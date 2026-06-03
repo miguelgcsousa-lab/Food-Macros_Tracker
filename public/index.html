@@ -768,8 +768,12 @@ function switchInputTab(tab, el) {
 }
 
 // ── FILE ─────────────────────────────────────────────────
+let photoMediaType = 'image/jpeg';
+
 function handleFile(input) {
   const file = input.files[0]; if (!file) return;
+  const allowed = ['image/jpeg','image/png','image/gif','image/webp'];
+  photoMediaType = allowed.includes(file.type) ? file.type : 'image/jpeg';
   const reader = new FileReader();
   reader.onload = e => {
     const img = document.getElementById('preview-img');
@@ -831,7 +835,7 @@ async function analyzePhoto() {
 
   try {
     const text = await callClaude([{ role: 'user', content: [
-      { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: photoBase64 } },
+      { type: 'image', source: { type: 'base64', media_type: photoMediaType, data: photoBase64 } },
       { type: 'text', text: `Analisa esta refeição/alimento.${weight ? ` Peso total: ${weight}g.` : ''}${desc ? ` Descrição: ${desc}.` : ''} Devolve JSON com macros.` }
     ]}], MACRO_SYSTEM);
 
