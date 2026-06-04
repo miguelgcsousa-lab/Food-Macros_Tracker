@@ -236,6 +236,75 @@ header {
 #loading-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 1000; flex-direction: column; gap: 12px; }
 #loading-overlay .spinner { width: 28px; height: 28px; border-width: 3px; }
 #loading-overlay span { font-size: 0.85rem; color: var(--text3); }
+
+/* ── DARK MODE ── */
+body.dark {
+  --bg: #0f0f0d; --surface: #1a1a18; --surface2: #242420;
+  --border: #2e2e2a; --border2: #3a3a34;
+  --text: #f0f0ec; --text2: #a0a098; --text3: #606058;
+  --green-light: #0d2a1a; --red-light: #2a0d0d;
+}
+
+/* ── WATER ── */
+.water-dots { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.water-dot { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border2); background: var(--surface2); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+.water-dot.filled { background: var(--blue); border-color: var(--blue); }
+.water-dot:hover { transform: scale(1.1); }
+
+/* ── STREAK ── */
+.streak-badge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #f0c44d, #e8a020); color: #0e0e0c; border-radius: 20px; padding: 4px 12px; font-size: 0.75rem; font-weight: 700; }
+
+/* ── DIABETES ── */
+.diabetes-layout { max-width: 900px; margin: 0 auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+@media (max-width: 700px) { .diabetes-layout { padding: 14px; gap: 12px; } }
+
+.glucose-display { display: flex; align-items: center; gap: 16px; }
+.glucose-number { font-family: 'JetBrains Mono', monospace; font-size: 3rem; font-weight: 600; letter-spacing: -0.03em; transition: color 0.3s; }
+.glucose-number.normal { color: var(--green); }
+.glucose-number.warning { color: var(--orange); }
+.glucose-number.danger { color: var(--red); }
+.glucose-unit { font-size: 0.78rem; color: var(--text3); font-weight: 500; }
+.glucose-label { font-size: 0.78rem; color: var(--text3); margin-top: 2px; }
+
+.semaphore { display: flex; flex-direction: column; gap: 4px; }
+.sem-light { width: 14px; height: 14px; border-radius: 50%; opacity: 0.2; transition: opacity 0.3s; }
+.sem-light.active { opacity: 1; }
+.sem-red { background: var(--red); }
+.sem-orange { background: var(--orange); }
+.sem-green { background: var(--green); }
+
+.glucose-ref { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 12px; }
+.ref-card { background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 12px; border: 1px solid var(--border); }
+.ref-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 4px; }
+.ref-val { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; color: var(--text2); }
+.ref-val.ok { color: var(--green); }
+.ref-val.warn { color: var(--orange); }
+.ref-val.bad { color: var(--red); }
+
+.glucose-log-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 6px; animation: fadeUp 0.2s ease; }
+.glucose-val-tag { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 600; padding: 3px 10px; border-radius: 6px; }
+.glucose-val-tag.normal { background: var(--green-light); color: var(--green); }
+.glucose-val-tag.warning { background: #fff3e0; color: var(--orange); }
+.glucose-val-tag.danger { background: var(--red-light); color: var(--red); }
+
+.hba1c-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+.hba1c-item:last-child { border-bottom: none; }
+.hba1c-val { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 600; }
+.hba1c-val.good { color: var(--green); }
+.hba1c-val.fair { color: var(--orange); }
+.hba1c-val.poor { color: var(--red); }
+
+.med-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 6px; }
+.med-taken { background: var(--green-light); border-color: #b8d9c4; }
+
+/* ── DASHBOARD ── */
+.dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (max-width: 500px) { .dashboard-grid { grid-template-columns: 1fr; } }
+.dash-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+.dash-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 8px; }
+.dash-val { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 600; color: var(--green); letter-spacing: -0.02em; }
+.dash-sub { font-size: 0.72rem; color: var(--text3); margin-top: 3px; }
+
 </style>
 </head>
 <body>
@@ -311,9 +380,11 @@ header {
       <button class="nav-tab active" onclick="showPage('analyser',this)">Analisar</button>
       <button class="nav-tab" onclick="showPage('daily',this)">Hoje</button>
       <button class="nav-tab" onclick="showPage('history',this)">Histórico</button>
-      <button class="nav-tab" onclick="showPage('mounjaro',this)">💉</button>
+      <button class="nav-tab" onclick="showPage('mounjaro',this)">💉 Mounjaro</button>
     </div>
+    <button class="nav-tab" onclick="showPage('diabetes',this)">🩸 Diabetes</button>
     <button class="btn-ghost" onclick="openSettings()" style="font-size:1rem;padding:4px 6px">⚙️</button>
+    <button class="btn-ghost" onclick="toggleDark()" id="dark-toggle" style="font-size:1rem;padding:4px 6px">🌙</button>
     <button class="btn-signout" onclick="signOut()">Sair</button>
   </div>
 </header>
@@ -400,7 +471,7 @@ header {
 <div class="page" id="page-daily">
   <div class="daily-layout">
     <div class="card">
-      <div class="card-header"><span id="daily-date-label">Hoje</span><button class="btn-ghost" onclick="resetDay()">↺ Limpar dia</button></div>
+      <div class="card-header"><div style="display:flex;align-items:center;gap:8px"><span id="daily-date-label">Hoje</span><div class="streak-badge" id="streak-display" style="display:none">🔥 <span></span></div></div><button class="btn-ghost" onclick="resetDay()">↺ Limpar dia</button></div>
       <div class="card-body">
         <div class="summary-top">
           <div><div class="kcal-number ok" id="d-kcal">0</div><div class="kcal-label" id="d-kcal-label">kcal / 0 objectivo</div></div>
@@ -414,6 +485,19 @@ header {
       </div>
     </div>
     <div id="daily-log-container"></div>
+
+    <!-- Water tracking -->
+    <div class="card">
+      <div class="card-header">
+        <span>Hidratação</span>
+        <span id="water-count-label" style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.8rem;color:var(--text2)">0 / 8 copos</span>
+      </div>
+      <div class="card-body">
+        <div class="water-dots" id="water-dots"></div>
+        <div style="font-size:0.72rem;color:var(--text3);margin-top:8px">Toca num copo para registar. Cada copo = 250ml.</div>
+      </div>
+    </div>
+
     <button class="btn-outline" onclick="exportCSV()" style="align-self:flex-start">⬇ Exportar semana CSV</button>
   </div>
 </div>
@@ -495,6 +579,124 @@ header {
 
 </div><!-- end app-screen -->
 
+
+<!-- DIABETES -->
+<div class="page" id="page-diabetes">
+  <div class="diabetes-layout">
+
+    <!-- Latest glucose banner -->
+    <div class="card">
+      <div class="card-header"><span>Glicemia actual</span><span id="diabetes-date" style="font-weight:400;text-transform:none;letter-spacing:0"></span></div>
+      <div class="card-body">
+        <div class="glucose-display">
+          <div class="semaphore">
+            <div class="sem-light sem-red" id="sem-red"></div>
+            <div class="sem-light sem-orange" id="sem-orange"></div>
+            <div class="sem-light sem-green active" id="sem-green"></div>
+          </div>
+          <div>
+            <div class="glucose-number normal" id="latest-glucose">—</div>
+            <div class="glucose-unit">mg/dL</div>
+            <div class="glucose-label" id="latest-glucose-label">Sem registos</div>
+          </div>
+        </div>
+        <div class="glucose-ref">
+          <div class="ref-card"><div class="ref-label">Jejum</div><div class="ref-val ok">70–99</div><div style="font-size:0.62rem;color:var(--text3)">Normal</div></div>
+          <div class="ref-card"><div class="ref-label">Pós-refeição</div><div class="ref-val ok">&lt;140</div><div style="font-size:0.62rem;color:var(--text3)">2h depois</div></div>
+          <div class="ref-card"><div class="ref-label">Antes dormir</div><div class="ref-val ok">100–140</div><div style="font-size:0.62rem;color:var(--text3)">Recomendado</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register glucose -->
+    <div class="card">
+      <div class="card-header">Registar glicemia</div>
+      <div class="card-body">
+        <div class="row-2">
+          <div class="field"><label>Valor (mg/dL)</label><input type="number" id="glucose-val" placeholder="ex: 95" inputmode="numeric"></div>
+          <div class="field"><label>Momento</label><select id="glucose-moment"><option value="Jejum">Jejum</option><option value="Pós-almoço">Pós-almoço</option><option value="Pós-jantar">Pós-jantar</option><option value="Pós-pequeno-almoço">Pós-pequeno-almoço</option><option value="Antes de dormir">Antes de dormir</option><option value="Outro">Outro</option></select></div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label>Data</label><input type="date" id="glucose-date"></div>
+          <div class="field"><label>Hora</label><input type="time" id="glucose-time"></div>
+        </div>
+        <div class="field"><label>Notas (opcional)</label><input type="text" id="glucose-notes" placeholder="ex: após exercício, stressado..."></div>
+        <button class="btn-primary" onclick="registerGlucose()" id="btn-glucose">Registar</button>
+        <div class="error-msg" id="error-glucose"></div>
+      </div>
+    </div>
+
+    <!-- Medication -->
+    <div class="card">
+      <div class="card-header"><span>Medicação oral</span><button class="btn-ghost" onclick="showMedForm()">+ Adicionar</button></div>
+      <div class="card-body" style="padding:12px 16px">
+        <div id="med-form" style="display:none;flex-direction:column;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
+          <div class="row-2">
+            <div class="field"><label>Medicamento</label><input type="text" id="med-name" placeholder="ex: Metformina"></div>
+            <div class="field"><label>Dose</label><input type="text" id="med-dose" placeholder="ex: 500mg"></div>
+          </div>
+          <div class="row-2">
+            <div class="field"><label>Frequência</label><select id="med-freq"><option>1x dia</option><option>2x dia</option><option>3x dia</option><option>Com refeições</option></select></div>
+            <div class="field"><label>Hora habitual</label><input type="time" id="med-time"></div>
+          </div>
+          <button class="btn-primary" onclick="saveMedication()">Guardar medicamento</button>
+        </div>
+        <div id="med-list"><div class="log-empty">Sem medicação registada.</div></div>
+      </div>
+    </div>
+
+    <!-- HbA1c -->
+    <div class="card">
+      <div class="card-header"><span>HbA1c</span><button class="btn-ghost" onclick="document.getElementById('hba1c-form').style.display='flex'">+ Adicionar</button></div>
+      <div class="card-body" style="padding:12px 16px">
+        <div id="hba1c-form" style="display:none;flex-direction:column;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
+          <div class="row-2">
+            <div class="field"><label>Valor (%)</label><input type="number" id="hba1c-val" placeholder="ex: 6.8" step="0.1" inputmode="decimal"></div>
+            <div class="field"><label>Data</label><input type="date" id="hba1c-date"></div>
+          </div>
+          <button class="btn-primary" onclick="saveHba1c()">Guardar</button>
+        </div>
+        <div id="hba1c-list"><div class="log-empty">Sem registos de HbA1c.</div></div>
+        <div style="margin-top:10px;font-size:0.72rem;color:var(--text3);line-height:1.6">
+          <span style="color:var(--green)">●</span> &lt;5.7% Normal &nbsp;
+          <span style="color:var(--orange)">●</span> 5.7–6.4% Pré-diabetes &nbsp;
+          <span style="color:var(--red)">●</span> ≥6.5% Diabetes
+        </div>
+      </div>
+    </div>
+
+    <!-- Weight / BMI -->
+    <div class="card">
+      <div class="card-header"><span>Peso & IMC</span><button class="btn-ghost" onclick="document.getElementById('weight-form').style.display='flex'">+ Registar</button></div>
+      <div class="card-body" style="padding:12px 16px">
+        <div id="weight-form" style="display:none;flex-direction:column;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
+          <div class="row-2">
+            <div class="field"><label>Peso (kg)</label><input type="number" id="weight-val" placeholder="ex: 82.5" step="0.1" inputmode="decimal"></div>
+            <div class="field"><label>Altura (cm)</label><input type="number" id="height-val" placeholder="ex: 175" inputmode="numeric"></div>
+          </div>
+          <button class="btn-primary" onclick="saveWeight()">Guardar</button>
+        </div>
+        <div id="weight-display">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="ref-card"><div class="ref-label">Peso actual</div><div class="ref-val" id="weight-current" style="color:var(--text)">—</div></div>
+            <div class="ref-card"><div class="ref-label">IMC</div><div class="ref-val" id="bmi-current">—</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Glucose history -->
+    <div class="card">
+      <div class="card-header"><span>Histórico de glicemia</span><button class="btn-ghost" onclick="clearGlucoseHistory()">Apagar</button></div>
+      <div class="card-body" style="padding:12px 16px">
+        <div id="glucose-history"><div class="log-empty">Sem registos.</div></div>
+        <button class="btn-outline" onclick="exportDiabetesCSV()" style="margin-top:12px">⬇ Exportar para médico</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="settings-modal" onclick="if(event.target===this)closeSettings()">
   <div class="modal">
@@ -575,6 +777,8 @@ function showApp() {
   renderDaily();
   renderHistory();
   initMounjaroUI();
+  initWater();
+  loadDiabetesData();
 }
 
 function showAuth() {
@@ -607,6 +811,7 @@ async function loadUserData() {
   // Injections
   const { data: injs } = await sb.from('injections').select('*').eq('user_id', uid).order('date', { ascending: false });
   injLog = injs || [];
+  await loadDiabetesData();
 }
 
 // ── AUTH ──────────────────────────────────────────────────
@@ -661,6 +866,8 @@ function showPage(id, el) {
   if (id === 'daily') renderDaily();
   if (id === 'history') renderHistory();
   if (id === 'mounjaro') { renderBodyMap(); renderNextDose(); renderInjHistory(); }
+  if (id === 'diabetes') { initDiabetesPage(); }
+  if (id === 'daily') { initWater(); }
 }
 
 function switchInputTab(tab, el) {
@@ -713,7 +920,7 @@ async function callClaude(messages, system) {
   return data.content.filter(b => b.type==='text').map(b => b.text).join('');
 }
 
-const MACRO_SYS = 'És um nutricionista especialista. Responde APENAS em JSON válido sem markdown nem backticks.\nFormato: {"name":"Nome","kcal":número,"protein":número,"carbs":número,"fat":número,"fiber":número,"notes":"nota (max 2 frases)"}\nUsa valores reais USDA/INSA. Se o peso não for dado, estima pela porção típica.';
+const MACRO_SYS = 'És um nutricionista especialista. Responde APENAS em JSON válido sem markdown nem backticks.\nFormato: {"name":"Nome","kcal":número,"protein":número,"carbs":número,"fat":número,"fiber":número,"gi":número_ou_null,"notes":"nota (max 2 frases)"}\ngi = índice glicémico estimado (0-100), null se não aplicável.\nUsa valores reais USDA/INSA. Se o peso não for dado, estima pela porção típica.';
 
 async function analyzePhoto() {
   if (!photoBase64) { showError('photo','Adiciona uma foto primeiro.'); return; }
@@ -770,6 +977,7 @@ function renderResult(r) {
   if (r.meal) { mealTag.textContent = r.meal; mealTag.style.display='inline-block'; } else { mealTag.style.display='none'; }
   const today = log.filter(i => i.date === todayKey());
   const totals = today.reduce((a,i) => ({ kcal:a.kcal+i.kcal, protein:a.protein+i.protein, carbs:a.carbs+i.carbs, fat:a.fat+i.fat, fiber:a.fiber+i.fiber }), {kcal:0,protein:0,carbs:0,fat:0,fiber:0});
+  const giBox = r.gi ? [{ cls:'m-kcal', label:'IG', val:r.gi, target:null, cur:0 }] : [];
   const boxes = [
     { cls:'m-kcal', label:'kcal', val:Math.round(r.kcal), target:TARGETS.kcal, cur:totals.kcal },
     { cls:'m-prot', label:'Prot.', val:Math.round(r.protein)+'g', target:TARGETS.protein, cur:totals.protein },
@@ -887,6 +1095,10 @@ function renderDaily() {
     document.getElementById('val-'+k).textContent = Math.round(val) + ' / ' + tgt + 'g';
     document.getElementById('val-'+k).className = 'bar-val' + (isOver?' over':'');
   });
+  // Streak
+  const streak = calcStreak();
+  const streakEl = document.getElementById('streak-display');
+  if (streakEl && streak > 0) { streakEl.style.display='inline-flex'; streakEl.querySelector('span').textContent = streak + ' dias seguidos'; }
   const c = document.getElementById('daily-log-container');
   if (!todayLog.length) { c.innerHTML='<div class="log-empty">Ainda não adicionaste nenhuma refeição hoje.</div>'; return; }
   c.innerHTML = todayLog.map(item => '<div class="log-item"><div><div class="log-name">' + item.name + (item.meal?'<span class="log-meal-tag">'+item.meal+'</span>':'') + '</div><div class="log-meta">' + (item.time||'') + ' · P:' + Math.round(item.protein) + 'g · HC:' + Math.round(item.carbs) + 'g · G:' + Math.round(item.fat) + 'g · F:' + Math.round(item.fiber) + 'g</div></div><div style="display:flex;align-items:center;gap:4px"><span class="log-kcal">' + Math.round(item.kcal) + ' kcal</span><button class="btn-ghost" onclick="removeFromLog(' + item.id + ')">✕</button></div></div>').join('');
@@ -1053,6 +1265,274 @@ function formatDateLabel(key) {
 function setLoading(type, show) { document.getElementById('loading-'+type).classList.toggle('show',show); document.getElementById('btn-'+type).disabled=show; }
 function showError(type, msg) { const e=document.getElementById('error-'+type); e.textContent=msg; e.classList.add('show'); }
 function hideError(type) { document.getElementById('error-'+type).classList.remove('show'); }
+
+
+// ── DARK MODE ─────────────────────────────────────────────
+function toggleDark() {
+  document.body.classList.toggle('dark');
+  const btn = document.getElementById('dark-toggle');
+  btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  localStorage.setItem('darkMode', document.body.classList.contains('dark') ? '1' : '0');
+}
+if (localStorage.getItem('darkMode') === '1') {
+  document.body.classList.add('dark');
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('dark-toggle');
+    if (btn) btn.textContent = '☀️';
+  });
+}
+
+// ── WATER TRACKING ────────────────────────────────────────
+function initWater() {
+  const key = 'water_' + todayKey();
+  const count = parseInt(localStorage.getItem(key) || '0');
+  renderWater(count);
+}
+
+function renderWater(count) {
+  const key = 'water_' + todayKey();
+  localStorage.setItem(key, count);
+  const c = document.getElementById('water-dots');
+  if (!c) return;
+  c.innerHTML = Array.from({length:8}, (_,i) =>
+    '<div class="water-dot ' + (i < count ? 'filled' : '') + '" onclick="setWater(' + (i+1) + ')" title="' + ((i+1)*250) + 'ml">💧</div>'
+  ).join('');
+  const label = document.getElementById('water-count-label');
+  if (label) label.textContent = count + ' / 8 copos (' + (count*250) + 'ml)';
+}
+
+function setWater(n) {
+  const key = 'water_' + todayKey();
+  const current = parseInt(localStorage.getItem(key) || '0');
+  renderWater(current === n ? n - 1 : n);
+}
+
+// ── STREAK ────────────────────────────────────────────────
+function calcStreak() {
+  if (!log.length) return 0;
+  const dates = [...new Set(log.map(i => i.date))].sort().reverse();
+  let streak = 0; let check = new Date();
+  for (const d of dates) {
+    const checkStr = check.toISOString().slice(0,10);
+    if (d === checkStr || d === new Date(check - 86400000).toISOString().slice(0,10)) {
+      streak++;
+      check = new Date(d);
+      check.setDate(check.getDate() - 1);
+    } else break;
+  }
+  return streak;
+}
+
+// ── DIABETES STATE ────────────────────────────────────────
+let glucoseLog = [];
+let medications = JSON.parse(localStorage.getItem('medications') || '[]');
+let hba1cLog = JSON.parse(localStorage.getItem('hba1cLog') || '[]');
+let weightLog = JSON.parse(localStorage.getItem('weightLog') || '[]');
+
+async function loadDiabetesData() {
+  // glucose from supabase if table exists, else localStorage
+  const stored = localStorage.getItem('glucoseLog');
+  glucoseLog = stored ? JSON.parse(stored) : [];
+}
+
+function getGlucoseStatus(val, moment) {
+  if (!val) return 'normal';
+  const isFasting = moment && moment.toLowerCase().includes('jejum');
+  if (isFasting) {
+    if (val < 70 || val > 180) return 'danger';
+    if (val > 99) return 'warning';
+    return 'normal';
+  } else {
+    if (val > 200) return 'danger';
+    if (val > 140) return 'warning';
+    return 'normal';
+  }
+}
+
+function updateGlucoseBanner() {
+  if (!glucoseLog.length) return;
+  const latest = [...glucoseLog].sort((a,b) => (b.date+b.time).localeCompare(a.date+a.time))[0];
+  const val = latest.value;
+  const status = getGlucoseStatus(val, latest.moment);
+  const el = document.getElementById('latest-glucose');
+  if (!el) return;
+  el.textContent = val;
+  el.className = 'glucose-number ' + status;
+  document.getElementById('latest-glucose-label').textContent = latest.moment + ' · ' + formatDateLabel(latest.date);
+  document.getElementById('diabetes-date').textContent = latest.time || '';
+  // Semaphore
+  document.getElementById('sem-green').classList.toggle('active', status === 'normal');
+  document.getElementById('sem-orange').classList.toggle('active', status === 'warning');
+  document.getElementById('sem-red').classList.toggle('active', status === 'danger');
+}
+
+function registerGlucose() {
+  const val = parseInt(document.getElementById('glucose-val').value);
+  const moment = document.getElementById('glucose-moment').value;
+  const date = document.getElementById('glucose-date').value;
+  const time = document.getElementById('glucose-time').value;
+  const notes = document.getElementById('glucose-notes').value;
+  if (!val || !date) { showGlucoseError('Indica o valor e a data.'); return; }
+  const entry = { id: Date.now(), value: val, moment, date, time, notes };
+  glucoseLog.unshift(entry);
+  localStorage.setItem('glucoseLog', JSON.stringify(glucoseLog));
+  document.getElementById('glucose-val').value = '';
+  document.getElementById('glucose-notes').value = '';
+  updateGlucoseBanner();
+  renderGlucoseHistory();
+  const btn = document.getElementById('btn-glucose');
+  btn.textContent = '✓ Registado'; setTimeout(() => { btn.textContent = 'Registar'; }, 2000);
+}
+
+function renderGlucoseHistory() {
+  const c = document.getElementById('glucose-history');
+  if (!glucoseLog.length) { c.innerHTML = '<div class="log-empty">Sem registos.</div>'; return; }
+  c.innerHTML = [...glucoseLog].sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).slice(0,30).map(g => {
+    const status = getGlucoseStatus(g.value, g.moment);
+    return '<div class="glucose-log-item"><div><div style="font-size:0.88rem;font-weight:600">' + g.moment + '</div><div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text3);margin-top:2px">' + formatDateLabel(g.date) + (g.time?' · '+g.time:'') + (g.notes?' · '+g.notes:'') + '</div></div><div style="display:flex;align-items:center;gap:8px"><span class="glucose-val-tag ' + status + '">' + g.value + ' mg/dL</span><button class="btn-ghost" onclick="deleteGlucose(' + g.id + ')">✕</button></div></div>';
+  }).join('');
+}
+
+function deleteGlucose(id) {
+  glucoseLog = glucoseLog.filter(g => g.id !== id);
+  localStorage.setItem('glucoseLog', JSON.stringify(glucoseLog));
+  updateGlucoseBanner(); renderGlucoseHistory();
+}
+
+function clearGlucoseHistory() {
+  if (!confirm('Apagar histórico de glicemia?')) return;
+  glucoseLog = []; localStorage.setItem('glucoseLog', JSON.stringify(glucoseLog));
+  updateGlucoseBanner(); renderGlucoseHistory();
+}
+
+function showGlucoseError(msg) {
+  const e = document.getElementById('error-glucose');
+  e.textContent = msg; e.classList.add('show');
+  setTimeout(() => e.classList.remove('show'), 3000);
+}
+
+// Medication
+function showMedForm() {
+  const f = document.getElementById('med-form');
+  f.style.display = f.style.display === 'none' ? 'flex' : 'none';
+}
+
+function saveMedication() {
+  const name = document.getElementById('med-name').value.trim();
+  const dose = document.getElementById('med-dose').value.trim();
+  const freq = document.getElementById('med-freq').value;
+  const time = document.getElementById('med-time').value;
+  if (!name) return;
+  medications.push({ id: Date.now(), name, dose, freq, time, taken: false });
+  localStorage.setItem('medications', JSON.stringify(medications));
+  document.getElementById('med-form').style.display = 'none';
+  document.getElementById('med-name').value = '';
+  document.getElementById('med-dose').value = '';
+  renderMedications();
+}
+
+function toggleMedTaken(id) {
+  const med = medications.find(m => m.id === id);
+  if (med) { med.taken = !med.taken; localStorage.setItem('medications', JSON.stringify(medications)); renderMedications(); }
+}
+
+function deleteMed(id) {
+  medications = medications.filter(m => m.id !== id);
+  localStorage.setItem('medications', JSON.stringify(medications));
+  renderMedications();
+}
+
+function renderMedications() {
+  const c = document.getElementById('med-list');
+  if (!medications.length) { c.innerHTML = '<div class="log-empty">Sem medicação registada.</div>'; return; }
+  c.innerHTML = medications.map(m => '<div class="med-item ' + (m.taken?'med-taken':'') + '"><div><div style="font-size:0.88rem;font-weight:600">' + m.name + (m.dose?' · '+m.dose:'') + '</div><div style="font-size:0.72rem;color:var(--text3);margin-top:2px">' + m.freq + (m.time?' · '+m.time:'') + '</div></div><div style="display:flex;align-items:center;gap:8px"><button class="btn-outline" style="padding:5px 10px;font-size:0.72rem" onclick="toggleMedTaken(' + m.id + ')">' + (m.taken?'✓ Tomado':'Tomar') + '</button><button class="btn-ghost" onclick="deleteMed(' + m.id + ')">✕</button></div></div>').join('');
+}
+
+// HbA1c
+function saveHba1c() {
+  const val = parseFloat(document.getElementById('hba1c-val').value);
+  const date = document.getElementById('hba1c-date').value;
+  if (!val || !date) return;
+  hba1cLog.unshift({ id: Date.now(), value: val, date });
+  localStorage.setItem('hba1cLog', JSON.stringify(hba1cLog));
+  document.getElementById('hba1c-form').style.display = 'none';
+  renderHba1c();
+}
+
+function renderHba1c() {
+  const c = document.getElementById('hba1c-list');
+  if (!hba1cLog.length) { c.innerHTML = '<div class="log-empty">Sem registos de HbA1c.</div>'; return; }
+  c.innerHTML = '<div>' + hba1cLog.slice(0,10).map(h => {
+    const cls = h.value < 5.7 ? 'good' : h.value < 6.5 ? 'fair' : 'poor';
+    const label = h.value < 5.7 ? 'Normal' : h.value < 6.5 ? 'Pré-diabetes' : 'Diabetes';
+    return '<div class="hba1c-item"><div><div style="font-size:0.85rem;font-weight:500">' + formatDateLabel(h.date) + '</div><div style="font-size:0.68rem;color:var(--text3)">' + label + '</div></div><div style="display:flex;align-items:center;gap:8px"><span class="hba1c-val ' + cls + '">' + h.value + '%</span><button class="btn-ghost" onclick="deleteHba1c(' + h.id + ')">✕</button></div></div>';
+  }).join('') + '</div>';
+}
+
+function deleteHba1c(id) {
+  hba1cLog = hba1cLog.filter(h => h.id !== id);
+  localStorage.setItem('hba1cLog', JSON.stringify(hba1cLog));
+  renderHba1c();
+}
+
+// Weight / BMI
+function saveWeight() {
+  const weight = parseFloat(document.getElementById('weight-val').value);
+  const height = parseFloat(document.getElementById('height-val').value);
+  if (!weight) return;
+  const bmi = height ? Math.round((weight / ((height/100)**2)) * 10) / 10 : null;
+  weightLog.unshift({ id: Date.now(), weight, height, bmi, date: todayKey() });
+  localStorage.setItem('weightLog', JSON.stringify(weightLog));
+  document.getElementById('weight-form').style.display = 'none';
+  renderWeight();
+}
+
+function renderWeight() {
+  if (!weightLog.length) return;
+  const latest = weightLog[0];
+  document.getElementById('weight-current').textContent = latest.weight + ' kg';
+  const bmiEl = document.getElementById('bmi-current');
+  if (latest.bmi) {
+    const bmiLabel = latest.bmi < 18.5 ? 'Baixo peso' : latest.bmi < 25 ? 'Normal' : latest.bmi < 30 ? 'Excesso' : 'Obesidade';
+    const bmiColor = latest.bmi < 25 ? 'var(--green)' : latest.bmi < 30 ? 'var(--orange)' : 'var(--red)';
+    bmiEl.textContent = latest.bmi;
+    bmiEl.style.color = bmiColor;
+    bmiEl.nextElementSibling && (bmiEl.nextElementSibling.textContent = bmiLabel);
+  }
+}
+
+function exportDiabetesCSV() {
+  if (!glucoseLog.length) { alert('Sem dados para exportar.'); return; }
+  const rows = [['Data','Hora','Momento','Glicemia (mg/dL)','Estado','Notas']];
+  [...glucoseLog].sort((a,b)=>a.date.localeCompare(b.date)).forEach(g => {
+    const status = getGlucoseStatus(g.value, g.moment);
+    const statusLabel = status === 'normal' ? 'Normal' : status === 'warning' ? 'Atenção' : 'Elevado';
+    rows.push([g.date, g.time||'', g.moment, g.value, statusLabel, g.notes||'']);
+  });
+  if (hba1cLog.length) {
+    rows.push([]); rows.push(['--- HbA1c ---']);
+    rows.push(['Data','HbA1c (%)','Classificação']);
+    hba1cLog.forEach(h => rows.push([h.date, h.value, h.value<5.7?'Normal':h.value<6.5?'Pré-diabetes':'Diabetes']));
+  }
+  if (weightLog.length) {
+    rows.push([]); rows.push(['--- Peso ---']);
+    rows.push(['Data','Peso (kg)','IMC']);
+    weightLog.forEach(w => rows.push([w.date, w.weight, w.bmi||'']));
+  }
+  const csv = rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a = document.createElement('a'); a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv); a.download='diabetes_'+todayKey()+'.csv'; a.click();
+}
+
+function initDiabetesPage() {
+  document.getElementById('glucose-date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('glucose-time').value = new Date().toTimeString().slice(0,5);
+  document.getElementById('hba1c-date').value = new Date().toISOString().slice(0,10);
+  updateGlucoseBanner();
+  renderGlucoseHistory();
+  renderMedications();
+  renderHba1c();
+  renderWeight();
+}
 
 // ── START ─────────────────────────────────────────────────
 init();
