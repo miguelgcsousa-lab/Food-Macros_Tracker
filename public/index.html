@@ -21,6 +21,7 @@
   --green: #2d7d52;
   --green-light: #e8f5ee;
   --red: #c0392b;
+  --red-light: #fdf0ef;
   --orange: #c0720a;
   --blue: #1a6fa8;
   --purple: #6b3fb5;
@@ -43,11 +44,10 @@ body {
   line-height: 1.5;
 }
 
-/* ── HEADER ── */
 header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  padding: 0 24px;
+  padding: 0 20px;
   height: 56px;
   display: flex;
   align-items: center;
@@ -58,613 +58,416 @@ header {
   padding-top: env(safe-area-inset-top);
 }
 
-.logo {
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text);
-}
+.logo { font-size: 1rem; font-weight: 700; letter-spacing: -0.02em; }
 .logo span { color: var(--green); }
 
-.nav-tabs {
-  display: flex;
-  gap: 4px;
-  background: var(--surface2);
-  border-radius: 8px;
-  padding: 3px;
-}
-
+.nav-tabs { display: flex; gap: 3px; background: var(--surface2); border-radius: 8px; padding: 3px; }
 .nav-tab {
-  background: none;
-  border: none;
-  padding: 5px 14px;
-  border-radius: 6px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text3);
-  cursor: pointer;
-  transition: all 0.18s;
-  white-space: nowrap;
+  background: none; border: none; padding: 5px 12px;
+  border-radius: 6px; font-family: 'Inter', sans-serif;
+  font-size: 0.78rem; font-weight: 600; color: var(--text3);
+  cursor: pointer; transition: all 0.18s; white-space: nowrap;
 }
+.nav-tab.active { background: var(--surface); color: var(--green); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 
-.nav-tab.active {
-  background: var(--surface);
-  color: var(--green);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-/* ── LAYOUT ── */
 .page { display: none; }
 .page.active { display: block; }
 
-/* ── ANALYSER PAGE ── */
+/* ── ANALYSER ── */
 .analyser-layout {
-  max-width: 1100px;
-  margin: 0 auto;
+  max-width: 1100px; margin: 0 auto;
   padding: 24px 20px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  align-items: start;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px; align-items: start;
 }
-
 @media (max-width: 700px) {
-  .analyser-layout {
-    grid-template-columns: 1fr;
-    padding: 16px;
-    gap: 14px;
-  }
-  header { padding: 0 16px; }
-  .nav-tabs { gap: 2px; }
-  .nav-tab { padding: 5px 10px; font-size: 0.75rem; }
+  .analyser-layout { grid-template-columns: 1fr; padding: 14px; gap: 12px; }
+  header { padding: 0 14px; }
+  .nav-tab { padding: 5px 9px; font-size: 0.73rem; }
 }
 
-/* ── CARDS ── */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 .card-header {
-  padding: 14px 16px 12px;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text3);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text3);
+  display: flex; align-items: center; justify-content: space-between;
 }
-
 .card-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 
-/* ── INPUT TABS ── */
-.input-tabs {
-  display: flex;
-  border-bottom: 1px solid var(--border);
-}
-
+.input-tabs { display: flex; border-bottom: 1px solid var(--border); }
 .input-tab {
-  flex: 1;
-  padding: 11px;
-  background: none;
-  border: none;
+  flex: 1; padding: 11px; background: none; border: none;
   border-bottom: 2px solid transparent;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text3);
-  cursor: pointer;
-  transition: all 0.18s;
+  font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600;
+  color: var(--text3); cursor: pointer; transition: all 0.18s;
 }
-
-.input-tab.active {
-  color: var(--green);
-  border-bottom-color: var(--green);
-  background: var(--green-light);
-}
-
+.input-tab.active { color: var(--green); border-bottom-color: var(--green); background: var(--green-light); }
 .input-panel { display: none; padding: 16px; flex-direction: column; gap: 12px; }
 .input-panel.active { display: flex; }
 
-/* ── DROP ZONE ── */
 .drop-zone {
-  border: 1.5px dashed var(--border2);
-  border-radius: var(--radius-sm);
-  padding: 28px 16px;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s;
-  background: var(--surface2);
+  border: 1.5px dashed var(--border2); border-radius: var(--radius-sm);
+  padding: 28px 16px; text-align: center; cursor: pointer;
+  position: relative; transition: all 0.2s; background: var(--surface2);
 }
-
 .drop-zone:hover { border-color: var(--green); background: var(--green-light); }
-.drop-zone.has-image { padding: 0; border: none; border-radius: var(--radius-sm); overflow: hidden; }
+.drop-zone.has-image { padding: 0; border: none; overflow: hidden; }
 .drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2; }
-
 .drop-icon { font-size: 1.8rem; margin-bottom: 6px; }
 .drop-text { font-size: 0.83rem; color: var(--text2); line-height: 1.5; }
 .drop-text strong { color: var(--text); display: block; font-weight: 600; }
-
-#preview-img {
-  width: 100%; max-height: 240px; object-fit: cover;
-  display: none; border-radius: var(--radius-sm);
-}
-
+#preview-img { width: 100%; max-height: 240px; object-fit: cover; display: none; border-radius: var(--radius-sm); }
 .change-photo-btn {
   position: absolute; bottom: 8px; right: 8px;
-  background: rgba(255,255,255,0.9);
-  border: 1px solid var(--border2);
-  border-radius: 6px;
-  font-size: 0.72rem; font-weight: 600;
-  padding: 4px 10px; cursor: pointer; display: none; z-index: 3;
-  color: var(--text2);
+  background: rgba(255,255,255,0.9); border: 1px solid var(--border2);
+  border-radius: 6px; font-size: 0.72rem; font-weight: 600;
+  padding: 4px 10px; cursor: pointer; display: none; z-index: 3; color: var(--text2);
 }
 
-/* ── FIELDS ── */
 .field { display: flex; flex-direction: column; gap: 5px; }
-
-.field label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text2);
-}
-
+.field label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text2); }
 .field input, .field textarea, .field select {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-  padding: 10px 12px;
-  outline: none;
-  width: 100%;
-  transition: border-color 0.18s;
-  -webkit-appearance: none;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: 'Inter', sans-serif; font-size: 0.95rem;
+  padding: 10px 12px; outline: none; width: 100%;
+  transition: border-color 0.18s; -webkit-appearance: none;
 }
-
 .field input:focus, .field textarea:focus { border-color: var(--green); background: var(--surface); }
-
-.field textarea {
-  min-height: 100px;
-  resize: none;
-  line-height: 1.6;
-  font-size: 0.9rem;
-}
+.field textarea { min-height: 90px; resize: none; line-height: 1.6; font-size: 0.9rem; }
+.field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
 
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-/* ── BUTTONS ── */
 .btn-primary {
-  background: var(--green);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 0.92rem;
-  padding: 12px 20px;
-  cursor: pointer;
-  width: 100%;
-  transition: opacity 0.15s, transform 0.1s;
+  background: var(--green); color: #fff; border: none;
+  border-radius: var(--radius-sm); font-family: 'Inter', sans-serif;
+  font-weight: 700; font-size: 0.92rem; padding: 12px 20px;
+  cursor: pointer; width: 100%; transition: opacity 0.15s, transform 0.1s;
 }
-
 .btn-primary:active { opacity: 0.85; transform: scale(0.99); }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
 .btn-outline {
-  background: var(--surface);
-  color: var(--green);
-  border: 1.5px solid var(--green);
-  border-radius: var(--radius-sm);
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 0.82rem;
-  padding: 8px 14px;
-  cursor: pointer;
-  transition: all 0.15s;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
+  background: var(--surface); color: var(--green); border: 1.5px solid var(--green);
+  border-radius: var(--radius-sm); font-family: 'Inter', sans-serif;
+  font-weight: 600; font-size: 0.82rem; padding: 8px 14px;
+  cursor: pointer; transition: all 0.15s;
+  display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
 }
-
 .btn-outline:active { background: var(--green); color: #fff; }
 .btn-outline.success { background: var(--green); color: #fff; border-color: var(--green); }
 
 .btn-ghost {
-  background: none; border: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--text3);
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: color 0.15s;
+  background: none; border: none; font-family: 'Inter', sans-serif;
+  font-size: 0.78rem; font-weight: 500; color: var(--text3);
+  cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: color 0.15s;
 }
 .btn-ghost:hover { color: var(--red); }
 
-/* ── LOADING ── */
-.loading {
-  display: none; align-items: center; gap: 10px;
-  padding: 10px 0; font-size: 0.83rem; color: var(--text3);
-}
+.loading { display: none; align-items: center; gap: 10px; padding: 10px 0; font-size: 0.83rem; color: var(--text3); }
 .loading.show { display: flex; }
-
-.spinner {
-  width: 15px; height: 15px;
-  border: 2px solid var(--border2);
-  border-top-color: var(--green);
-  border-radius: 50%;
-  animation: spin 0.65s linear infinite; flex-shrink: 0;
-}
+.spinner { width: 15px; height: 15px; border: 2px solid var(--border2); border-top-color: var(--green); border-radius: 50%; animation: spin 0.65s linear infinite; flex-shrink: 0; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── ERROR ── */
-.error-msg {
-  background: #fdf0ef; border: 1px solid #e8b4b0;
-  border-radius: var(--radius-sm);
-  padding: 10px 13px; font-size: 0.82rem;
-  color: var(--red); display: none;
-}
+.error-msg { background: var(--red-light); border: 1px solid #e8b4b0; border-radius: var(--radius-sm); padding: 10px 13px; font-size: 0.82rem; color: var(--red); display: none; }
 .error-msg.show { display: block; }
 
-/* ── RESULT CARD ── */
-.result-wrap {
-  display: none; flex-direction: column; gap: 12px;
-  animation: fadeUp 0.25s ease;
-}
+.result-wrap { display: none; flex-direction: column; gap: 12px; animation: fadeUp 0.25s ease; }
 .result-wrap.show { display: flex; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.result-name { font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+.result-meal-tag { display: inline-block; font-size: 0.68rem; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: var(--green-light); color: var(--green); margin-top: 3px; }
 
-.result-name {
-  font-size: 1rem; font-weight: 700; color: var(--text);
-  line-height: 1.3;
-}
-
-.macros-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-}
-
-.macro-box {
-  background: var(--surface2);
-  border-radius: var(--radius-sm);
-  padding: 10px 6px;
-  text-align: center;
-  border: 1px solid var(--border);
-}
-
-.macro-box .ml {
-  font-size: 0.6rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--text3); margin-bottom: 4px;
-}
-
-.macro-box .mv {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.95rem; font-weight: 600;
-}
-
+.macros-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.macro-box { background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 6px; text-align: center; border: 1px solid var(--border); transition: border-color 0.3s; }
+.macro-box.over-limit { border-color: var(--red); background: var(--red-light); }
+.macro-box .ml { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 4px; }
+.macro-box .mv { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 600; }
 .macro-box.m-kcal .mv { color: var(--green); }
 .macro-box.m-prot .mv { color: var(--protein); }
 .macro-box.m-carb .mv { color: var(--carbs); }
 .macro-box.m-fat  .mv { color: var(--fat); }
 .macro-box.m-fib  .mv { color: var(--purple); }
 
-.result-notes {
-  font-size: 0.82rem; color: var(--text2);
-  line-height: 1.65;
-  padding: 10px 12px;
-  background: var(--surface2);
-  border-radius: var(--radius-sm);
-  border-left: 3px solid var(--green);
-}
+.result-notes { font-size: 0.82rem; color: var(--text2); line-height: 1.65; padding: 10px 12px; background: var(--surface2); border-radius: var(--radius-sm); border-left: 3px solid var(--green); }
+.result-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-.result-actions {
-  display: flex; gap: 8px; flex-wrap: wrap;
+/* Favourites */
+.fav-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); cursor: pointer; transition: background 0.15s;
 }
+.fav-item:hover { background: var(--green-light); }
+.fav-name { font-size: 0.88rem; font-weight: 600; }
+.fav-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text3); margin-top: 2px; }
+.fav-kcal { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; color: var(--green); }
 
-/* ── RECIPE SUGGESTION ── */
-.recipe-suggestion {
-  display: none; flex-direction: column; gap: 8px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-.recipe-suggestion.show { display: flex; }
+/* Recipe suggestion */
+.recipe-sug-body { padding: 12px 14px; font-size: 0.85rem; color: var(--text2); line-height: 1.7; white-space: pre-wrap; max-height: 220px; overflow-y: auto; display: none; }
 
-.recipe-suggestion-header {
-  padding: 10px 14px;
-  background: var(--green-light);
-  font-size: 0.75rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  color: var(--green);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 6px;
-}
+/* ── DAILY ── */
+.daily-layout { max-width: 900px; margin: 0 auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+@media (max-width: 700px) { .daily-layout { padding: 14px; gap: 12px; } }
 
-.recipe-suggestion-body {
-  padding: 12px 14px;
-  font-size: 0.85rem; color: var(--text2);
-  line-height: 1.7; white-space: pre-wrap;
-  max-height: 200px; overflow-y: auto;
-}
-
-/* ── DAILY SUMMARY ── */
-.daily-layout {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 24px 20px;
-  display: flex; flex-direction: column; gap: 16px;
-}
-
-@media (max-width: 700px) {
-  .daily-layout { padding: 16px; gap: 12px; }
-}
-
-.summary-top {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 20px;
-  align-items: center;
-}
-
-@media (max-width: 500px) {
-  .summary-top { grid-template-columns: 1fr; }
-}
+.summary-top { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; }
+@media (max-width: 500px) { .summary-top { grid-template-columns: 1fr; } }
 
 .kcal-display { line-height: 1; }
-.kcal-number {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 2.8rem; font-weight: 600;
-  color: var(--green); letter-spacing: -0.03em;
-}
+.kcal-number { font-family: 'JetBrains Mono', monospace; font-size: 2.8rem; font-weight: 600; letter-spacing: -0.03em; transition: color 0.3s; }
+.kcal-number.ok { color: var(--green); }
+.kcal-number.warn { color: var(--orange); }
+.kcal-number.over { color: var(--red); }
 .kcal-label { font-size: 0.78rem; color: var(--text3); font-weight: 500; margin-top: 2px; }
 
 .macro-bars { display: flex; flex-direction: column; gap: 8px; }
-
-.bar-row {
-  display: grid;
-  grid-template-columns: 70px 1fr 60px;
-  align-items: center;
-  gap: 10px;
-}
-
-.bar-label { font-size: 0.78rem; font-weight: 600; color: var(--text2); }
+.bar-row { display: grid; grid-template-columns: 70px 1fr 70px; align-items: center; gap: 10px; }
+.bar-label { font-size: 0.78rem; font-weight: 600; }
 .bar-track { height: 7px; background: var(--surface2); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
-.bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease, background-color 0.3s; }
 .bar-fill.prot { background: var(--protein); }
 .bar-fill.carb { background: var(--carbs); }
-.bar-fill.fat { background: var(--fat); }
-.bar-fill.fib { background: var(--purple); }
-.bar-val {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem; color: var(--text2); text-align: right;
-}
+.bar-fill.fat  { background: var(--fat); }
+.bar-fill.fib  { background: var(--purple); }
+.bar-fill.over { background: var(--red) !important; }
+.bar-val { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text2); text-align: right; }
+.bar-val.over { color: var(--red); font-weight: 700; }
 
-/* ── LOG ── */
-.log-date-group { display: flex; flex-direction: column; gap: 6px; }
-
-.log-date-label {
-  font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--text3); padding: 4px 2px;
-}
-
-.log-item {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 11px 14px;
-  display: flex; align-items: center;
-  justify-content: space-between;
-  animation: fadeUp 0.2s ease;
-}
-
+.log-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; animation: fadeUp 0.2s ease; }
 .log-name { font-size: 0.9rem; font-weight: 600; color: var(--text); }
-.log-meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem; color: var(--text3); margin-top: 2px;
-}
-.log-kcal {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.95rem; font-weight: 600; color: var(--green);
-  margin-right: 10px;
-}
+.log-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text3); margin-top: 2px; }
+.log-meal-tag { display: inline-block; font-size: 0.62rem; font-weight: 600; padding: 1px 6px; border-radius: 20px; background: var(--green-light); color: var(--green); margin-left: 6px; vertical-align: middle; }
+.log-kcal { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 600; color: var(--green); margin-right: 8px; }
 
-.log-empty {
-  text-align: center; padding: 32px 16px;
-  font-size: 0.85rem; color: var(--text3);
-  border: 1px dashed var(--border2);
-  border-radius: var(--radius); background: var(--surface);
-}
+.log-empty { text-align: center; padding: 32px 16px; font-size: 0.85rem; color: var(--text3); border: 1px dashed var(--border2); border-radius: var(--radius); background: var(--surface); }
 
-/* ── HISTORY PAGE ── */
-.history-layout {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 24px 20px;
-  display: flex; flex-direction: column; gap: 16px;
-}
+/* ── SETTINGS MODAL ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
+.modal-overlay.show { display: flex; }
+.modal { background: var(--surface); border-radius: 20px 20px 0 0; padding: 24px 20px 40px; width: 100%; max-width: 500px; animation: slideUp 0.25s ease; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-title { font-size: 1rem; font-weight: 700; margin-bottom: 20px; }
+.modal-section { margin-bottom: 16px; }
+.modal-section-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 8px; }
+.targets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-@media (max-width: 700px) { .history-layout { padding: 16px; gap: 12px; } }
+/* ── HISTORY ── */
+.history-layout { max-width: 900px; margin: 0 auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+@media (max-width: 700px) { .history-layout { padding: 14px; gap: 12px; } }
 
-.week-day-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-.week-day-header {
-  padding: 12px 16px;
-  display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface2);
-  cursor: pointer;
-}
-
+.week-day-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.week-day-header { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: var(--surface2); cursor: pointer; }
 .week-day-title { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-.week-day-title span { color: var(--text3); font-weight: 400; font-size: 0.78rem; margin-left: 8px; }
-.week-day-kcal {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem; font-weight: 600; color: var(--green);
-}
-
-.week-day-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 6px; }
+.week-day-kcal { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; color: var(--green); }
+.week-day-body { padding: 10px 16px; display: flex; flex-direction: column; gap: 0; }
 .week-day-body.hidden { display: none; }
-
-.history-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 7px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.83rem;
-}
+.history-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.83rem; }
 .history-item:last-child { border-bottom: none; }
-.history-item .hi-name { color: var(--text); font-weight: 500; }
-.history-item .hi-meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem; color: var(--text3);
+.hi-name { color: var(--text); font-weight: 500; }
+.hi-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text3); }
+
+/* ── MOUNJARO ── */
+.mounjaro-layout { max-width: 900px; margin: 0 auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; }
+@media (max-width: 700px) { .mounjaro-layout { padding: 14px; gap: 12px; } }
+
+.next-dose-card { background: var(--green); color: #fff; border-radius: var(--radius); padding: 20px; display: flex; align-items: center; justify-content: space-between; }
+.next-dose-card.warn { background: var(--orange); }
+.next-dose-card.overdue { background: var(--red); }
+.next-dose-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85; margin-bottom: 4px; }
+.next-dose-val { font-size: 1.3rem; font-weight: 700; }
+.next-dose-sub { font-size: 0.78rem; opacity: 0.8; margin-top: 3px; }
+.dose-badge { background: rgba(255,255,255,0.25); border-radius: 8px; padding: 8px 14px; text-align: center; }
+.dose-badge-val { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700; }
+.dose-badge-label { font-size: 0.68rem; opacity: 0.85; margin-top: 2px; }
+
+/* Body map */
+.body-map-wrap { display: flex; gap: 20px; align-items: flex-start; }
+@media (max-width: 600px) { .body-map-wrap { flex-direction: column; } }
+
+.body-svg-container { flex-shrink: 0; position: relative; }
+.body-svg-container svg { width: 180px; height: auto; }
+
+.zone-btn {
+  position: absolute; border-radius: 50%; border: 2.5px solid #fff;
+  cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+  font-size: 0.55rem; font-weight: 700; color: #fff; text-align: center; line-height: 1.2;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
+.zone-btn:hover { transform: scale(1.12); }
+.zone-btn.available { background: var(--green); }
+.zone-btn.recent { background: var(--orange); }
+.zone-btn.avoid { background: var(--red); }
+.zone-btn.selected { border-color: var(--text); transform: scale(1.15); box-shadow: 0 0 0 3px rgba(0,0,0,0.15); }
+
+.zone-legend { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--text2); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+.zone-info-panel { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.selected-zone-label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.selected-zone-sub { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+
+/* Injection log */
+.inj-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); animation: fadeUp 0.2s ease; }
+.inj-left .inj-name { font-size: 0.88rem; font-weight: 600; }
+.inj-left .inj-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text3); margin-top: 2px; }
+.inj-dose { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 600; color: var(--green); }
+
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">MACRO<span>.</span></div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('analyser', this)">Analisar</button>
-    <button class="nav-tab" onclick="showPage('daily', this)">Hoje</button>
-    <button class="nav-tab" onclick="showPage('history', this)">Histórico</button>
+  <div style="display:flex;align-items:center;gap:8px">
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('analyser',this)">Analisar</button>
+      <button class="nav-tab" onclick="showPage('daily',this)">Hoje</button>
+      <button class="nav-tab" onclick="showPage('history',this)">Histórico</button>
+      <button class="nav-tab" onclick="showPage('mounjaro',this)">💉 Injecção</button>
+    </div>
+    <button class="btn-ghost" onclick="openSettings()" style="font-size:1.1rem;padding:4px 6px">⚙️</button>
   </div>
 </header>
 
-<!-- ════════════════ ANALYSER ════════════════ -->
+<!-- ════ ANALYSER ════ -->
 <div class="page active" id="page-analyser">
   <div class="analyser-layout">
 
-    <!-- LEFT: Input -->
-    <div class="card">
-      <div class="input-tabs">
-        <button class="input-tab active" onclick="switchInputTab('photo', this)">📷 Foto</button>
-        <button class="input-tab" onclick="switchInputTab('recipe', this)">📋 Receita / Texto</button>
-      </div>
+    <!-- LEFT -->
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="input-tabs">
+          <button class="input-tab active" onclick="switchInputTab('photo',this)">📷 Foto</button>
+          <button class="input-tab" onclick="switchInputTab('recipe',this)">📋 Receita</button>
+          <button class="input-tab" onclick="switchInputTab('favs',this)">⭐ Favoritos</button>
+        </div>
 
-      <!-- Photo panel -->
-      <div class="input-panel active" id="ipanel-photo">
-        <div class="drop-zone" id="drop-zone">
-          <input type="file" accept="image/*" id="file-input" onchange="handleFile(this)">
-          <div id="drop-placeholder">
-            <div class="drop-icon">🍽️</div>
-            <div class="drop-text"><strong>Toca para adicionar foto</strong>Câmara ou galeria</div>
+        <!-- Photo -->
+        <div class="input-panel active" id="ipanel-photo">
+          <div class="drop-zone" id="drop-zone">
+            <input type="file" accept="image/*" id="file-input" onchange="handleFile(this)">
+            <div id="drop-placeholder">
+              <div class="drop-icon">🍽️</div>
+              <div class="drop-text"><strong>Toca para adicionar foto</strong>Câmara ou galeria</div>
+            </div>
+            <img id="preview-img" alt="preview">
+            <button class="change-photo-btn" id="change-photo-btn" onclick="changePhoto(event)">✎ Alterar</button>
           </div>
-          <img id="preview-img" alt="preview">
-          <button class="change-photo-btn" id="change-photo-btn" onclick="changePhoto(event)">✎ Alterar</button>
-        </div>
-
-        <div class="field">
-          <label>Peso estimado (g)</label>
-          <input type="number" id="photo-weight" placeholder="ex: 350" inputmode="numeric">
-        </div>
-
-        <div class="field">
-          <label>Descrição adicional (opcional)</label>
-          <textarea id="photo-desc" placeholder="ex: frango grelhado com arroz e legumes&#10;Descreve ingredientes visíveis ou preparo"></textarea>
-        </div>
-
-        <div style="display:flex;gap:8px;align-items:center">
+          <div class="row-2">
+            <div class="field">
+              <label>Peso (g)</label>
+              <input type="number" id="photo-weight" placeholder="ex: 350" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label>Refeição</label>
+              <select id="photo-meal">
+                <option value="">— selecciona —</option>
+                <option value="Pequeno-almoço">Pequeno-almoço</option>
+                <option value="Almoço">Almoço</option>
+                <option value="Lanche">Lanche</option>
+                <option value="Jantar">Jantar</option>
+                <option value="Snack">Snack</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Descrição adicional (opcional)</label>
+            <textarea id="photo-desc" placeholder="ex: frango grelhado com arroz e legumes"></textarea>
+          </div>
           <button class="btn-primary" onclick="analyzePhoto()" id="btn-photo">Analisar</button>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" id="suggest-recipe" style="width:16px;height:16px;accent-color:var(--green)">
+            <label for="suggest-recipe" style="font-size:0.82rem;color:var(--text2);cursor:pointer">Sugerir receita com estes ingredientes</label>
+          </div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <input type="checkbox" id="suggest-recipe" style="width:16px;height:16px;accent-color:var(--green)">
-          <label for="suggest-recipe" style="font-size:0.82rem;color:var(--text2);cursor:pointer">Sugerir receita com estes ingredientes</label>
-        </div>
-      </div>
 
-      <!-- Recipe panel -->
-      <div class="input-panel" id="ipanel-recipe">
-        <div class="field">
-          <label>Ingredientes com pesos ou descrição do prato</label>
-          <textarea id="recipe-text" style="min-height:130px" placeholder="Ex:&#10;150g peito de frango grelhado&#10;80g arroz branco cozido&#10;100g brócolos&#10;10g azeite&#10;&#10;Ou descreve o prato livremente."></textarea>
+        <!-- Recipe -->
+        <div class="input-panel" id="ipanel-recipe">
+          <div class="field">
+            <label>Ingredientes com pesos ou descrição</label>
+            <textarea id="recipe-text" style="min-height:120px" placeholder="Ex:&#10;150g peito de frango grelhado&#10;80g arroz branco cozido&#10;100g brócolos&#10;10g azeite"></textarea>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Peso total (g)</label>
+              <input type="number" id="recipe-weight" placeholder="ex: 400" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label>Refeição</label>
+              <select id="recipe-meal">
+                <option value="">— selecciona —</option>
+                <option value="Pequeno-almoço">Pequeno-almoço</option>
+                <option value="Almoço">Almoço</option>
+                <option value="Lanche">Lanche</option>
+                <option value="Jantar">Jantar</option>
+                <option value="Snack">Snack</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="analyzeRecipe()" id="btn-recipe">Calcular Macros</button>
         </div>
-        <div class="field">
-          <label>Peso total (g) — opcional</label>
-          <input type="number" id="recipe-weight" placeholder="ex: 400" inputmode="numeric">
-        </div>
-        <button class="btn-primary" onclick="analyzeRecipe()" id="btn-recipe">Calcular Macros</button>
-      </div>
 
-      <div style="padding:0 16px 16px">
-        <div class="loading" id="loading-photo"><div class="spinner"></div> A analisar imagem...</div>
-        <div class="loading" id="loading-recipe"><div class="spinner"></div> A calcular macros...</div>
-        <div class="error-msg" id="error-photo"></div>
-        <div class="error-msg" id="error-recipe"></div>
+        <!-- Favourites -->
+        <div class="input-panel" id="ipanel-favs">
+          <div id="favs-list"><div class="log-empty" style="padding:20px">Ainda sem favoritos.<br>Analisa um prato e guarda-o como favorito.</div></div>
+        </div>
+
+        <div style="padding:0 16px 14px">
+          <div class="loading" id="loading-photo"><div class="spinner"></div> A analisar imagem...</div>
+          <div class="loading" id="loading-recipe"><div class="spinner"></div> A calcular macros...</div>
+          <div class="error-msg" id="error-photo"></div>
+          <div class="error-msg" id="error-recipe"></div>
+        </div>
       </div>
     </div>
 
-    <!-- RIGHT: Result -->
-    <div style="display:flex;flex-direction:column;gap:14px">
-
-      <!-- Macros result -->
+    <!-- RIGHT -->
+    <div style="display:flex;flex-direction:column;gap:12px">
       <div class="card" id="result-container" style="display:none">
         <div class="card-header">
           <span>Resultado</span>
           <button class="btn-ghost" onclick="clearResult()">Limpar</button>
         </div>
         <div class="card-body">
-          <div class="result-wrap show" id="result-wrap">
-            <div class="result-name" id="res-name"></div>
+          <div class="result-wrap show">
+            <div>
+              <div class="result-name" id="res-name"></div>
+              <div class="result-meal-tag" id="res-meal-tag" style="display:none"></div>
+            </div>
             <div class="macros-grid" id="res-macros"></div>
             <div class="result-notes" id="res-notes"></div>
             <div class="result-actions">
               <button class="btn-outline" onclick="copyResult()" id="btn-copy">⎘ Copiar</button>
+              <button class="btn-outline" onclick="saveFavourite()" id="btn-fav">⭐ Favorito</button>
               <button class="btn-outline" onclick="addToLog()" id="btn-add-log" style="background:var(--green);color:#fff;border-color:var(--green)">+ Adicionar ao dia</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Recipe suggestion -->
       <div class="card" id="recipe-sug-container" style="display:none">
         <div class="card-header">
           <span>💡 Sugestão de Receita</span>
-          <button class="btn-ghost" onclick="document.getElementById('recipe-sug-container').style.display='none'">✕</button>
+          <button class="btn-ghost" onclick="this.closest('.card').style.display='none'">✕</button>
         </div>
         <div class="card-body" style="padding:0">
           <div class="loading" id="loading-recipe-sug" style="padding:14px 16px"><div class="spinner"></div> A gerar receita...</div>
-          <div id="recipe-sug-body" class="recipe-suggestion-body" style="display:none"></div>
+          <div id="recipe-sug-body" class="recipe-sug-body"></div>
         </div>
       </div>
 
-      <!-- Empty state desktop -->
-      <div id="empty-state" class="log-empty" style="display:block">
-        Analisa uma foto ou receita para ver os macros aqui.
-      </div>
-
+      <div id="empty-state" class="log-empty">Analisa uma foto ou receita para ver os macros aqui.</div>
     </div>
   </div>
 </div>
 
-<!-- ════════════════ DAILY ════════════════ -->
+<!-- ════ DAILY ════ -->
 <div class="page" id="page-daily">
   <div class="daily-layout">
-
     <div class="card">
       <div class="card-header">
         <span id="daily-date-label">Hoje</span>
@@ -673,84 +476,244 @@ header {
       <div class="card-body">
         <div class="summary-top">
           <div class="kcal-display">
-            <div class="kcal-number" id="d-kcal">0</div>
-            <div class="kcal-label">kcal / 2150 objectivo</div>
+            <div class="kcal-number ok" id="d-kcal">0</div>
+            <div class="kcal-label" id="d-kcal-label">kcal / 0 objectivo</div>
           </div>
           <div class="macro-bars">
             <div class="bar-row">
               <div class="bar-label" style="color:var(--protein)">Proteína</div>
               <div class="bar-track"><div class="bar-fill prot" id="bar-prot" style="width:0%"></div></div>
-              <div class="bar-val" id="val-prot">0 / 140g</div>
+              <div class="bar-val" id="val-prot">0g</div>
             </div>
             <div class="bar-row">
               <div class="bar-label" style="color:var(--carbs)">Hidratos</div>
               <div class="bar-track"><div class="bar-fill carb" id="bar-carb" style="width:0%"></div></div>
-              <div class="bar-val" id="val-carb">0 / 215g</div>
+              <div class="bar-val" id="val-carb">0g</div>
             </div>
             <div class="bar-row">
               <div class="bar-label" style="color:var(--fat)">Gordura</div>
               <div class="bar-track"><div class="bar-fill fat" id="bar-fat" style="width:0%"></div></div>
-              <div class="bar-val" id="val-fat">0 / 72g</div>
+              <div class="bar-val" id="val-fat">0g</div>
             </div>
             <div class="bar-row">
               <div class="bar-label" style="color:var(--purple)">Fibra</div>
               <div class="bar-track"><div class="bar-fill fib" id="bar-fib" style="width:0%"></div></div>
-              <div class="bar-val" id="val-fib">0 / 30g</div>
+              <div class="bar-val" id="val-fib">0g</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <div>
-      <div id="daily-log-container">
-        <div class="log-empty">Ainda não adicionaste nenhuma refeição hoje.<br>Vai a <strong>Analisar</strong> para começar.</div>
-      </div>
-    </div>
-
+    <div id="daily-log-container"></div>
+    <button class="btn-outline" onclick="exportCSV()" style="align-self:flex-start">⬇ Exportar semana CSV</button>
   </div>
 </div>
 
-<!-- ════════════════ HISTORY ════════════════ -->
+<!-- ════ HISTORY ════ -->
 <div class="page" id="page-history">
   <div class="history-layout">
     <div class="card">
       <div class="card-header">
         <span>Últimos 7 dias</span>
-        <button class="btn-ghost" onclick="if(confirm('Apagar todo o histórico?')){localStorage.removeItem('macroLog');renderAll();}">Apagar tudo</button>
+        <button class="btn-ghost" onclick="if(confirm('Apagar todo o histórico?')){localStorage.removeItem('macroLog');log=[];renderAll();
+initMounjaroSettings();
+renderNextDose();
+renderInjHistory();}">Apagar tudo</button>
       </div>
     </div>
-    <div id="history-container">
-      <div class="log-empty">Sem histórico disponível.</div>
+    <div id="history-container"></div>
+  </div>
+</div>
+
+
+<!-- ════ MOUNJARO ════ -->
+<div class="page" id="page-mounjaro">
+  <div class="mounjaro-layout">
+
+    <!-- Next dose banner -->
+    <div id="next-dose-banner" class="next-dose-card">
+      <div>
+        <div class="next-dose-label">Próxima dose</div>
+        <div class="next-dose-val" id="next-dose-val">—</div>
+        <div class="next-dose-sub" id="next-dose-sub"></div>
+      </div>
+      <div class="dose-badge">
+        <div class="dose-badge-val" id="current-dose-display">2.5mg</div>
+        <div class="dose-badge-label">dose actual</div>
+      </div>
     </div>
+
+    <!-- Register injection -->
+    <div class="card">
+      <div class="card-header">Registar toma</div>
+      <div class="card-body">
+
+        <!-- Body map -->
+        <div class="body-map-wrap">
+          <div>
+            <div class="body-svg-container" id="body-svg-container">
+              <!-- SVG body outline -->
+              <svg viewBox="0 0 120 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Head -->
+                <ellipse cx="60" cy="22" rx="16" ry="18" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <!-- Neck -->
+                <rect x="53" y="38" width="14" height="10" rx="4" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <!-- Torso -->
+                <path d="M30 48 Q20 52 18 80 L18 140 Q18 148 30 148 L90 148 Q102 148 102 140 L102 80 Q100 52 90 48 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <!-- Left arm -->
+                <path d="M18 52 Q8 58 6 90 Q5 110 10 130 Q14 140 20 138 L22 100 Q22 68 28 54 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <!-- Right arm -->
+                <path d="M102 52 Q112 58 114 90 Q115 110 110 130 Q106 140 100 138 L98 100 Q98 68 92 54 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <!-- Left leg -->
+                <path d="M30 148 Q26 160 26 200 Q26 230 28 255 Q30 265 38 265 Q46 265 48 255 L50 200 L52 148 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <!-- Right leg -->
+                <path d="M90 148 Q94 160 94 200 Q94 230 92 255 Q90 265 82 265 Q74 265 72 255 L70 200 L68 148 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+              </svg>
+
+              <!-- Zone buttons positioned over SVG -->
+              <!-- Abdomen left -->
+              <div class="zone-btn available" id="zone-abd-l" style="width:34px;height:34px;left:22px;top:95px" onclick="selectZone('abd-l')" title="Abdómen esquerdo">Abd<br>Esq</div>
+              <!-- Abdomen right -->
+              <div class="zone-btn available" id="zone-abd-r" style="width:34px;height:34px;left:90px;top:95px" onclick="selectZone('abd-r')" title="Abdómen direito">Abd<br>Dir</div>
+              <!-- Left thigh -->
+              <div class="zone-btn available" id="zone-cox-l" style="width:34px;height:34px;left:14px;top:175px" onclick="selectZone('cox-l')" title="Coxa esquerda">Coxa<br>Esq</div>
+              <!-- Right thigh -->
+              <div class="zone-btn available" id="zone-cox-r" style="width:34px;height:34px;left:82px;top:175px" onclick="selectZone('cox-r')" title="Coxa direita">Coxa<br>Dir</div>
+              <!-- Left arm -->
+              <div class="zone-btn available" id="zone-bra-l" style="width:30px;height:30px;left:0px;top:80px" onclick="selectZone('bra-l')" title="Braço esquerdo">Braço<br>Esq</div>
+              <!-- Right arm -->
+              <div class="zone-btn available" id="zone-bra-r" style="width:30px;height:30px;left:118px;top:80px" onclick="selectZone('bra-r')" title="Braço direito">Braço<br>Dir</div>
+            </div>
+
+            <div class="zone-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Disponível</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div>Recente (&lt;4 sem)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Evitar (&lt;2 sem)</div>
+            </div>
+          </div>
+
+          <div class="zone-info-panel">
+            <div id="selected-zone-info">
+              <div class="selected-zone-label" style="color:var(--text3)">Toca numa zona para seleccionar</div>
+            </div>
+
+            <div class="field">
+              <label>Data da toma</label>
+              <input type="date" id="inj-date">
+            </div>
+            <div class="field">
+              <label>Dose</label>
+              <select id="inj-dose">
+                <option value="2.5">2.5 mg</option>
+                <option value="5">5 mg</option>
+                <option value="7.5">7.5 mg</option>
+                <option value="10">10 mg</option>
+                <option value="12.5">12.5 mg</option>
+                <option value="15">15 mg</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Notas (opcional)</label>
+              <input type="text" id="inj-notes" placeholder="ex: sem reacção, leve vermelhidão...">
+            </div>
+            <button class="btn-primary" onclick="registerInjection()" id="btn-inj">Registar toma</button>
+            <div class="error-msg" id="error-inj"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Settings inline -->
+    <div class="card">
+      <div class="card-header">
+        <span>Configuração</span>
+      </div>
+      <div class="card-body">
+        <div class="row-2">
+          <div class="field">
+            <label>Dose actual</label>
+            <select id="mounjaro-dose-setting" onchange="saveMounjaroSettings()">
+              <option value="2.5">2.5 mg</option>
+              <option value="5">5 mg</option>
+              <option value="7.5">7.5 mg</option>
+              <option value="10">10 mg</option>
+              <option value="12.5">12.5 mg</option>
+              <option value="15">15 mg</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Dia da semana habitual</label>
+            <select id="mounjaro-day-setting" onchange="saveMounjaroSettings()">
+              <option value="0">Domingo</option>
+              <option value="1">Segunda</option>
+              <option value="2">Terça</option>
+              <option value="3">Quarta</option>
+              <option value="4">Quinta</option>
+              <option value="5">Sexta</option>
+              <option value="6">Sábado</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Injection history -->
+    <div class="card">
+      <div class="card-header">
+        <span>Histórico de tomas</span>
+        <button class="btn-ghost" onclick="if(confirm('Apagar histórico de tomas?')){injLog=[];saveInjLog();renderInjHistory();renderBodyMap();renderNextDose();}">Apagar</button>
+      </div>
+      <div class="card-body" style="padding:12px 16px">
+        <div id="inj-history-container"><div class="log-empty">Sem tomas registadas.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════ SETTINGS MODAL ════ -->
+<div class="modal-overlay" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div class="modal-title" style="margin:0">⚙️ Objectivos diários</div>
+      <button class="btn-ghost" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="targets-grid">
+      <div class="field"><label>Calorias (kcal)</label><input type="number" id="t-kcal" inputmode="numeric"></div>
+      <div class="field"><label>Proteína (g)</label><input type="number" id="t-prot" inputmode="numeric"></div>
+      <div class="field"><label>Hidratos (g)</label><input type="number" id="t-carb" inputmode="numeric"></div>
+      <div class="field"><label>Gordura (g)</label><input type="number" id="t-fat" inputmode="numeric"></div>
+      <div class="field"><label>Fibra (g)</label><input type="number" id="t-fib" inputmode="numeric"></div>
+    </div>
+    <button class="btn-primary" style="margin-top:20px" onclick="saveSettings()">Guardar</button>
   </div>
 </div>
 
 <script>
 // ── TARGETS ──────────────────────────────────────────────
-const TARGETS = { kcal: 2150, protein: 140, carbs: 215, fat: 72, fiber: 30 };
+let TARGETS = JSON.parse(localStorage.getItem('macroTargets') || 'null') || { kcal:2150, protein:140, carbs:215, fat:72, fiber:30 };
 
-// ── STATE ────────────────────────────────────────────────
+// ── STATE ─────────────────────────────────────────────────
 let photoBase64 = null;
+let photoMediaType = 'image/jpeg';
 let pendingResult = null;
 let log = JSON.parse(localStorage.getItem('macroLog') || '[]');
+let favourites = JSON.parse(localStorage.getItem('macroFavs') || '[]');
 
-// ── DATE HELPERS ─────────────────────────────────────────
-function todayKey() {
-  return new Date().toISOString().slice(0,10);
-}
+// ── DATE ──────────────────────────────────────────────────
+function todayKey() { return new Date().toISOString().slice(0,10); }
 
 function formatDateLabel(key) {
   const d = new Date(key + 'T12:00:00');
   const today = todayKey();
-  const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
-  const yKey = yesterday.toISOString().slice(0,10);
+  const yest = new Date(); yest.setDate(yest.getDate()-1);
   if (key === today) return 'Hoje';
-  if (key === yKey) return 'Ontem';
-  return d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'short' });
+  if (key === yest.toISOString().slice(0,10)) return 'Ontem';
+  return d.toLocaleDateString('pt-PT', { weekday:'long', day:'numeric', month:'short' });
 }
 
-// ── NAVIGATION ───────────────────────────────────────────
+// ── NAV ───────────────────────────────────────────────────
 function showPage(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -758,6 +721,7 @@ function showPage(id, el) {
   el.classList.add('active');
   if (id === 'daily') renderDaily();
   if (id === 'history') renderHistory();
+  if (id === 'mounjaro') { renderBodyMap(); renderNextDose(); renderInjHistory(); }
 }
 
 function switchInputTab(tab, el) {
@@ -765,11 +729,10 @@ function switchInputTab(tab, el) {
   document.querySelectorAll('.input-panel').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('ipanel-' + tab).classList.add('active');
+  if (tab === 'favs') renderFavourites();
 }
 
-// ── FILE ─────────────────────────────────────────────────
-let photoMediaType = 'image/jpeg';
-
+// ── FILE ──────────────────────────────────────────────────
 function handleFile(input) {
   const file = input.files[0]; if (!file) return;
   const allowed = ['image/jpeg','image/png','image/gif','image/webp'];
@@ -786,13 +749,10 @@ function handleFile(input) {
   reader.readAsDataURL(file);
 }
 
-function changePhoto(e) {
-  e.stopPropagation();
-  document.getElementById('file-input').click();
-}
+function changePhoto(e) { e.stopPropagation(); document.getElementById('file-input').click(); }
 
 const dz = document.getElementById('drop-zone');
-dz.addEventListener('dragover', e => { e.preventDefault(); });
+dz.addEventListener('dragover', e => e.preventDefault());
 dz.addEventListener('drop', e => {
   e.preventDefault();
   const file = e.dataTransfer.files[0];
@@ -803,175 +763,190 @@ dz.addEventListener('drop', e => {
   }
 });
 
-// ── API ──────────────────────────────────────────────────
-async function callClaude(messages, systemPrompt) {
+// ── API ───────────────────────────────────────────────────
+async function callClaude(messages, system) {
   const res = await fetch('/api/analyse', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system: systemPrompt, messages })
+    body: JSON.stringify({ system, messages })
   });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error?.message || 'API ' + res.status);
-  }
+  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.error || 'API ' + res.status); }
   const data = await res.json();
-  return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+  return data.content.filter(b => b.type==='text').map(b => b.text).join('');
 }
 
-const MACRO_SYSTEM = `És um nutricionista especialista em contagem de macros. Responde APENAS em JSON válido sem markdown, sem backticks, sem texto fora do JSON.
-Formato obrigatório:
-{"name":"Nome do prato","kcal":número,"protein":número,"carbs":número,"fat":número,"fiber":número,"notes":"nota breve (max 2 frases)"}
-Usa valores reais com base em USDA/INSA. Se o peso não for dado, estima pela porção típica.`;
+const MACRO_SYS = `És um nutricionista especialista. Responde APENAS em JSON válido sem markdown nem backticks.
+Formato: {"name":"Nome","kcal":número,"protein":número,"carbs":número,"fat":número,"fiber":número,"notes":"nota (max 2 frases)"}
+Usa valores reais USDA/INSA. Se o peso não for dado, estima pela porção típica.`;
 
-// ── ANALYSE PHOTO ─────────────────────────────────────────
+// ── ANALYSE ───────────────────────────────────────────────
 async function analyzePhoto() {
-  if (!photoBase64) { showError('photo', 'Adiciona uma foto primeiro.'); return; }
+  if (!photoBase64) { showError('photo','Adiciona uma foto primeiro.'); return; }
   const weight = document.getElementById('photo-weight').value;
   const desc = document.getElementById('photo-desc').value;
+  const meal = document.getElementById('photo-meal').value;
   const wantRecipe = document.getElementById('suggest-recipe').checked;
-
-  setLoading('photo', true);
-  hideError('photo');
-
+  setLoading('photo',true); hideError('photo');
   try {
-    const text = await callClaude([{ role: 'user', content: [
-      { type: 'image', source: { type: 'base64', media_type: photoMediaType, data: photoBase64 } },
-      { type: 'text', text: `Analisa esta refeição/alimento.${weight ? ` Peso total: ${weight}g.` : ''}${desc ? ` Descrição: ${desc}.` : ''} Devolve JSON com macros.` }
-    ]}], MACRO_SYSTEM);
-
-    const result = JSON.parse(text.replace(/```json|```/g, '').trim());
-    pendingResult = result;
-    renderResult(result);
-
-    if (wantRecipe) {
-      generateRecipeSuggestion(result.name, desc || '');
-    }
-  } catch(e) {
-    showError('photo', 'Erro ao analisar: ' + e.message);
-  } finally {
-    setLoading('photo', false);
-  }
+    const raw = await callClaude([{ role:'user', content:[
+      { type:'image', source:{ type:'base64', media_type:photoMediaType, data:photoBase64 }},
+      { type:'text', text:'Analisa esta refeição.' + (weight ? ' Peso: ' + weight + 'g.' : '') + (desc ? ' Descrição: ' + desc + '.' : '') + ' Devolve JSON.' }
+    ]}], MACRO_SYS);
+    const r = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    r.meal = meal;
+    pendingResult = r;
+    renderResult(r);
+    if (wantRecipe) generateRecipeSug(r.name, desc);
+  } catch(e) { showError('photo','Erro: ' + e.message); }
+  finally { setLoading('photo',false); }
 }
 
-// ── ANALYSE RECIPE ────────────────────────────────────────
 async function analyzeRecipe() {
   const text = document.getElementById('recipe-text').value.trim();
-  if (!text) { showError('recipe', 'Introduz a receita ou ingredientes.'); return; }
+  if (!text) { showError('recipe','Introduz os ingredientes.'); return; }
   const weight = document.getElementById('recipe-weight').value;
-
-  setLoading('recipe', true);
-  hideError('recipe');
-
+  const meal = document.getElementById('recipe-meal').value;
+  setLoading('recipe',true); hideError('recipe');
   try {
-    const raw = await callClaude([{ role: 'user', content:
-      `Receita/ingredientes:\n${text}${weight ? `\nPeso total: ${weight}g.` : ''}\nCalcula os macros e devolve JSON.`
-    }], MACRO_SYSTEM);
-
-    const result = JSON.parse(raw.replace(/```json|```/g, '').trim());
-    pendingResult = result;
-    renderResult(result);
-  } catch(e) {
-    showError('recipe', 'Erro ao calcular: ' + e.message);
-  } finally {
-    setLoading('recipe', false);
-  }
+    const raw = await callClaude([{ role:'user', content:
+      'Receita:\n' + text + (weight ? '\nPeso total: ' + weight + 'g.' : '') + '\nCalcula macros e devolve JSON.'
+    }], MACRO_SYS);
+    const r = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    r.meal = meal;
+    pendingResult = r;
+    renderResult(r);
+  } catch(e) { showError('recipe','Erro: ' + e.message); }
+  finally { setLoading('recipe',false); }
 }
 
-// ── RECIPE SUGGESTION ─────────────────────────────────────
-async function generateRecipeSuggestion(dishName, extra) {
-  const container = document.getElementById('recipe-sug-container');
-  const body = document.getElementById('recipe-sug-body');
-  const loading = document.getElementById('loading-recipe-sug');
-
-  container.style.display = 'block';
-  loading.style.display = 'flex';
-  body.style.display = 'none';
-
+async function generateRecipeSug(name, extra) {
+  const c = document.getElementById('recipe-sug-container');
+  const b = document.getElementById('recipe-sug-body');
+  const l = document.getElementById('loading-recipe-sug');
+  c.style.display='block'; l.style.display='flex'; b.style.display='none';
   try {
-    const text = await callClaude([{ role: 'user', content:
-      `Com base no prato "${dishName}"${extra ? ` (${extra})` : ''}, sugere uma receita simples e equilibrada com ingredientes comuns. Inclui ingredientes com quantidades e passos breves. Responde em português de Portugal, máximo 200 palavras.`
-    }], 'És um chef nutricionista. Dá receitas práticas e saudáveis. Responde sempre em português de Portugal.');
-
-    body.textContent = text;
-    body.style.display = 'block';
-  } catch(e) {
-    body.textContent = 'Não foi possível gerar a sugestão.';
-    body.style.display = 'block';
-  } finally {
-    loading.style.display = 'none';
-  }
+    const extraStr = extra ? ' (' + extra + ')' : '';
+    const t = await callClaude([{ role:'user', content:
+      'Sugere uma receita simples e saudável baseada em "' + name + '"' + extraStr + '. Ingredientes com quantidades, passos breves. Máx 200 palavras. Português de Portugal.'
+    }], 'Chef nutricionista. Receitas práticas. Português de Portugal.');
+    b.textContent = t; b.style.display='block';
+  } catch { b.textContent='Não foi possível gerar a sugestão.'; b.style.display='block'; }
+  finally { l.style.display='none'; }
 }
 
 // ── RENDER RESULT ─────────────────────────────────────────
 function renderResult(r) {
-  document.getElementById('empty-state').style.display = 'none';
-  document.getElementById('result-container').style.display = 'block';
+  document.getElementById('empty-state').style.display='none';
+  document.getElementById('result-container').style.display='block';
   document.getElementById('res-name').textContent = r.name;
-  document.getElementById('res-macros').innerHTML = `
-    <div class="macro-box m-kcal"><div class="ml">kcal</div><div class="mv">${Math.round(r.kcal)}</div></div>
-    <div class="macro-box m-prot"><div class="ml">Prot.</div><div class="mv">${Math.round(r.protein)}g</div></div>
-    <div class="macro-box m-carb"><div class="ml">HC</div><div class="mv">${Math.round(r.carbs)}g</div></div>
-    <div class="macro-box m-fat"><div class="ml">Gord.</div><div class="mv">${Math.round(r.fat)}g</div></div>
-    <div class="macro-box m-fib"><div class="ml">Fibra</div><div class="mv">${Math.round(r.fiber)}g</div></div>
-  `;
+
+  const mealTag = document.getElementById('res-meal-tag');
+  if (r.meal) { mealTag.textContent = r.meal; mealTag.style.display='inline-block'; }
+  else { mealTag.style.display='none'; }
+
+  // Check over-limit for today
+  const today = log.filter(i => i.date === todayKey());
+  const totals = today.reduce((a,i) => ({ kcal:a.kcal+i.kcal, protein:a.protein+i.protein, carbs:a.carbs+i.carbs, fat:a.fat+i.fat, fiber:a.fiber+i.fiber }), {kcal:0,protein:0,carbs:0,fat:0,fiber:0});
+
+  const boxes = [
+    { cls:'m-kcal', label:'kcal', val:Math.round(r.kcal), target:TARGETS.kcal, cur:totals.kcal },
+    { cls:'m-prot', label:'Prot.', val:Math.round(r.protein)+'g', target:TARGETS.protein, cur:totals.protein },
+    { cls:'m-carb', label:'HC', val:Math.round(r.carbs)+'g', target:TARGETS.carbs, cur:totals.carbs },
+    { cls:'m-fat',  label:'Gord.', val:Math.round(r.fat)+'g', target:TARGETS.fat, cur:totals.fat },
+    { cls:'m-fib',  label:'Fibra', val:Math.round(r.fiber)+'g', target:TARGETS.fiber, cur:totals.fiber },
+  ];
+
+  document.getElementById('res-macros').innerHTML = boxes.map(b => {
+    const numVal = parseFloat(b.val);
+    const over = b.target && (b.cur + numVal) > b.target * 1.1;
+    return `<div class="macro-box ${b.cls}${over?' over-limit':''}"><div class="ml">${b.label}</div><div class="mv">${b.val}</div></div>`;
+  }).join('');
+
   document.getElementById('res-notes').textContent = r.notes || '';
 }
 
 function clearResult() {
-  document.getElementById('result-container').style.display = 'none';
-  document.getElementById('recipe-sug-container').style.display = 'none';
-  document.getElementById('empty-state').style.display = 'block';
+  document.getElementById('result-container').style.display='none';
+  document.getElementById('recipe-sug-container').style.display='none';
+  document.getElementById('empty-state').style.display='block';
   pendingResult = null;
 }
 
-// ── COPY ─────────────────────────────────────────────────
+// ── COPY ──────────────────────────────────────────────────
 function copyResult() {
   if (!pendingResult) return;
   const r = pendingResult;
-  const t = `${r.name}\n${Math.round(r.kcal)} kcal | Prot: ${Math.round(r.protein)}g | HC: ${Math.round(r.carbs)}g | Gord: ${Math.round(r.fat)}g | Fibra: ${Math.round(r.fiber)}g`;
-  navigator.clipboard.writeText(t).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = t; document.body.appendChild(ta); ta.select();
-    document.execCommand('copy'); document.body.removeChild(ta);
-  });
+  const t = `${r.name}${r.meal?' ('+r.meal+')':''}\n${Math.round(r.kcal)} kcal | Prot: ${Math.round(r.protein)}g | HC: ${Math.round(r.carbs)}g | Gord: ${Math.round(r.fat)}g | Fibra: ${Math.round(r.fiber)}g`;
+  navigator.clipboard.writeText(t).catch(() => { const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); });
   const btn = document.getElementById('btn-copy');
-  btn.classList.add('success'); btn.textContent = '✓ Copiado';
-  setTimeout(() => { btn.classList.remove('success'); btn.innerHTML = '⎘ Copiar'; }, 2000);
+  btn.classList.add('success'); btn.textContent='✓ Copiado';
+  setTimeout(() => { btn.classList.remove('success'); btn.innerHTML='⎘ Copiar'; }, 2000);
 }
 
-// ── ADD TO LOG ────────────────────────────────────────────
+// ── FAVOURITES ────────────────────────────────────────────
+function saveFavourite() {
+  if (!pendingResult) return;
+  const r = { ...pendingResult, id: Date.now() };
+  if (favourites.find(f => f.name === r.name)) { alert('Este prato já está nos favoritos.'); return; }
+  favourites.push(r);
+  localStorage.setItem('macroFavs', JSON.stringify(favourites));
+  const btn = document.getElementById('btn-fav');
+  btn.classList.add('success'); btn.textContent='✓ Guardado';
+  setTimeout(() => { btn.classList.remove('success'); btn.innerHTML='⭐ Favorito'; }, 2000);
+}
+
+function renderFavourites() {
+  const c = document.getElementById('favs-list');
+  if (!favourites.length) { c.innerHTML='<div class="log-empty" style="padding:20px">Ainda sem favoritos.<br>Analisa um prato e guarda-o como favorito.</div>'; return; }
+  c.innerHTML = favourites.map(f => `
+    <div class="fav-item" onclick="loadFavourite(${f.id})">
+      <div>
+        <div class="fav-name">${f.name}</div>
+        <div class="fav-meta">${Math.round(f.kcal)} kcal · P:${Math.round(f.protein)}g · HC:${Math.round(f.carbs)}g · G:${Math.round(f.fat)}g</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="fav-kcal">${Math.round(f.kcal)}</span>
+        <button class="btn-ghost" onclick="event.stopPropagation();deleteFav(${f.id})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadFavourite(id) {
+  const f = favourites.find(x => x.id === id);
+  if (!f) return;
+  pendingResult = { ...f };
+  renderResult(f);
+  switchInputTab('photo', document.querySelector('.input-tab'));
+}
+
+function deleteFav(id) {
+  favourites = favourites.filter(f => f.id !== id);
+  localStorage.setItem('macroFavs', JSON.stringify(favourites));
+  renderFavourites();
+}
+
+// ── LOG ───────────────────────────────────────────────────
 function addToLog() {
   if (!pendingResult) return;
-  const entry = {
-    ...pendingResult,
-    id: Date.now(),
-    date: todayKey(),
-    time: new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })
-  };
-  log.push(entry);
-  saveLog();
+  const entry = { ...pendingResult, id:Date.now(), date:todayKey(), time:new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}) };
+  log.push(entry); saveLog();
   const btn = document.getElementById('btn-add-log');
-  btn.textContent = '✓ Adicionado';
-  setTimeout(() => { btn.innerHTML = '+ Adicionar ao dia'; }, 2000);
+  btn.textContent='✓ Adicionado';
+  setTimeout(() => { btn.innerHTML='+ Adicionar ao dia'; }, 2000);
 }
 
 function removeFromLog(id) {
-  log = log.filter(i => i.id !== id);
-  saveLog();
-  renderDaily();
-  renderHistory();
+  log = log.filter(i => i.id !== id); saveLog(); renderDaily(); renderHistory();
 }
 
 function resetDay() {
   if (!confirm('Limpar todas as refeições de hoje?')) return;
-  log = log.filter(i => i.date !== todayKey());
-  saveLog();
-  renderDaily();
+  log = log.filter(i => i.date !== todayKey()); saveLog(); renderDaily();
 }
 
 function saveLog() {
-  // Keep only last 7 days
-  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-7);
   log = log.filter(i => new Date(i.date) >= cutoff);
   localStorage.setItem('macroLog', JSON.stringify(log));
 }
@@ -979,36 +954,37 @@ function saveLog() {
 // ── RENDER DAILY ──────────────────────────────────────────
 function renderDaily() {
   const today = todayKey();
-  const d = new Date();
-  document.getElementById('daily-date-label').textContent =
-    d.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long' });
+  document.getElementById('daily-date-label').textContent = new Date().toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('d-kcal-label').textContent = `kcal / ${TARGETS.kcal} objectivo`;
 
   const todayLog = log.filter(i => i.date === today);
-  const totals = todayLog.reduce((a, i) => ({
-    kcal: a.kcal + i.kcal, protein: a.protein + i.protein,
-    carbs: a.carbs + i.carbs, fat: a.fat + i.fat, fiber: a.fiber + i.fiber
-  }), { kcal: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 });
+  const t = todayLog.reduce((a,i) => ({kcal:a.kcal+i.kcal,protein:a.protein+i.protein,carbs:a.carbs+i.carbs,fat:a.fat+i.fat,fiber:a.fiber+i.fiber}),{kcal:0,protein:0,carbs:0,fat:0,fiber:0});
 
-  document.getElementById('d-kcal').textContent = Math.round(totals.kcal);
-  const pct = (v, t) => Math.min(100, Math.round(v/t*100)) + '%';
-  document.getElementById('bar-prot').style.width = pct(totals.protein, TARGETS.protein);
-  document.getElementById('bar-carb').style.width = pct(totals.carbs, TARGETS.carbs);
-  document.getElementById('bar-fat').style.width  = pct(totals.fat, TARGETS.fat);
-  document.getElementById('bar-fib').style.width  = pct(totals.fiber, TARGETS.fiber);
-  document.getElementById('val-prot').textContent = `${Math.round(totals.protein)} / ${TARGETS.protein}g`;
-  document.getElementById('val-carb').textContent = `${Math.round(totals.carbs)} / ${TARGETS.carbs}g`;
-  document.getElementById('val-fat').textContent  = `${Math.round(totals.fat)} / ${TARGETS.fat}g`;
-  document.getElementById('val-fib').textContent  = `${Math.round(totals.fiber)} / ${TARGETS.fiber}g`;
+  // Kcal colour
+  const kcalEl = document.getElementById('d-kcal');
+  kcalEl.textContent = Math.round(t.kcal);
+  const kcalPct = t.kcal / TARGETS.kcal;
+  kcalEl.className = 'kcal-number ' + (kcalPct > 1.05 ? 'over' : kcalPct > 0.9 ? 'warn' : 'ok');
 
-  const container = document.getElementById('daily-log-container');
-  if (!todayLog.length) {
-    container.innerHTML = '<div class="log-empty">Ainda não adicionaste nenhuma refeição hoje.<br>Vai a <strong>Analisar</strong> para começar.</div>';
-    return;
-  }
-  container.innerHTML = todayLog.map(item => `
+  const pct = (v,tgt) => Math.min(100, Math.round(v/tgt*100)) + '%';
+  const over = (v,tgt) => v > tgt * 1.05;
+
+  [['prot','protein'],['carb','carbs'],['fat','fat'],['fib','fiber']].forEach(([k,prop]) => {
+    const bar = document.getElementById('bar-'+k);
+    const val = document.getElementById('val-'+k);
+    const isOver = over(t[prop], TARGETS[prop === 'carbs' ? 'carbs' : prop]);
+    bar.style.width = pct(t[prop], TARGETS[prop === 'carbs' ? 'carbs' : prop]);
+    bar.className = `bar-fill ${k}${isOver?' over':''}`;
+    val.textContent = `${Math.round(t[prop])} / ${TARGETS[prop === 'carbs' ? 'carbs' : prop]}g`;
+    val.className = `bar-val${isOver?' over':''}`;
+  });
+
+  const c = document.getElementById('daily-log-container');
+  if (!todayLog.length) { c.innerHTML='<div class="log-empty">Ainda não adicionaste nenhuma refeição hoje.<br>Vai a <strong>Analisar</strong> para começar.</div>'; return; }
+  c.innerHTML = todayLog.map(item => `
     <div class="log-item">
       <div>
-        <div class="log-name">${item.name}</div>
+        <div class="log-name">${item.name}${item.meal?`<span class="log-meal-tag">${item.meal}</span>`:''}</div>
         <div class="log-meta">${item.time} · P:${Math.round(item.protein)}g · HC:${Math.round(item.carbs)}g · G:${Math.round(item.fat)}g · F:${Math.round(item.fiber)}g</div>
       </div>
       <div style="display:flex;align-items:center;gap:4px">
@@ -1021,33 +997,29 @@ function renderDaily() {
 
 // ── RENDER HISTORY ────────────────────────────────────────
 function renderHistory() {
-  const container = document.getElementById('history-container');
+  const c = document.getElementById('history-container');
   const grouped = {};
-  log.forEach(i => { if (!grouped[i.date]) grouped[i.date] = []; grouped[i.date].push(i); });
+  log.forEach(i => { if(!grouped[i.date]) grouped[i.date]=[]; grouped[i.date].push(i); });
   const dates = Object.keys(grouped).sort().reverse();
-
-  if (!dates.length) {
-    container.innerHTML = '<div class="log-empty">Sem histórico disponível.</div>'; return;
-  }
-
-  container.innerHTML = dates.map(date => {
+  if (!dates.length) { c.innerHTML='<div class="log-empty">Sem histórico disponível.</div>'; return; }
+  c.innerHTML = dates.map(date => {
     const items = grouped[date];
-    const totalKcal = items.reduce((a,i) => a + i.kcal, 0);
+    const totalKcal = items.reduce((a,i)=>a+i.kcal,0);
     const isToday = date === todayKey();
     return `
       <div class="week-day-card">
         <div class="week-day-header" onclick="toggleDay(this)">
-          <div class="week-day-title">${formatDateLabel(date)}${isToday ? ' <span style="color:var(--green);font-weight:700">• hoje</span>' : ''}</div>
-          <div style="display:flex;align-items:center;gap:10px">
+          <div class="week-day-title">${formatDateLabel(date)}${isToday?' <span style="color:var(--green);font-size:0.75rem">● hoje</span>':''}</div>
+          <div style="display:flex;align-items:center;gap:8px">
             <span class="week-day-kcal">${Math.round(totalKcal)} kcal</span>
             <span style="font-size:0.7rem;color:var(--text3)">▾</span>
           </div>
         </div>
-        <div class="week-day-body ${isToday ? '' : 'hidden'}">
-          ${items.map(item => `
+        <div class="week-day-body${isToday?'':' hidden'}">
+          ${items.map(item=>`
             <div class="history-item">
               <div>
-                <div class="hi-name">${item.name}</div>
+                <div class="hi-name">${item.name}${item.meal?` <span style="font-size:0.65rem;color:var(--green)">${item.meal}</span>`:''}</div>
                 <div class="hi-meta">${item.time} · P:${Math.round(item.protein)}g · HC:${Math.round(item.carbs)}g · G:${Math.round(item.fat)}g</div>
               </div>
               <div style="display:flex;align-items:center;gap:6px">
@@ -1057,35 +1029,233 @@ function renderHistory() {
             </div>
           `).join('')}
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
-function toggleDay(header) {
-  const body = header.nextElementSibling;
-  body.classList.toggle('hidden');
+function toggleDay(h) { h.nextElementSibling.classList.toggle('hidden'); }
+
+// ── CSV EXPORT ────────────────────────────────────────────
+function exportCSV() {
+  if (!log.length) { alert('Sem dados para exportar.'); return; }
+  const rows = [['Data','Hora','Refeição','Prato','kcal','Proteína(g)','Hidratos(g)','Gordura(g)','Fibra(g)']];
+  log.sort((a,b)=>a.date.localeCompare(b.date)).forEach(i => {
+    rows.push([i.date, i.time||'', i.meal||'', i.name, Math.round(i.kcal), Math.round(i.protein), Math.round(i.carbs), Math.round(i.fat), Math.round(i.fiber)]);
+  });
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
+  a.download = `macros_${todayKey()}.csv`;
+  a.click();
 }
 
-// ── UI HELPERS ────────────────────────────────────────────
-function setLoading(type, show) {
-  document.getElementById('loading-' + type).classList.toggle('show', show);
-  document.getElementById('btn-' + type).disabled = show;
+// ── SETTINGS ─────────────────────────────────────────────
+function openSettings() {
+  document.getElementById('t-kcal').value = TARGETS.kcal;
+  document.getElementById('t-prot').value = TARGETS.protein;
+  document.getElementById('t-carb').value = TARGETS.carbs;
+  document.getElementById('t-fat').value  = TARGETS.fat;
+  document.getElementById('t-fib').value  = TARGETS.fiber;
+  document.getElementById('settings-modal').classList.add('show');
 }
 
-function showError(type, msg) {
-  const el = document.getElementById('error-' + type);
-  el.textContent = msg; el.classList.add('show');
+function closeSettings() { document.getElementById('settings-modal').classList.remove('show'); }
+
+function saveSettings() {
+  TARGETS = {
+    kcal:    parseInt(document.getElementById('t-kcal').value) || 2150,
+    protein: parseInt(document.getElementById('t-prot').value) || 140,
+    carbs:   parseInt(document.getElementById('t-carb').value) || 215,
+    fat:     parseInt(document.getElementById('t-fat').value)  || 72,
+    fiber:   parseInt(document.getElementById('t-fib').value)  || 30,
+  };
+  localStorage.setItem('macroTargets', JSON.stringify(TARGETS));
+  closeSettings();
+  renderDaily();
 }
 
-function hideError(type) {
-  document.getElementById('error-' + type).classList.remove('show');
-}
-
+// ── HELPERS ───────────────────────────────────────────────
+function setLoading(type, show) { document.getElementById('loading-'+type).classList.toggle('show',show); document.getElementById('btn-'+type).disabled=show; }
+function showError(type, msg) { const e=document.getElementById('error-'+type); e.textContent=msg; e.classList.add('show'); }
+function hideError(type) { document.getElementById('error-'+type).classList.remove('show'); }
 function renderAll() { renderDaily(); renderHistory(); }
 
-// ── INIT ─────────────────────────────────────────────────
+// Fix bar rendering with correct property keys
+const barMap = { prot:'protein', carb:'carbs', fat:'fat', fib:'fiber' };
+
+
+// ── MOUNJARO ──────────────────────────────────────────────
+const ZONE_NAMES = {
+  'abd-l': 'Abdómen esquerdo',
+  'abd-r': 'Abdómen direito',
+  'cox-l': 'Coxa esquerda',
+  'cox-r': 'Coxa direita',
+  'bra-l': 'Braço esquerdo (posterior)',
+  'bra-r': 'Braço direito (posterior)',
+};
+
+let injLog = JSON.parse(localStorage.getItem('injLog') || '[]');
+let mounjaroSettings = JSON.parse(localStorage.getItem('mounjaroSettings') || '{"dose":"2.5","day":4}');
+let selectedZone = null;
+
+function saveInjLog() { localStorage.setItem('injLog', JSON.stringify(injLog)); }
+function saveMounjaroSettings() {
+  mounjaroSettings.dose = document.getElementById('mounjaro-dose-setting').value;
+  mounjaroSettings.day  = parseInt(document.getElementById('mounjaro-day-setting').value);
+  localStorage.setItem('mounjaroSettings', JSON.stringify(mounjaroSettings));
+  document.getElementById('current-dose-display').textContent = mounjaroSettings.dose + 'mg';
+  document.getElementById('inj-dose').value = mounjaroSettings.dose;
+  renderNextDose();
+}
+
+function initMounjaroSettings() {
+  document.getElementById('mounjaro-dose-setting').value = mounjaroSettings.dose;
+  document.getElementById('mounjaro-day-setting').value  = mounjaroSettings.day;
+  document.getElementById('inj-dose').value = mounjaroSettings.dose;
+  document.getElementById('current-dose-display').textContent = mounjaroSettings.dose + 'mg';
+  // Set today as default date
+  document.getElementById('inj-date').value = new Date().toISOString().slice(0,10);
+}
+
+function selectZone(zoneId) {
+  selectedZone = zoneId;
+  // Update visual
+  document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('zone-' + zoneId).classList.add('selected');
+  // Show info
+  const lastUsed = injLog.filter(i => i.zone === zoneId).sort((a,b) => b.date.localeCompare(a.date))[0];
+  const info = document.getElementById('selected-zone-info');
+  info.innerHTML = `
+    <div class="selected-zone-label">${ZONE_NAMES[zoneId]}</div>
+    <div class="selected-zone-sub">${lastUsed ? 'Última vez: ' + formatDateLabel(lastUsed.date) + ' (' + lastUsed.dose + 'mg)' : 'Nunca utilizada'}</div>
+  `;
+}
+
+function getZoneStatus(zoneId) {
+  const entries = injLog.filter(i => i.zone === zoneId).sort((a,b) => b.date.localeCompare(a.date));
+  if (!entries.length) return 'available';
+  const last = new Date(entries[0].date + 'T12:00:00');
+  const today = new Date();
+  const daysDiff = Math.floor((today - last) / (1000*60*60*24));
+  if (daysDiff < 14) return 'avoid';
+  if (daysDiff < 28) return 'recent';
+  return 'available';
+}
+
+function renderBodyMap() {
+  Object.keys(ZONE_NAMES).forEach(zoneId => {
+    const el = document.getElementById('zone-' + zoneId);
+    if (!el) return;
+    el.className = 'zone-btn ' + getZoneStatus(zoneId) + (selectedZone === zoneId ? ' selected' : '');
+  });
+}
+
+function renderNextDose() {
+  const banner = document.getElementById('next-dose-banner');
+  const valEl  = document.getElementById('next-dose-val');
+  const subEl  = document.getElementById('next-dose-sub');
+
+  if (!injLog.length) {
+    valEl.textContent = 'Sem tomas registadas';
+    subEl.textContent = 'Regista a primeira toma abaixo';
+    banner.className = 'next-dose-card';
+    return;
+  }
+
+  const lastInj = injLog.sort((a,b) => b.date.localeCompare(a.date))[0];
+  const lastDate = new Date(lastInj.date + 'T12:00:00');
+  const nextDate = new Date(lastDate);
+  nextDate.setDate(nextDate.getDate() + 7);
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const diffDays = Math.round((nextDate - today) / (1000*60*60*24));
+
+  const nextStr = nextDate.toLocaleDateString('pt-PT', { weekday:'long', day:'numeric', month:'long' });
+
+  if (diffDays < 0) {
+    valEl.textContent = 'Atrasada ' + Math.abs(diffDays) + ' dias';
+    subEl.textContent = 'Estava prevista para ' + nextStr;
+    banner.className = 'next-dose-card overdue';
+  } else if (diffDays === 0) {
+    valEl.textContent = 'Hoje!';
+    subEl.textContent = 'Dose de ' + mounjaroSettings.dose + 'mg prevista para hoje';
+    banner.className = 'next-dose-card warn';
+  } else if (diffDays === 1) {
+    valEl.textContent = 'Amanhã';
+    subEl.textContent = nextStr + ' · ' + mounjaroSettings.dose + 'mg';
+    banner.className = 'next-dose-card';
+  } else {
+    valEl.textContent = 'Em ' + diffDays + ' dias';
+    subEl.textContent = nextStr + ' · ' + mounjaroSettings.dose + 'mg';
+    banner.className = 'next-dose-card';
+  }
+}
+
+function registerInjection() {
+  if (!selectedZone) { showInjError('Selecciona uma zona no mapa do corpo.'); return; }
+  const date  = document.getElementById('inj-date').value;
+  const dose  = document.getElementById('inj-dose').value;
+  const notes = document.getElementById('inj-notes').value;
+  if (!date) { showInjError('Indica a data da toma.'); return; }
+
+  const entry = { id:Date.now(), date, dose, zone:selectedZone, zoneName:ZONE_NAMES[selectedZone], notes };
+  injLog.push(entry);
+  saveInjLog();
+
+  // Reset form
+  selectedZone = null;
+  document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('selected-zone-info').innerHTML = '<div class="selected-zone-label" style="color:var(--text3)">Toca numa zona para seleccionar</div>';
+  document.getElementById('inj-notes').value = '';
+  document.getElementById('inj-date').value = new Date().toISOString().slice(0,10);
+
+  renderBodyMap();
+  renderNextDose();
+  renderInjHistory();
+
+  const btn = document.getElementById('btn-inj');
+  btn.textContent = '✓ Toma registada';
+  setTimeout(() => { btn.textContent = 'Registar toma'; }, 2000);
+}
+
+function renderInjHistory() {
+  const c = document.getElementById('inj-history-container');
+  const sorted = [...injLog].sort((a,b) => b.date.localeCompare(a.date));
+  if (!sorted.length) { c.innerHTML = '<div class="log-empty">Sem tomas registadas.</div>'; return; }
+  c.innerHTML = sorted.map(i => `
+    <div class="inj-item">
+      <div class="inj-left">
+        <div class="inj-name">${i.zoneName}</div>
+        <div class="inj-meta">${formatDateLabel(i.date)}${i.notes ? ' · ' + i.notes : ''}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="inj-dose">${i.dose}mg</span>
+        <button class="btn-ghost" onclick="deleteInj(${i.id})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteInj(id) {
+  injLog = injLog.filter(i => i.id !== id);
+  saveInjLog();
+  renderBodyMap();
+  renderNextDose();
+  renderInjHistory();
+}
+
+function showInjError(msg) {
+  const e = document.getElementById('error-inj');
+  e.textContent = msg; e.classList.add('show');
+  setTimeout(() => e.classList.remove('show'), 3000);
+}
+
+// ── INIT ──────────────────────────────────────────────────
 renderAll();
+initMounjaroSettings();
+renderNextDose();
+renderInjHistory();
 </script>
 </body>
 </html>
