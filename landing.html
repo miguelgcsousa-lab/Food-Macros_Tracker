@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriAI — Inteligência para a tua saúde</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0e0e0c;
+  --cream: #f5f2eb;
+  --cream2: #ede9df;
+  --green: #1a5c3a;
+  --green-light: #2d8a56;
+  --green-pale: #e8f2ec;
+  --gold: #b8912a;
+  --gold-light: #f0d98a;
+  --muted: #7a7a6e;
+  --border: #d8d4c8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(245,242,235,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 900;
+  color: var(--ink); letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--green); }
+
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+
+.lang-toggle {
+  display: flex; gap: 2px;
+  background: var(--cream2); border-radius: 6px; padding: 3px;
+}
+.lang-btn {
+  background: none; border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem; font-weight: 600;
+  padding: 4px 10px; border-radius: 4px;
+  cursor: pointer; color: var(--muted); transition: all 0.18s;
+}
+.lang-btn.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); background: white; }
+
+@media (max-width: 700px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 120px 24px 80px;
+  position: relative; text-align: center;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green-pale); border: 1px solid #b8d9c4;
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--green); letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  animation: fadeDown 0.6s ease both;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--green-light);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 800px;
+  animation: fadeDown 0.6s 0.1s ease both;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--green);
+}
+
+.hero-title .line-gold { color: var(--gold); }
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--muted);
+  font-weight: 300;
+  max-width: 520px;
+  margin: 24px auto 0;
+  line-height: 1.7;
+  animation: fadeDown 0.6s 0.2s ease both;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── WAITLIST FORM ── */
+.waitlist-wrap {
+  margin-top: 48px;
+  animation: fadeDown 0.6s 0.3s ease both;
+}
+
+.waitlist-form {
+  display: flex; gap: 10px;
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 6px 6px 6px 20px;
+  max-width: 480px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.waitlist-form:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 4px 24px rgba(26,92,58,0.12);
+}
+
+.waitlist-form input {
+  flex: 1; border: none; outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; color: var(--ink);
+  background: transparent;
+  min-width: 0;
+}
+
+.waitlist-form input::placeholder { color: #aaa; }
+
+.btn-waitlist {
+  background: var(--green); color: white;
+  border: none; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600; font-size: 0.88rem;
+  padding: 12px 22px;
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.18s, transform 0.1s;
+}
+.btn-waitlist:hover { background: var(--green-light); }
+.btn-waitlist:active { transform: scale(0.98); }
+
+.waitlist-note {
+  margin-top: 12px;
+  font-size: 0.75rem; color: var(--muted);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+
+.waitlist-success {
+  display: none;
+  background: var(--green-pale);
+  border: 1px solid #b8d9c4;
+  border-radius: 12px;
+  padding: 16px 24px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--green);
+  font-weight: 500;
+  max-width: 480px;
+}
+
+.early-bird-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, #b8912a, #d4a840);
+  color: white; border-radius: 8px;
+  padding: 8px 16px; font-size: 0.78rem;
+  font-weight: 600; letter-spacing: 0.03em;
+  margin-bottom: 16px;
+  animation: fadeDown 0.6s 0.25s ease both;
+}
+
+.counter-wrap {
+  margin-top: 20px;
+  font-size: 0.82rem; color: var(--muted);
+  animation: fadeDown 0.6s 0.4s ease both;
+}
+.counter-num { font-weight: 700; color: var(--ink); }
+
+/* ── SCROLL INDICATOR ── */
+.scroll-hint {
+  position: absolute; bottom: 32px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;
+  animation: fadeDown 0.6s 0.6s ease both;
+}
+.scroll-arrow { width: 1px; height: 40px; background: linear-gradient(var(--border), transparent); }
+
+/* ── FEATURES ── */
+.section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
+
+.section-label {
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.02em; max-width: 560px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 60px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--border);
+}
+
+@media (max-width: 768px) {
+  .features-grid { grid-template-columns: 1fr; }
+}
+
+.feature-card {
+  background: var(--cream);
+  padding: 40px 32px;
+  transition: background 0.2s;
+}
+.feature-card:hover { background: white; }
+
+.feature-icon {
+  font-size: 2rem; margin-bottom: 20px;
+  display: block;
+}
+.feature-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 700;
+  margin-bottom: 10px; line-height: 1.2;
+}
+.feature-desc {
+  font-size: 0.875rem; color: var(--muted);
+  line-height: 1.65;
+}
+.feature-tag {
+  display: inline-block; margin-top: 14px;
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 100px;
+  background: var(--green-pale); color: var(--green);
+}
+.feature-tag.gold { background: #f7edcc; color: var(--gold); }
+
+/* ── DIVIDER ── */
+.divider {
+  border: none; height: 1px;
+  background: var(--border);
+  max-width: 1100px; margin: 0 auto;
+}
+
+/* ── HOW IT WORKS ── */
+.how-wrap {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+  padding: 100px 24px;
+  max-width: 1100px; margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .how-wrap { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
+}
+
+.steps { display: flex; flex-direction: column; gap: 32px; }
+
+.step {
+  display: flex; gap: 20px; align-items: flex-start;
+  opacity: 0; transform: translateX(-20px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.step.visible { opacity: 1; transform: translateX(0); }
+
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--green); color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.step-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+.step-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+.phone-mockup {
+  background: var(--ink);
+  border-radius: 40px;
+  padding: 16px;
+  max-width: 260px;
+  margin: 0 auto;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+  position: relative;
+}
+.phone-mockup::before {
+  content: '';
+  position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+  width: 80px; height: 6px;
+  background: #1a1a1a; border-radius: 3px;
+}
+.phone-screen {
+  background: var(--cream);
+  border-radius: 28px;
+  padding: 40px 16px 20px;
+  min-height: 380px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.mock-bar { height: 8px; border-radius: 4px; background: var(--border); }
+.mock-bar.green { background: var(--green); width: 60%; }
+.mock-bar.short { width: 40%; }
+.mock-card { background: white; border-radius: 10px; padding: 12px; border: 1px solid var(--border); }
+.mock-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+.mock-macros { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; }
+.mock-macro { background: var(--cream); border-radius: 6px; padding: 6px 4px; text-align: center; }
+.mock-macro .mv { font-size: 0.7rem; font-weight: 700; color: var(--green); }
+.mock-macro .ml { font-size: 0.5rem; color: var(--muted); }
+
+/* ── FINAL CTA ── */
+.cta-section {
+  background: var(--green);
+  color: white;
+  padding: 100px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: 'N';
+  position: absolute; top: -40px; right: -20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 320px; font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  line-height: 1; pointer-events: none;
+}
+
+.cta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900; line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 600px; margin: 0 auto 24px;
+}
+
+.cta-sub { font-size: 1rem; opacity: 0.75; max-width: 440px; margin: 0 auto 40px; }
+
+.cta-form {
+  display: flex; gap: 10px;
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: 14px;
+  padding: 6px 6px 6px 20px;
+  max-width: 440px; margin: 0 auto;
+  backdrop-filter: blur(8px);
+}
+.cta-form:focus-within { border-color: rgba(255,255,255,0.5); }
+.cta-form input {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+  color: white; min-width: 0;
+}
+.cta-form input::placeholder { color: rgba(255,255,255,0.5); }
+.btn-cta {
+  background: white; color: var(--green);
+  border: none; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700; font-size: 0.88rem;
+  padding: 12px 22px; cursor: pointer;
+  transition: all 0.18s; white-space: nowrap;
+}
+.btn-cta:hover { background: var(--gold-light); }
+
+.cta-success {
+  display: none;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.9rem; font-weight: 500;
+  margin-top: 16px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); color: rgba(255,255,255,0.5);
+  padding: 48px 48px 32px;
+}
+
+.footer-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 40px;
+  flex-wrap: wrap; gap: 32px;
+}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 900;
+  color: white;
+}
+.footer-logo span { color: #4db87a; }
+
+.footer-desc { font-size: 0.82rem; max-width: 260px; line-height: 1.6; margin-top: 8px; }
+
+.footer-links { display: flex; flex-direction: column; gap: 10px; }
+.footer-links a {
+  font-size: 0.82rem; color: rgba(255,255,255,0.45);
+  text-decoration: none; transition: color 0.18s;
+}
+.footer-links a:hover { color: white; }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.75rem; flex-wrap: wrap; gap: 12px;
+}
+
+/* ── T&C MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  z-index: 500;
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+
+.tc-modal {
+  background: var(--cream);
+  border-radius: 20px;
+  max-width: 680px; width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+  animation: modalIn 0.3s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.tc-header {
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.tc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-weight: 700;
+}
+
+.tc-close {
+  background: var(--cream2); border: none; border-radius: 50%;
+  width: 32px; height: 32px; cursor: pointer;
+  font-size: 1rem; color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.tc-close:hover { background: var(--border); }
+
+.tc-body {
+  padding: 24px 28px;
+  overflow-y: auto; flex: 1;
+  font-size: 0.85rem; color: var(--muted);
+  line-height: 1.75;
+}
+
+.tc-body h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; color: var(--ink); font-weight: 700;
+  margin: 20px 0 8px;
+}
+.tc-body h3:first-child { margin-top: 0; }
+.tc-body p { margin-bottom: 10px; }
+
+/* ── ANIMATIONS ── */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 480px) {
+  .waitlist-form { flex-direction: column; padding: 12px; }
+  .btn-waitlist { width: 100%; text-align: center; }
+  .cta-form { flex-direction: column; padding: 12px; }
+  .btn-cta { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Nutri<span>AI</span></div>
+  <div class="nav-links">
+    <a href="#features" data-pt="Funcionalidades" data-en="Features">Funcionalidades</a>
+    <a href="#how" data-pt="Como funciona" data-en="How it works">Como funciona</a>
+    <a href="#waitlist" data-pt="Lista de espera" data-en="Join waitlist">Lista de espera</a>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('pt')">PT</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-eyebrow" data-pt="🚀 Em desenvolvimento — sê o primeiro a saber" data-en="🚀 Coming soon — be the first to know">
+    🚀 Em desenvolvimento — sê o primeiro a saber
+  </div>
+
+  <h1 class="hero-title">
+    <span data-pt="A <em>inteligência</em> que a tua" data-en="The <em>intelligence</em> your">A <em>inteligência</em> que a tua</span><br>
+    <span data-pt="saúde merecia" data-en="health deserved">saúde merecia</span>
+  </h1>
+
+  <p class="hero-subtitle" data-pt="Analisa refeições por foto, controla macros, gere a tua medicação GLP-1 e monitoriza a glicémia — tudo num só lugar, com IA." data-en="Analyse meals by photo, track macros, manage your GLP-1 medication and monitor blood glucose — all in one place, powered by AI.">
+    Analisa refeições por foto, controla macros, gere a tua medicação GLP-1 e monitoriza a glicémia — tudo num só lugar, com IA.
+  </p>
+
+  <div class="waitlist-wrap" id="waitlist">
+    <div class="early-bird-badge">
+      🎁 <span data-pt="Early Bird — acesso gratuito por 3 meses" data-en="Early Bird — 3 months free access">Early Bird — acesso gratuito por 3 meses</span>
+    </div>
+
+    <form class="waitlist-form" id="hero-form" onsubmit="submitWaitlist(event,'hero')">
+      <input type="email" id="hero-email" placeholder="o teu email" data-pt-placeholder="o teu email" data-en-placeholder="your email" required>
+      <button type="submit" class="btn-waitlist" data-pt="Entrar na lista" data-en="Join waitlist">Entrar na lista</button>
+    </form>
+    <div class="waitlist-success" id="hero-success">
+      <span data-pt="✓ Estás na lista! Vamos avisar-te assim que abrirmos." data-en="✓ You're on the list! We'll notify you when we launch.">✓ Estás na lista! Vamos avisar-te assim que abrirmos.</span>
+    </div>
+
+    <div class="waitlist-note">
+      🔒 <span data-pt="Sem spam. Podes cancelar quando quiseres." data-en="No spam. Unsubscribe anytime.">Sem spam. Podes cancelar quando quiseres.</span>
+    </div>
+
+    <div class="counter-wrap">
+      <span class="counter-num" id="counter">47</span> <span data-pt="pessoas já na lista" data-en="people already on the list">pessoas já na lista</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span data-pt="Explorar" data-en="Explore">Explorar</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FEATURES -->
+<section id="features" style="padding:100px 24px">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal" data-pt="O que a NutriAI faz" data-en="What NutriAI does">O que a NutriAI faz</div>
+    <h2 class="section-title reveal" data-pt="Tudo o que precisas para gerir a tua saúde" data-en="Everything you need to manage your health">
+      Tudo o que precisas para gerir a tua saúde
+    </h2>
+
+    <div class="features-grid reveal" style="transition-delay:0.1s">
+      <div class="feature-card">
+        <span class="feature-icon">📷</span>
+        <div class="feature-title" data-pt="Análise por foto" data-en="Photo analysis">Análise por foto</div>
+        <div class="feature-desc" data-pt="Fotografa qualquer refeição e obtém calorias, proteína, hidratos, gordura e fibra em segundos. Sem pesagens manuais." data-en="Photograph any meal and get calories, protein, carbs, fat and fibre in seconds. No manual weighing.">Fotografa qualquer refeição e obtém calorias, proteína, hidratos, gordura e fibra em segundos. Sem pesagens manuais.</div>
+        <span class="feature-tag" data-pt="IA Vision" data-en="AI Vision">IA Vision</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💉</span>
+        <div class="feature-title" data-pt="Gestão GLP-1" data-en="GLP-1 Management">Gestão GLP-1</div>
+        <div class="feature-desc" data-pt="Regista tomas de Mounjaro ou Ozempic, rota locais de injecção com mapa corporal interactivo e recebe alertas da próxima dose." data-en="Log Mounjaro or Ozempic doses, rotate injection sites with an interactive body map and receive next-dose alerts.">Regista tomas de Mounjaro ou Ozempic, rota locais de injecção com mapa corporal interactivo e recebe alertas da próxima dose.</div>
+        <span class="feature-tag" data-pt="Medicação" data-en="Medication">Medicação</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🩸</span>
+        <div class="feature-title" data-pt="Monitorização glicémica" data-en="Glucose monitoring">Monitorização glicémica</div>
+        <div class="feature-desc" data-pt="Regista leituras de glicémia, identifica padrões e correlaciona com as tuas refeições e medicação." data-en="Log glucose readings, identify patterns and correlate with your meals and medication.">Regista leituras de glicémia, identifica padrões e correlaciona com as tuas refeições e medicação.</div>
+        <span class="feature-tag gold" data-pt="Em breve" data-en="Coming soon">Em breve</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📊</span>
+        <div class="feature-title" data-pt="Objectivos personalizados" data-en="Personalised goals">Objectivos personalizados</div>
+        <div class="feature-desc" data-pt="Define os teus targets de macros, calorias e hidratação. Barras de progresso em tempo real com alertas visuais." data-en="Set your macro, calorie and hydration targets. Real-time progress bars with visual alerts.">Define os teus targets de macros, calorias e hidratação. Barras de progresso em tempo real com alertas visuais.</div>
+        <span class="feature-tag" data-pt="Dashboard" data-en="Dashboard">Dashboard</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⭐</span>
+        <div class="feature-title" data-pt="Pratos favoritos" data-en="Favourite meals">Pratos favoritos</div>
+        <div class="feature-desc" data-pt="Guarda os teus pratos habituais e adiciona-os ao log com um toque. Sem analisar de novo." data-en="Save your regular meals and add them to your log with one tap. No re-analysing needed.">Guarda os teus pratos habituais e adiciona-os ao log com um toque. Sem analisar de novo.</div>
+        <span class="feature-tag" data-pt="Produtividade" data-en="Productivity">Produtividade</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📤</span>
+        <div class="feature-title" data-pt="Exportação & integração" data-en="Export & integration">Exportação & integração</div>
+        <div class="feature-desc" data-pt="Exporta o histórico semanal em CSV para o MyFitnessPal, Excel ou o teu médico. Dados sempre teus." data-en="Export your weekly history as CSV to MyFitnessPal, Excel or your doctor. Your data, always.">Exporta o histórico semanal em CSV para o MyFitnessPal, Excel ou o teu médico. Dados sempre teus.</div>
+        <span class="feature-tag" data-pt="Interoperabilidade" data-en="Interoperability">Interoperabilidade</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- HOW IT WORKS -->
+<div class="how-wrap" id="how">
+  <div>
+    <div class="section-label reveal" data-pt="Como funciona" data-en="How it works">Como funciona</div>
+    <h2 class="section-title reveal" data-pt="Três segundos para saber o que comeste" data-en="Three seconds to know what you ate">
+      Três segundos para saber o que comeste
+    </h2>
+    <div class="steps" style="margin-top:40px">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title" data-pt="Fotografa ou descreve" data-en="Photo or describe">Fotografa ou descreve</div>
+          <div class="step-desc" data-pt="Tira uma foto ao prato ou escreve os ingredientes com os pesos. A IA trata do resto." data-en="Take a photo of your meal or type the ingredients with weights. AI does the rest.">Tira uma foto ao prato ou escreve os ingredientes com os pesos. A IA trata do resto.</div>
+        </div>
+      </div>
+      <div class="step reveal" style="transition-delay:0.1s">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title" data-pt="Obtém os macros instantaneamente" data-en="Get macros instantly">Obtém os macros instantaneamente</div>
+          <div class="step-desc" data-pt="Calorias, proteína, hidratos, gordura e fibra calculados com base em bases de dados nutricionais validadas." data-en="Calories, protein, carbs, fat and fibre calculated from validated nutritional databases.">Calorias, proteína, hidratos, gordura e fibra calculados com base em bases de dados nutricionais validadas.</div>
+        </div>
+      </div>
+      <div class="step reveal" style="transition-delay:0.2s">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title" data-pt="Adiciona ao teu dia" data-en="Add to your day">Adiciona ao teu dia</div>
+          <div class="step-desc" data-pt="Regista no log diário ou copia para o MyFitnessPal. O progresso actualiza em tempo real." data-en="Log to your daily tracker or copy to MyFitnessPal. Progress updates in real time.">Regista no log diário ou copia para o MyFitnessPal. O progresso actualiza em tempo real.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone mockup -->
+  <div class="reveal" style="transition-delay:0.15s">
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#999;margin-bottom:4px">Hoje · Quinta-feira</div>
+        <div style="font-size:1.8rem;font-weight:700;color:#1a5c3a;font-family:'Playfair Display',serif;line-height:1">1847</div>
+        <div style="font-size:0.55rem;color:#aaa;margin-bottom:10px">kcal / 2150 objectivo</div>
+        <div class="mock-bar green"></div>
+        <div style="height:4px"></div>
+        <div class="mock-bar short" style="background:#c0720a;opacity:0.6"></div>
+        <div style="height:4px"></div>
+        <div class="mock-bar" style="width:55%;background:#1a6fa8;opacity:0.6"></div>
+        <div style="height:12px"></div>
+        <div class="mock-card">
+          <div class="mock-label">Almoço</div>
+          <div style="font-size:0.7rem;font-weight:600;margin-bottom:8px">Frango grelhado com arroz</div>
+          <div class="mock-macros">
+            <div class="mock-macro"><div class="mv">487</div><div class="ml">kcal</div></div>
+            <div class="mock-macro"><div class="mv" style="color:#c0392b">42g</div><div class="ml">prot</div></div>
+            <div class="mock-macro"><div class="mv" style="color:#c0720a">38g</div><div class="ml">hc</div></div>
+            <div class="mock-macro"><div class="mv" style="color:#1a6fa8">12g</div><div class="ml">gord</div></div>
+          </div>
+        </div>
+        <div style="height:6px"></div>
+        <div class="mock-card" style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div class="mock-label">💉 Próxima dose</div>
+            <div style="font-size:0.7rem;font-weight:600">Mounjaro 2.5mg</div>
+            <div style="font-size:0.58rem;color:#aaa">em 3 dias · Coxa Dir.</div>
+          </div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#1a5c3a"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- FINAL CTA -->
+<section class="cta-section">
+  <h2 class="cta-title" data-pt="Pronto para começar?" data-en="Ready to start?">Pronto para começar?</h2>
+  <p class="cta-sub" data-pt="Junta-te à lista de espera e garante 3 meses gratuitos como Early Bird." data-en="Join the waitlist and secure 3 free months as an Early Bird.">
+    Junta-te à lista de espera e garante 3 meses gratuitos como Early Bird.
+  </p>
+
+  <form class="cta-form" id="cta-form" onsubmit="submitWaitlist(event,'cta')">
+    <input type="email" id="cta-email" placeholder="o teu email" data-pt-placeholder="o teu email" data-en-placeholder="your email" required>
+    <button type="submit" class="btn-cta" data-pt="Garantir lugar" data-en="Secure my spot">Garantir lugar</button>
+  </form>
+  <div class="cta-success" id="cta-success">
+    <span data-pt="✓ Estás na lista! Em breve terás novidades." data-en="✓ You're on the list! News coming soon.">✓ Estás na lista! Em breve terás novidades.</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Nutri<span>AI</span></div>
+      <div class="footer-desc" data-pt="Nutrição inteligente e gestão de saúde para quem toma a sério o seu bem-estar." data-en="Smart nutrition and health management for those who take their wellbeing seriously.">Nutrição inteligente e gestão de saúde para quem toma a sério o seu bem-estar.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#" onclick="openTC(event)" data-pt="Termos e Condições" data-en="Terms & Conditions">Termos e Condições</a>
+      <a href="#" onclick="openTC(event)" data-pt="Política de Privacidade" data-en="Privacy Policy">Política de Privacidade</a>
+      <a href="#waitlist" data-pt="Lista de espera" data-en="Waitlist">Lista de espera</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-pt="© 2025 NutriAI. Todos os direitos reservados." data-en="© 2025 NutriAI. All rights reserved.">© 2025 NutriAI. Todos os direitos reservados.</span>
+    <span data-pt="Desenvolvido em Portugal 🇵🇹" data-en="Built in Portugal 🇵🇹">Desenvolvido em Portugal 🇵🇹</span>
+  </div>
+</footer>
+
+<!-- T&C MODAL -->
+<div class="modal-overlay" id="tc-modal" onclick="if(event.target===this)closeTC()">
+  <div class="tc-modal">
+    <div class="tc-header">
+      <div class="tc-title" data-pt="Termos e Condições / Privacidade" data-en="Terms & Conditions / Privacy">Termos e Condições / Privacidade</div>
+      <button class="tc-close" onclick="closeTC()">✕</button>
+    </div>
+    <div class="tc-body">
+      <h3 data-pt="1. Sobre a NutriAI" data-en="1. About NutriAI">1. Sobre a NutriAI</h3>
+      <p data-pt="A NutriAI é uma aplicação de apoio à gestão nutricional e de saúde pessoal. Não é um dispositivo médico certificado nem substitui aconselhamento médico profissional. Os valores nutricionais apresentados são estimativas calculadas por inteligência artificial e podem conter margem de erro." data-en="NutriAI is an application to support personal nutritional and health management. It is not a certified medical device and does not replace professional medical advice. Nutritional values shown are estimates calculated by artificial intelligence and may contain a margin of error.">A NutriAI é uma aplicação de apoio à gestão nutricional e de saúde pessoal. Não é um dispositivo médico certificado nem substitui aconselhamento médico profissional. Os valores nutricionais apresentados são estimativas calculadas por inteligência artificial e podem conter margem de erro.</p>
+
+      <h3 data-pt="2. Recolha de dados" data-en="2. Data collection">2. Recolha de dados</h3>
+      <p data-pt="Recolhemos apenas o endereço de email fornecido voluntariamente para a lista de espera. Não recolhemos dados de saúde sem consentimento explícito. Após o lançamento, os dados inseridos na aplicação (refeições, medicação, glicémia) são armazenados localmente no teu dispositivo ou, com consentimento, em servidores seguros." data-en="We collect only the email address voluntarily provided for the waitlist. We do not collect health data without explicit consent. After launch, data entered in the app (meals, medication, glucose) is stored locally on your device or, with consent, on secure servers.">Recolhemos apenas o endereço de email fornecido voluntariamente para a lista de espera. Não recolhemos dados de saúde sem consentimento explícito. Após o lançamento, os dados inseridos na aplicação (refeições, medicação, glicémia) são armazenados localmente no teu dispositivo ou, com consentimento, em servidores seguros.</p>
+
+      <h3 data-pt="3. Uso do email" data-en="3. Use of email">3. Uso do email</h3>
+      <p data-pt="O teu email é usado exclusivamente para comunicar o lançamento da NutriAI e actualizações relevantes. Não é partilhado com terceiros nem usado para fins comerciais externos. Podes cancelar a qualquer momento respondendo com 'cancelar' ou através do link de unsubscribe em cada email." data-en="Your email is used exclusively to communicate the NutriAI launch and relevant updates. It is not shared with third parties or used for external commercial purposes. You can unsubscribe at any time by replying 'unsubscribe' or via the unsubscribe link in each email.">O teu email é usado exclusivamente para comunicar o lançamento da NutriAI e actualizações relevantes. Não é partilhado com terceiros nem usado para fins comerciais externos. Podes cancelar a qualquer momento respondendo com 'cancelar' ou através do link de unsubscribe em cada email.</p>
+
+      <h3 data-pt="4. Limitação de responsabilidade" data-en="4. Limitation of liability">4. Limitação de responsabilidade</h3>
+      <p data-pt="A NutriAI não se responsabiliza por decisões de saúde tomadas com base nas estimativas da aplicação. Em caso de dúvida, consulta sempre um profissional de saúde qualificado, especialmente no que respeita a medicação, glicémia ou condições médicas." data-en="NutriAI is not responsible for health decisions made based on the application's estimates. When in doubt, always consult a qualified healthcare professional, especially regarding medication, blood glucose or medical conditions.">A NutriAI não se responsabiliza por decisões de saúde tomadas com base nas estimativas da aplicação. Em caso de dúvida, consulta sempre um profissional de saúde qualificado, especialmente no que respeita a medicação, glicémia ou condições médicas.</p>
+
+      <h3 data-pt="5. RGPD" data-en="5. GDPR">5. RGPD</h3>
+      <p data-pt="Em conformidade com o Regulamento Geral de Protecção de Dados (UE 2016/679), tens direito a aceder, rectificar ou eliminar os teus dados pessoais. Para exercer esses direitos, contacta-nos através do email disponível na aplicação." data-en="In compliance with the General Data Protection Regulation (EU 2016/679), you have the right to access, rectify or delete your personal data. To exercise these rights, contact us via the email available in the application.">Em conformidade com o Regulamento Geral de Protecção de Dados (UE 2016/679), tens direito a aceder, rectificar ou eliminar os teus dados pessoais. Para exercer esses direitos, contacta-nos através do email disponível na aplicação.</p>
+
+      <h3 data-pt="6. Alterações" data-en="6. Changes">6. Alterações</h3>
+      <p data-pt="Estes termos podem ser actualizados antes do lançamento oficial. A versão actualizada será sempre disponibilizada na aplicação e comunicada por email." data-en="These terms may be updated before the official launch. The updated version will always be made available in the application and communicated by email.">Estes termos podem ser actualizados antes do lançamento oficial. A versão actualizada será sempre disponibilizada na aplicação e comunicada por email.</p>
+
+      <p style="margin-top:24px;font-size:0.75rem;color:#aaa" data-pt="Última actualização: Junho 2025" data-en="Last updated: June 2025">Última actualização: Junho 2025</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── LANGUAGE ──────────────────────────────────────────────
+let currentLang = 'pt';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+  document.querySelectorAll('[data-pt]').forEach(el => {
+    const val = el.getAttribute('data-' + lang);
+    if (val) el.innerHTML = val;
+  });
+
+  document.querySelectorAll('[data-pt-placeholder]').forEach(el => {
+    el.placeholder = el.getAttribute('data-' + lang + '-placeholder') || el.placeholder;
+  });
+
+  document.documentElement.lang = lang;
+}
+
+// ── WAITLIST ──────────────────────────────────────────────
+let waitlistCount = 47;
+
+function submitWaitlist(e, source) {
+  e.preventDefault();
+  const emailEl = document.getElementById(source + '-email');
+  const email = emailEl.value.trim();
+  if (!email) return;
+
+  // Store locally
+  const list = JSON.parse(localStorage.getItem('nutriai_waitlist') || '[]');
+  if (!list.includes(email)) {
+    list.push(email);
+    localStorage.setItem('nutriai_waitlist', JSON.stringify(list));
+    waitlistCount++;
+    document.getElementById('counter').textContent = waitlistCount;
+  }
+
+  // Show success
+  document.getElementById(source + '-form').style.display = 'none';
+  document.getElementById(source + '-success').style.display = 'block';
+}
+
+// ── T&C ───────────────────────────────────────────────────
+function openTC(e) {
+  if (e) e.preventDefault();
+  document.getElementById('tc-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTC() {
+  document.getElementById('tc-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTC(); });
+
+// ── SCROLL REVEAL ─────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.classList.add('visible');
+      observer.unobserve(el.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal, .step').forEach(el => observer.observe(el));
+
+// ── COUNTER ANIMATION ─────────────────────────────────────
+// Simulate a growing counter on load
+const stored = JSON.parse(localStorage.getItem('nutriai_waitlist') || '[]');
+waitlistCount = 47 + stored.length;
+document.getElementById('counter').textContent = waitlistCount;
+</script>
+</body>
+</html>
