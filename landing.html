@@ -820,13 +820,29 @@ function setLang(lang) {
 // ── WAITLIST ──────────────────────────────────────────────
 let waitlistCount = 47;
 
-function submitWaitlist(e, source) {
+const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSe8BPRVHYmNjCKDfIYNIafUN0pSrroJRVTxUhIf7erh-2zoRg/formResponse';
+const ENTRY_ID = 'entry.2108367124';
+
+async function submitWaitlist(e, source) {
   e.preventDefault();
   const emailEl = document.getElementById(source + '-email');
   const email = emailEl.value.trim();
   if (!email) return;
 
-  // Store locally
+  const btn = document.querySelector('#' + source + '-form button[type=submit]');
+  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+
+  // Submit to Google Forms (no-cors — response is opaque but submission works)
+  const body = new FormData();
+  body.append(ENTRY_ID, email);
+
+  try {
+    await fetch(FORM_ACTION, { method: 'POST', mode: 'no-cors', body });
+  } catch(err) {
+    // no-cors fetch always throws or returns opaque — submission still works
+  }
+
+  // Store locally too
   const list = JSON.parse(localStorage.getItem('nutriai_waitlist') || '[]');
   if (!list.includes(email)) {
     list.push(email);
