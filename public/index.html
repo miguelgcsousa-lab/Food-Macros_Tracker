@@ -1115,7 +1115,7 @@ function renderHistory() {
     const items = grouped[date];
     const totalKcal = items.reduce((a,i)=>a+i.kcal,0);
     const isToday = date === todayKey();
-    return '<div class="week-day-card"><div class="week-day-header" onclick="toggleDay(this)"><div class="week-day-title">' + formatDateLabel(date) + (isToday?' <span style="color:var(--green);font-size:0.75rem">● hoje</span>':'') + '</div><div style="display:flex;align-items:center;gap:8px"><span class="week-day-kcal">' + Math.round(totalKcal) + ' kcal</span><span style="font-size:0.7rem;color:var(--text3)">▾</span></div></div><div class="week-day-body' + (isToday?'':' hidden') + '">' + items.map(item=>'<div class="history-item"><div><div class="hi-name">' + item.name + (item.meal?' <span style="font-size:0.65rem;color:var(--green)">' + item.meal + '</span>':'') + '</div><div class="hi-meta">' + (item.time||'') + ' · P:' + Math.round(item.protein) + 'g · HC:' + Math.round(item.carbs) + 'g</div></div><div style="display:flex;align-items:center;gap:6px"><span style="font-family:\'JetBrains Mono\',monospace;font-size:0.82rem;color:var(--green);font-weight:600">' + Math.round(item.kcal) + ' kcal</span><button class="btn-ghost" onclick="removeFromLog(' + item.id + ');renderHistory()">✕</button></div></div>').join('') + '</div></div>';
+    return '<div class="week-day-card"><div class="week-day-header" onclick="toggleDay(this)"><div class="week-day-title">' + formatDateLabel(date) + (isToday?' <span style="color:var(--green);font-size:0.75rem">● hoje</span>':'') + '</div><div style="display:flex;align-items:center;gap:8px"><span class="week-day-kcal">' + Math.round(totalKcal) + ' kcal</span><span style="font-size:0.7rem;color:var(--text3)">▾</span></div></div><div class="week-day-body' + (isToday?'':' hidden') + '">' + items.map(item=>'<div class="history-item"><div><div class="hi-name">' + item.name + (item.meal?' <span style="font-size:0.65rem;color:var(--green)">' + item.meal + '</span>':'') + '</div><div class="hi-meta">' + (item.time||'') + ' · P:' + Math.round(item.protein) + 'g · HC:' + Math.round(item.carbs) + 'g</div></div><div style="display:flex;align-items:center;gap:6px"><span style="font-family:JetBrains Mono,monospace;font-size:0.82rem;color:var(--green);font-weight:600">' + Math.round(item.kcal) + ' kcal</span><button class="btn-ghost" onclick="removeFromLog(' + item.id + ');renderHistory()">✕</button></div></div>').join('') + '</div></div>';
   }).join('');
 }
 
@@ -1229,7 +1229,7 @@ async function registerInjection() {
 function renderInjHistory() {
   const c = document.getElementById('inj-history-container');
   if (!injLog.length) { c.innerHTML='<div class="log-empty">Sem tomas registadas.</div>'; return; }
-  c.innerHTML = [...injLog].sort((a,b)=>b.date.localeCompare(a.date)).map(i => '<div class="inj-item"><div><div style="font-size:0.88rem;font-weight:600">' + i.zone_name + '</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:0.68rem;color:var(--text3);margin-top:2px">' + formatDateLabel(i.date) + (i.notes?' · '+i.notes:'') + '</div></div><div style="display:flex;align-items:center;gap:8px"><span class="inj-dose">' + i.dose + 'mg</span><button class="btn-ghost" onclick="deleteInj(' + i.id + ')">✕</button></div></div>').join('');
+  c.innerHTML = [...injLog].sort((a,b)=>b.date.localeCompare(a.date)).map(i => '<div class="inj-item"><div><div style="font-size:0.88rem;font-weight:600">' + i.zone_name + '</div><div style="font-family:JetBrains Mono,monospace;font-size:0.68rem;color:var(--text3);margin-top:2px">' + formatDateLabel(i.date) + (i.notes?' · '+i.notes:'') + '</div></div><div style="display:flex;align-items:center;gap:8px"><span class="inj-dose">' + i.dose + 'mg</span><button class="btn-ghost" onclick="deleteInj(' + i.id + ')">✕</button></div></div>').join('');
 }
 
 async function deleteInj(id) {
@@ -1387,9 +1387,17 @@ function registerGlucose() {
 function renderGlucoseHistory() {
   const c = document.getElementById('glucose-history');
   if (!glucoseLog.length) { c.innerHTML = '<div class="log-empty">Sem registos.</div>'; return; }
+  const monoStyle = 'font-family:monospace;font-size:0.68rem;color:var(--text3);margin-top:2px';
   c.innerHTML = [...glucoseLog].sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).slice(0,30).map(g => {
     const status = getGlucoseStatus(g.value, g.moment);
-    return '<div class="glucose-log-item"><div><div style="font-size:0.88rem;font-weight:600">' + g.moment + '</div><div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text3);margin-top:2px">' + formatDateLabel(g.date) + (g.time?' · '+g.time:'') + (g.notes?' · '+g.notes:'') + '</div></div><div style="display:flex;align-items:center;gap:8px"><span class="glucose-val-tag ' + status + '">' + g.value + ' mg/dL</span><button class="btn-ghost" onclick="deleteGlucose(' + g.id + ')">✕</button></div></div>';
+    const meta = formatDateLabel(g.date) + (g.time ? ' · ' + g.time : '') + (g.notes ? ' · ' + g.notes : '');
+    return '<div class="glucose-log-item">' +
+      '<div><div style="font-size:0.88rem;font-weight:600">' + g.moment + '</div>' +
+      '<div style="' + monoStyle + '">' + meta + '</div></div>' +
+      '<div style="display:flex;align-items:center;gap:8px">' +
+      '<span class="glucose-val-tag ' + status + '">' + g.value + ' mg/dL</span>' +
+      '<button class="btn-ghost" onclick="deleteGlucose(' + g.id + ')">✕</button>' +
+      '</div></div>';
   }).join('');
 }
 
