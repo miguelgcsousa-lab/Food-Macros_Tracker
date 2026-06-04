@@ -552,37 +552,48 @@ renderInjHistory();}">Apagar tudo</button>
         <div class="body-map-wrap">
           <div>
             <div class="body-svg-container" id="body-svg-container">
-              <!-- SVG body outline -->
-              <svg viewBox="0 0 120 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Improved SVG body outline -->
+              <svg viewBox="0 0 130 300" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <!-- Head -->
-                <ellipse cx="60" cy="22" rx="16" ry="18" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <ellipse cx="65" cy="20" rx="15" ry="17" fill="#e0e0d8" stroke="#bbb" stroke-width="1.2"/>
                 <!-- Neck -->
-                <rect x="53" y="38" width="14" height="10" rx="4" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <rect x="58" y="35" width="14" height="10" rx="3" fill="#e0e0d8" stroke="#bbb" stroke-width="1"/>
                 <!-- Torso -->
-                <path d="M30 48 Q20 52 18 80 L18 140 Q18 148 30 148 L90 148 Q102 148 102 140 L102 80 Q100 52 90 48 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <path d="M35 45 Q22 50 20 78 L20 142 Q20 150 34 150 L96 150 Q110 150 110 142 L110 78 Q108 50 95 45 Z" fill="#e0e0d8" stroke="#bbb" stroke-width="1.2"/>
+                <!-- Umbigo -->
+                <circle cx="65" cy="112" r="3" fill="#ccc" stroke="#aaa" stroke-width="1"/>
+                <!-- 5cm radius dashed circle around umbigo -->
+                <circle cx="65" cy="112" r="18" stroke="#e8a020" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
                 <!-- Left arm -->
-                <path d="M18 52 Q8 58 6 90 Q5 110 10 130 Q14 140 20 138 L22 100 Q22 68 28 54 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <path d="M20 48 Q8 56 5 92 Q4 114 10 132 Q14 142 22 140 L24 104 Q24 70 30 52 Z" fill="#e0e0d8" stroke="#bbb" stroke-width="1.2"/>
                 <!-- Right arm -->
-                <path d="M102 52 Q112 58 114 90 Q115 110 110 130 Q106 140 100 138 L98 100 Q98 68 92 54 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <path d="M110 48 Q122 56 125 92 Q126 114 120 132 Q116 142 108 140 L106 104 Q106 70 100 52 Z" fill="#e0e0d8" stroke="#bbb" stroke-width="1.2"/>
                 <!-- Left leg -->
-                <path d="M30 148 Q26 160 26 200 Q26 230 28 255 Q30 265 38 265 Q46 265 48 255 L50 200 L52 148 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <path d="M34 150 Q28 164 28 206 Q28 234 30 258 Q32 268 42 268 Q50 268 52 258 L54 206 L56 150 Z" fill="#e0e0d8" stroke="#bbb" stroke-width="1.2"/>
                 <!-- Right leg -->
-                <path d="M90 148 Q94 160 94 200 Q94 230 92 255 Q90 265 82 265 Q74 265 72 255 L70 200 L68 148 Z" fill="#e8e8e2" stroke="#ccc" stroke-width="1"/>
+                <path d="M96 150 Q102 164 102 206 Q102 234 100 258 Q98 268 88 268 Q80 268 78 258 L76 206 L74 150 Z" fill="#e0e0d8" stroke="#bbb" stroke-width="1.2"/>
+                <!-- Gluteus outline (back view implied) -->
+                <!-- Label -->
+                <text x="65" y="113" text-anchor="middle" font-size="4" fill="#aaa" dy="0">○</text>
               </svg>
 
-              <!-- Zone buttons positioned over SVG -->
-              <!-- Abdomen left -->
-              <div class="zone-btn available" id="zone-abd-l" style="width:34px;height:34px;left:22px;top:95px" onclick="selectZone('abd-l')" title="Abdómen esquerdo">Abd<br>Esq</div>
-              <!-- Abdomen right -->
-              <div class="zone-btn available" id="zone-abd-r" style="width:34px;height:34px;left:90px;top:95px" onclick="selectZone('abd-r')" title="Abdómen direito">Abd<br>Dir</div>
-              <!-- Left thigh -->
-              <div class="zone-btn available" id="zone-cox-l" style="width:34px;height:34px;left:14px;top:175px" onclick="selectZone('cox-l')" title="Coxa esquerda">Coxa<br>Esq</div>
-              <!-- Right thigh -->
-              <div class="zone-btn available" id="zone-cox-r" style="width:34px;height:34px;left:82px;top:175px" onclick="selectZone('cox-r')" title="Coxa direita">Coxa<br>Dir</div>
-              <!-- Left arm -->
-              <div class="zone-btn available" id="zone-bra-l" style="width:30px;height:30px;left:0px;top:80px" onclick="selectZone('bra-l')" title="Braço esquerdo">Braço<br>Esq</div>
-              <!-- Right arm -->
-              <div class="zone-btn available" id="zone-bra-r" style="width:30px;height:30px;left:118px;top:80px" onclick="selectZone('bra-r')" title="Braço direito">Braço<br>Dir</div>
+              <!-- Zone buttons -->
+              <!-- Abdomen LEFT (right side of body = left of screen in front view) -->
+              <div class="zone-btn available" id="zone-abd-l" style="width:36px;height:36px;left:24px;top:88px" onclick="selectZone('abd-l')" title="Abdómen esquerdo">ABD<br>ESQ</div>
+              <!-- Abdomen RIGHT -->
+              <div class="zone-btn available" id="zone-abd-r" style="width:36px;height:36px;left:90px;top:88px" onclick="selectZone('abd-r')" title="Abdómen direito">ABD<br>DIR</div>
+              <!-- Thigh LEFT -->
+              <div class="zone-btn available" id="zone-cox-l" style="width:36px;height:36px;left:16px;top:178px" onclick="selectZone('cox-l')" title="Coxa esquerda">COXA<br>ESQ</div>
+              <!-- Thigh RIGHT -->
+              <div class="zone-btn available" id="zone-cox-r" style="width:36px;height:36px;left:88px;top:178px" onclick="selectZone('cox-r')" title="Coxa direita">COXA<br>DIR</div>
+              <!-- Arm LEFT (posterior) -->
+              <div class="zone-btn available" id="zone-bra-l" style="width:32px;height:32px;left:-4px;top:76px" onclick="selectZone('bra-l')" title="Braço esquerdo posterior">BRAÇO<br>ESQ</div>
+              <!-- Arm RIGHT (posterior) -->
+              <div class="zone-btn available" id="zone-bra-r" style="width:32px;height:32px;left:122px;top:76px" onclick="selectZone('bra-r')" title="Braço direito posterior">BRAÇO<br>DIR</div>
+              <!-- Gluteus LEFT -->
+              <div class="zone-btn available" id="zone-glu-l" style="width:34px;height:34px;left:18px;top:148px" onclick="selectZone('glu-l')" title="Glúteo esquerdo">GLÚT<br>ESQ</div>
+              <!-- Gluteus RIGHT -->
+              <div class="zone-btn available" id="zone-glu-r" style="width:34px;height:34px;left:98px;top:148px" onclick="selectZone('glu-r')" title="Glúteo direito">GLÚT<br>DIR</div>
             </div>
 
             <div class="zone-legend">
@@ -590,6 +601,8 @@ renderInjHistory();}">Apagar tudo</button>
               <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div>Recente (&lt;4 sem)</div>
               <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Evitar (&lt;2 sem)</div>
             </div>
+            <div style="margin-top:8px;font-size:0.68rem;color:var(--orange);line-height:1.4">⚠️ Círculo = zona de exclusão (≥5cm do umbigo)</div>
+            <div style="margin-top:4px;font-size:0.68rem;color:var(--text3);line-height:1.4">Glúteos = face lateral posterior</div>
           </div>
 
           <div class="zone-info-panel">
@@ -1086,12 +1099,14 @@ const barMap = { prot:'protein', carb:'carbs', fat:'fat', fib:'fiber' };
 
 // ── MOUNJARO ──────────────────────────────────────────────
 const ZONE_NAMES = {
-  'abd-l': 'Abdómen esquerdo',
-  'abd-r': 'Abdómen direito',
-  'cox-l': 'Coxa esquerda',
-  'cox-r': 'Coxa direita',
-  'bra-l': 'Braço esquerdo (posterior)',
-  'bra-r': 'Braço direito (posterior)',
+  'abd-l': 'Abdómen esquerdo (≥5cm do umbigo)',
+  'abd-r': 'Abdómen direito (≥5cm do umbigo)',
+  'cox-l': 'Coxa esquerda (terço anterior)',
+  'cox-r': 'Coxa direita (terço anterior)',
+  'bra-l': 'Braço esquerdo (face posterior)',
+  'bra-r': 'Braço direito (face posterior)',
+  'glu-l': 'Glúteo esquerdo (face lateral)',
+  'glu-r': 'Glúteo direito (face lateral)',
 };
 
 let injLog = JSON.parse(localStorage.getItem('injLog') || '[]');
