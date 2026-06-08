@@ -1091,9 +1091,18 @@ function showUpgradeBanner() {
   const banner = document.createElement('div');
   banner.id = 'upgrade-banner';
   banner.style.cssText = 'background:linear-gradient(135deg,#1a5c3a,#2d7d52);color:white;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;gap:12px;flex-wrap:wrap';
-  banner.innerHTML = '<span>🚀 Estás no plano <strong>Free</strong> — ' + planLimits.daily_photo_limit + ' fotos/dia. Upgrade para Premium para acesso ilimitado.</span>' +
-    '<button onclick="document.getElementById('upgrade-banner').remove()" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.75rem;white-space:nowrap">✕ Fechar</button>';
-  document.getElementById('app-screen').insertBefore(banner, document.querySelector('header'));
+  const msg = document.createElement('span');
+  msg.innerHTML = '🚀 Estás no plano <strong>Free</strong> — ' + planLimits.daily_photo_limit + ' fotos/dia. Upgrade para Premium para acesso ilimitado.';
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = '✕ Fechar';
+  closeBtn.style.cssText = 'background:rgba(255,255,255,0.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.75rem;white-space:nowrap';
+  closeBtn.onclick = function() { banner.remove(); };
+  banner.appendChild(msg);
+  banner.appendChild(closeBtn);
+  const appScreen = document.getElementById('app-screen');
+  const header = appScreen ? appScreen.querySelector('header') : null;
+  if (header) appScreen.insertBefore(banner, header);
+  else if (appScreen) appScreen.prepend(banner);
 }
 
 // ── AUTH ──────────────────────────────────────────────────
