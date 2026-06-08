@@ -915,6 +915,18 @@ let photoBase64 = null;
 let photoMediaType = 'image/jpeg';
 let pendingResult = null;
 let selectedZone = null;
+let userPlan = 'free';
+let planLimits = {
+  history_days: 3,
+  csv_export: false,
+  mounjaro_access: false,
+  diabetes_access: false,
+  recipe_suggestions: false,
+  max_favourites: 3,
+  dark_mode: false,
+  daily_text_limit: 5,
+  daily_photo_limit: 3
+};
 
 const ZONE_NAMES = {
   'abd-l':'Abdómen esquerdo (≥5cm do umbigo)',
@@ -1002,6 +1014,84 @@ async function loadUserData() {
   const { data: injs } = await sb.from('injections').select('*').eq('user_id', uid).order('date', { ascending: false });
   injLog = injs || [];
   await loadDiabetesData();
+  await loadPlanLimits();
+}
+
+async function loadPlanLimits() {
+  if (!currentUser) return;
+  // Get user plan
+  const { data: s } = await sb.from('user_settings').select('plan, is_admin').eq('user_id', currentUser.id).single();
+  userPlan = s?.plan || 'free';
+  isAdmin = s?.is_admin === true;
+
+  // Get plan config
+  const { data: pc } = await sb.from('plan_config').select('*').eq('plan', userPlan).single();
+  if (pc) {
+    planLimits = {
+      history_days: pc.history_days ?? 3,
+      csv_export: pc.csv_export ?? false,
+      mounjaro_access: pc.mounjaro_access ?? false,
+      diabetes_access: pc.diabetes_access ?? false,
+      recipe_suggestions: pc.recipe_suggestions ?? false,
+      max_favourites: pc.max_favourites ?? 3,
+      dark_mode: pc.dark_mode ?? false,
+      daily_text_limit: pc.daily_text_limit ?? 5,
+      daily_photo_limit: pc.daily_photo_limit ?? 3
+    };
+  }
+
+  // Admins get everything
+  if (isAdmin) {
+    Object.keys(planLimits).forEach(k => {
+      if (typeof planLimits[k] === 'boolean') planLimits[k] = true;
+      if (typeof planLimits[k] === 'number') planLimits[k] = 999;
+    });
+  }
+
+  applyPlanRestrictions();
+}
+
+function applyPlanRestrictions() {
+  // Nav tabs
+  const mounjaroTab = document.querySelector('[onclick="showPage('mounjaro',this)"]');
+  const diabetesTab = document.querySelector('[onclick="showPage('diabetes',this)"]');
+  if (mounjaroTab) mounjaroTab.style.display = planLimits.mounjaro_access ? '' : 'none';
+  if (diabetesTab) diabetesTab.style.display = planLimits.diabetes_access ? '' : 'none';
+
+  // Recipe suggestion checkbox
+  const recipeCheck = document.getElementById('suggest-recipe');
+  const recipeLabel = recipeCheck?.nextElementSibling;
+  if (recipeCheck) {
+    recipeCheck.disabled = !planLimits.recipe_suggestions;
+    if (recipeLabel) recipeLabel.style.color = planLimits.recipe_suggestions ? '' : 'var(--text3)';
+    if (!planLimits.recipe_suggestions && recipeLabel) recipeLabel.textContent = 'Sugerir receita — Premium';
+  }
+
+  // Dark mode toggle
+  const darkBtn = document.getElementById('dark-toggle');
+  if (darkBtn) darkBtn.style.display = planLimits.dark_mode ? '' : 'none';
+
+  // CSV export button
+  const csvBtn = document.querySelector('[onclick="exportCSV()"]');
+  if (csvBtn) {
+    csvBtn.disabled = !planLimits.csv_export;
+    csvBtn.title = planLimits.csv_export ? '' : 'Disponível no plano Premium';
+    if (!planLimits.csv_export) csvBtn.innerHTML = '🔒 Exportar CSV — Premium';
+  }
+
+  // Show upgrade banner if free
+  if (userPlan === 'free' && !isAdmin) showUpgradeBanner();
+}
+
+function showUpgradeBanner() {
+  const existing = document.getElementById('upgrade-banner');
+  if (existing) return;
+  const banner = document.createElement('div');
+  banner.id = 'upgrade-banner';
+  banner.style.cssText = 'background:linear-gradient(135deg,#1a5c3a,#2d7d52);color:white;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;gap:12px;flex-wrap:wrap';
+  banner.innerHTML = '<span>🚀 Estás no plano <strong>Free</strong> — ' + planLimits.daily_photo_limit + ' fotos/dia. Upgrade para Premium para acesso ilimitado.</span>' +
+    '<button onclick="document.getElementById('upgrade-banner').remove()" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.75rem;white-space:nowrap">✕ Fechar</button>';
+  document.getElementById('app-screen').insertBefore(banner, document.querySelector('header'));
 }
 
 // ── AUTH ──────────────────────────────────────────────────
@@ -1218,6 +1308,14 @@ async function analyzeRecipe() {
 }
 
 async function generateRecipeSug(name, extra) {
+  if (!planLimits.recipe_suggestions) {
+    const c = document.getElementById('recipe-sug-container');
+    const b = document.getElementById('recipe-sug-body');
+    c.style.display='block';
+    b.textContent = '🔒 Sugestões de receita disponíveis apenas no plano Premium.';
+    b.style.display='block';
+    return;
+  }
   const c = document.getElementById('recipe-sug-container');
   const b = document.getElementById('recipe-sug-body');
   const l = document.getElementById('loading-recipe-sug');
@@ -1277,6 +1375,10 @@ async function saveFavourite() {
   if (!pendingResult || !currentUser) return;
   const r = pendingResult;
   if (favourites.find(f => f.name === r.name)) { alert('Já está nos favoritos.'); return; }
+  if (favourites.length >= planLimits.max_favourites) {
+    alert('Atingiste o limite de ' + planLimits.max_favourites + ' favoritos no plano ' + (userPlan === 'premium' ? 'Premium' : 'Free') + '. ' + (userPlan !== 'premium' ? 'Faz upgrade para Premium para favoritos ilimitados.' : ''));
+    return;
+  }
   const { data, error } = await sb.from('favourites').insert({
     user_id: currentUser.id, name:r.name, kcal:r.kcal, protein:r.protein, carbs:r.carbs, fat:r.fat, fiber:r.fiber, notes:r.notes||''
   }).select().single();
@@ -1370,7 +1472,11 @@ function renderDaily() {
 function renderHistory() {
   const c = document.getElementById('history-container');
   const grouped = {};
-  log.forEach(i => { if(!grouped[i.date]) grouped[i.date]=[]; grouped[i.date].push(i); });
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - (planLimits.history_days || 3));
+  const cutoffStr = cutoffDate.toISOString().slice(0,10);
+  const filteredLog = log.filter(i => i.date >= cutoffStr);
+  filteredLog.forEach(i => { if(!grouped[i.date]) grouped[i.date]=[]; grouped[i.date].push(i); });
   const dates = Object.keys(grouped).sort().reverse();
   if (!dates.length) { c.innerHTML='<div class="log-empty">Sem histórico disponível.</div>'; return; }
   c.innerHTML = dates.map(date => {
@@ -1385,6 +1491,7 @@ function toggleDay(h) { h.nextElementSibling.classList.toggle('hidden'); }
 
 // ── CSV ───────────────────────────────────────────────────
 function exportCSV() {
+  if (!planLimits.csv_export) { alert('Exportação CSV disponível apenas no plano Premium.'); return; }
   if (!log.length) { alert('Sem dados para exportar.'); return; }
   const rows = [['Data','Hora','Refeição','Prato','kcal','Proteína(g)','Hidratos(g)','Gordura(g)','Fibra(g)']];
   [...log].sort((a,b)=>a.date.localeCompare(b.date)).forEach(i => rows.push([i.date,i.time||'',i.meal||'',i.name,Math.round(i.kcal),Math.round(i.protein),Math.round(i.carbs),Math.round(i.fat),Math.round(i.fiber)]));
@@ -1535,8 +1642,6 @@ let isAdmin = false;
 
 async function checkAdminStatus() {
   if (!currentUser) return;
-  const { data } = await sb.from('user_settings').select('is_admin').eq('user_id', currentUser.id).single();
-  isAdmin = data?.is_admin === true;
   const adminTab = document.getElementById('admin-nav-tab');
   if (adminTab) adminTab.style.display = isAdmin ? 'block' : 'none';
 }
@@ -1698,24 +1803,56 @@ async function loadPlanConfig() {
 function renderPlanConfig() {
   const grid = document.getElementById('plan-config-grid');
   if (!planConfigs.length) { grid.innerHTML = '<div class="log-empty" style="grid-column:1/-1">Sem planos configurados.</div>'; return; }
-  grid.innerHTML = planConfigs.map(p => `
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
-      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:8px">${p.label || p.plan}</div>
-      <div class="field">
-        <label>Fotos/dia</label>
-        <input type="number" id="plan-limit-${p.plan}" value="${p.daily_photo_limit}" inputmode="numeric" min="1" max="999" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:0.95rem;padding:8px 12px;outline:none;width:100%">
-      </div>
-      <div style="font-size:0.7rem;color:var(--text3);margin-top:6px">${p.daily_photo_limit >= 999 ? 'Ilimitado' : p.daily_photo_limit + ' fotos por dia'}</div>
-    </div>
-  `).join('');
+
+  const fieldStyle = 'background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:Inter,sans-serif;font-size:0.88rem;padding:7px 10px;outline:none;width:100%';
+  const labelStyle = 'font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);display:block;margin-bottom:4px;margin-top:10px';
+
+  grid.innerHTML = planConfigs.map(p => {
+    const parts = [];
+    parts.push('<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px">');
+    parts.push('<div style="font-size:0.85rem;font-weight:700;color:var(--text);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)">' + (p.label || p.plan) + '</div>');
+    parts.push('<label style="' + labelStyle + '">Fotos/dia</label>');
+    parts.push('<input type="number" id="pc-photo-' + p.plan + '" value="' + (p.daily_photo_limit||3) + '" min="1" max="999" style="' + fieldStyle + '">');
+    parts.push('<label style="' + labelStyle + '">Textos/dia</label>');
+    parts.push('<input type="number" id="pc-text-' + p.plan + '" value="' + (p.daily_text_limit||5) + '" min="1" max="999" style="' + fieldStyle + '">');
+    parts.push('<label style="' + labelStyle + '">Histórico (dias)</label>');
+    parts.push('<input type="number" id="pc-hist-' + p.plan + '" value="' + (p.history_days||3) + '" min="1" max="365" style="' + fieldStyle + '">');
+    parts.push('<label style="' + labelStyle + '">Máx. favoritos</label>');
+    parts.push('<input type="number" id="pc-favs-' + p.plan + '" value="' + (p.max_favourites||3) + '" min="1" max="999" style="' + fieldStyle + '">');
+    parts.push('<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">');
+    const toggles = [
+      ['csv_export', 'Exportação CSV'],
+      ['mounjaro_access', 'Módulo Mounjaro'],
+      ['diabetes_access', 'Módulo Diabetes'],
+      ['recipe_suggestions', 'Sugestões de receita'],
+      ['dark_mode', 'Modo escuro']
+    ];
+    toggles.forEach(([key, label]) => {
+      const checked = p[key] ? 'checked' : '';
+      parts.push('<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.82rem">');
+      parts.push('<input type="checkbox" id="pc-' + key + '-' + p.plan + '" ' + checked + ' style="width:15px;height:15px;accent-color:var(--green)">');
+      parts.push(label + '</label>');
+    });
+    parts.push('</div></div>');
+    return parts.join('');
+  }).join('');
 }
 
 async function savePlanConfig() {
   for (const p of planConfigs) {
-    const input = document.getElementById('plan-limit-' + p.plan);
-    if (!input) continue;
-    const newLimit = parseInt(input.value) || 3;
-    await sb.from('plan_config').update({ daily_photo_limit: newLimit, updated_at: new Date().toISOString() }).eq('plan', p.plan);
+    const updates = {
+      daily_photo_limit: parseInt(document.getElementById('pc-photo-' + p.plan)?.value) || 3,
+      daily_text_limit:  parseInt(document.getElementById('pc-text-'  + p.plan)?.value) || 5,
+      history_days:      parseInt(document.getElementById('pc-hist-'  + p.plan)?.value) || 3,
+      max_favourites:    parseInt(document.getElementById('pc-favs-'  + p.plan)?.value) || 3,
+      csv_export:        document.getElementById('pc-csv_export-'       + p.plan)?.checked || false,
+      mounjaro_access:   document.getElementById('pc-mounjaro_access-'  + p.plan)?.checked || false,
+      diabetes_access:   document.getElementById('pc-diabetes_access-'  + p.plan)?.checked || false,
+      recipe_suggestions:document.getElementById('pc-recipe_suggestions-'+p.plan)?.checked || false,
+      dark_mode:         document.getElementById('pc-dark_mode-'        + p.plan)?.checked || false,
+      updated_at: new Date().toISOString()
+    };
+    await sb.from('plan_config').update(updates).eq('plan', p.plan);
   }
   await loadPlanConfig();
   const btn = document.querySelector('[onclick="savePlanConfig()"]');
@@ -1734,6 +1871,7 @@ async function exportAllData() {
 
 // ── DARK MODE ─────────────────────────────────────────────
 function toggleDark() {
+  if (!planLimits.dark_mode) { alert('Modo escuro disponível apenas no plano Premium.'); return; }
   document.body.classList.toggle('dark');
   const btn = document.getElementById('dark-toggle');
   btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
