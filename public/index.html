@@ -463,14 +463,14 @@ body.dark {
             <div class="field"><label>Peso (g)</label><input type="number" id="photo-weight" placeholder="ex: 350" inputmode="numeric"></div>
             <div class="field"><label>Refeição</label><select id="photo-meal"><option value="">— selecciona —</option><option>Pequeno-almoço</option><option>Almoço</option><option>Lanche</option><option>Jantar</option><option>Snack</option></select></div>
           </div>
-          <div class="field"><label>Descrição (opcional)</label><textarea id="photo-desc" placeholder="ex: frango grelhado com arroz"></textarea></div>
+          <div class="field"><label>Descrição (opcional)</label><textarea id="photo-desc" placeholder="ex: salmão do IKEA, frango grelhado com arroz, Big Mac..."></textarea></div>
           <button class="btn-primary" onclick="analyzePhoto()" id="btn-photo">Analisar</button>
           <div style="display:flex;align-items:center;gap:8px">
             <input type="checkbox" id="suggest-recipe" style="width:16px;height:16px;accent-color:var(--green)">
             <label for="suggest-recipe" style="font-size:0.82rem;color:var(--text2);cursor:pointer">Sugerir receita com estes ingredientes</label>
           </div>
           <div style="background:var(--green-light);border:1px solid #b8d9c4;border-radius:var(--radius-sm);padding:10px 13px;font-size:0.78rem;color:var(--green);line-height:1.6">
-            💡 <strong>Para uma análise mais precisa</strong>, indica o peso total do prato e descreve os ingredientes principais no campo de descrição. A IA estima com base na imagem, mas os valores nutricionais são mais fiáveis quando complementados com quantidades reais.
+            💡 <strong>Para resultados mais precisos:</strong> indica o peso do prato e usa a descrição para detalhar os ingredientes ou identificar o prato, por exemplo <em>"salmão grelhado do IKEA"</em> ou <em>"prato do dia do restaurante X"</em>. Quanto mais contexto deres, mais fiável será a estimativa.
           </div>
         </div>
         <!-- Recipe -->
