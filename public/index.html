@@ -1052,11 +1052,13 @@ async function loadPlanLimits() {
 }
 
 function applyPlanRestrictions() {
-  // Nav tabs
-  const mounjaroTab = document.querySelector('[onclick="showPage('mounjaro',this)"]');
-  const diabetesTab = document.querySelector('[onclick="showPage('diabetes',this)"]');
-  if (mounjaroTab) mounjaroTab.style.display = planLimits.mounjaro_access ? '' : 'none';
-  if (diabetesTab) diabetesTab.style.display = planLimits.diabetes_access ? '' : 'none';
+  // Nav tabs - use ID-based selection to avoid quote issues
+  const allNavTabs = document.querySelectorAll('.nav-tab');
+  allNavTabs.forEach(tab => {
+    const onclick = tab.getAttribute('onclick') || '';
+    if (onclick.includes('mounjaro')) tab.style.display = planLimits.mounjaro_access ? '' : 'none';
+    if (onclick.includes('diabetes')) tab.style.display = planLimits.diabetes_access ? '' : 'none';
+  });
 
   // Recipe suggestion checkbox
   const recipeCheck = document.getElementById('suggest-recipe');
