@@ -1470,26 +1470,29 @@ async function loadAdminData() {
   if (!adminUsers.length) {
     usersContainer.innerHTML = '<div class="log-empty">Sem utilizadores.</div>';
   } else {
-    usersContainer.innerHTML = adminUsers.map(u => {
+  usersContainer.innerHTML = adminUsers.map((u, idx) => {
       const activity = userActivity[u.user_id] || { count: 0, last: null };
       const lastActive = activity.last ? formatDateLabel(activity.last) : 'Nunca';
       const isActiveToday = activity.last === today;
       const planLabel = u.plan === 'premium' ? 'Premium' : 'Free';
-      const planColor = u.plan === 'premium' ? 'var(--green)' : 'var(--text3)';
-      return '<div class="user-row">' +
-        '<div style="flex:1;min-width:0">' +
-          '<div class="user-email" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
-            u.email +
-            (u.is_admin ? ' <span class="user-badge admin">admin</span>' : '') +
-            ' <span class="user-badge" style="background:' + (u.plan==='premium'?'var(--green-light)':'var(--surface2)') + ';color:' + planColor + '">' + planLabel + '</span>' +
-          '</div>' +
-          '<div class="user-meta">' + activity.count + ' refeições · último acesso ' + lastActive + (u.daily_analyses ? ' · ' + u.daily_analyses + ' análises hoje' : '') + '</div>' +
-        '</div>' +
-        '<div style="display:flex;align-items:center;gap:8px;flex-shrink:0">' +
-          '<span class="user-badge ' + (isActiveToday ? 'active' : 'inactive') + '">' + (isActiveToday ? 'Activo' : 'Inactivo') + '</span>' +
-          '<button class="btn-outline" style="padding:5px 10px;font-size:0.72rem" onclick="openEditUser('' + u.user_id + '')">✎ Editar</button>' +
-        '</div>' +
-      '</div>';
+      const planBg = u.plan === 'premium' ? 'var(--green-light)' : 'var(--surface2)';
+      const planClr = u.plan === 'premium' ? 'var(--green)' : 'var(--text3)';
+      const parts = [];
+      parts.push('<div class="user-row">');
+      parts.push('<div style="flex:1;min-width:0">');
+      parts.push('<div class="user-email" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">');
+      parts.push(u.email);
+      if (u.is_admin) parts.push('<span class="user-badge admin">admin</span>');
+      parts.push('<span class="user-badge" style="background:' + planBg + ';color:' + planClr + '">' + planLabel + '</span>');
+      parts.push('</div>');
+      parts.push('<div class="user-meta">' + activity.count + ' refeições · último acesso ' + lastActive + (u.daily_analyses ? ' · ' + u.daily_analyses + ' análises hoje' : '') + '</div>');
+      parts.push('</div>');
+      parts.push('<div style="display:flex;align-items:center;gap:8px;flex-shrink:0">');
+      parts.push('<span class="user-badge ' + (isActiveToday ? 'active' : 'inactive') + '">' + (isActiveToday ? 'Activo' : 'Inactivo') + '</span>');
+      parts.push('<button class="btn-outline" style="padding:5px 10px;font-size:0.72rem" data-edit-idx="' + idx + '" onclick="openEditUserByIdx(this)">✎ Editar</button>');
+      parts.push('</div>');
+      parts.push('</div>');
+      return parts.join('');
     }).join('');
   }
 
@@ -1511,6 +1514,13 @@ async function loadAdminData() {
       '</div>'
     ).join('');
   }
+}
+
+function openEditUserByIdx(btn) {
+  const idx = parseInt(btn.getAttribute('data-edit-idx'));
+  const user = adminUsers[idx];
+  if (!user) return;
+  openEditUser(user.user_id);
 }
 
 function openEditUser(userId) {
