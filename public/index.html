@@ -763,6 +763,33 @@ body.dark {
       </div>
     </div>
 
+    <!-- Edit user modal -->
+    <div id="edit-user-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+      <div style="background:var(--surface);border-radius:16px;padding:24px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.2)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div style="font-weight:700;font-size:1rem">Editar utilizador</div>
+          <button class="btn-ghost" onclick="closeEditUser()">✕</button>
+        </div>
+        <div style="font-size:0.82rem;color:var(--text2);margin-bottom:16px" id="edit-user-email"></div>
+        <div class="field" style="margin-bottom:12px">
+          <label>Plano</label>
+          <select id="edit-user-plan">
+            <option value="free">Free (3 fotos/dia)</option>
+            <option value="premium">Premium (ilimitado)</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+          <input type="checkbox" id="edit-user-admin" style="width:16px;height:16px;accent-color:var(--green)">
+          <label for="edit-user-admin" style="font-size:0.85rem;cursor:pointer">Admin</label>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn-primary" onclick="saveUserEdit()">Guardar</button>
+          <button class="btn-outline" onclick="closeEditUser()">Cancelar</button>
+        </div>
+        <div class="error-msg" id="edit-user-error" style="margin-top:10px"></div>
+      </div>
+    </div>
+
     <!-- API Usage -->
     <div class="card">
       <div class="card-header">Estimativa de custos</div>
@@ -1397,44 +1424,40 @@ async function checkAdminStatus() {
   if (adminTab) adminTab.style.display = isAdmin ? 'block' : 'none';
 }
 
+let adminUsers = [];
+let editingUserId = null;
+
 async function loadAdminData() {
   if (!isAdmin) return;
 
-  // Total users count from meal_log distinct users
-  const { data: meals } = await sb.from('meal_log').select('user_id, date, created_at');
+  // Get all users with email and plan via RPC function
+  const { data: users, error: usersError } = await sb.rpc('get_all_users_for_admin');
+  adminUsers = users || [];
+
+  // Meals data
+  const { data: meals } = await sb.from('meal_log').select('user_id, date, created_at, kcal, name');
   const allMeals = meals || [];
-
-  // Unique users
-  const uniqueUsers = new Set(allMeals.map(m => m.user_id));
-  document.getElementById('admin-total-users').textContent = uniqueUsers.size;
-
-  // Active today
   const today = todayKey();
+
+  // Stats
+  document.getElementById('admin-total-users').textContent = adminUsers.length;
   const activeToday = new Set(allMeals.filter(m => m.date === today).map(m => m.user_id));
   document.getElementById('admin-active-today').textContent = activeToday.size;
-
-  // Meals last 7 days
   const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
   const recentMeals = allMeals.filter(m => new Date(m.date) >= cutoff);
   document.getElementById('admin-total-meals').textContent = recentMeals.length;
 
-  // Cost estimate (assume 60% photo, 40% text)
+  // Cost estimate
   const totalMeals = allMeals.length;
   const photoCost = Math.round(totalMeals * 0.6) * 0.004;
   const textCost = Math.round(totalMeals * 0.4) * 0.0005;
   const totalCost = photoCost + textCost;
-
   document.getElementById('admin-api-cost').textContent = '$' + totalCost.toFixed(2);
   document.getElementById('cost-photo').textContent = '$' + photoCost.toFixed(3);
   document.getElementById('cost-text').textContent = '$' + textCost.toFixed(3);
   document.getElementById('cost-total').textContent = '$' + totalCost.toFixed(3);
 
-  // Users list - get from user_settings with is_admin flag
-  const { data: settings } = await sb.from('user_settings').select('user_id, is_admin, updated_at');
-  const settingsMap = {};
-  (settings || []).forEach(s => { settingsMap[s.user_id] = s; });
-
-  // Build user activity map
+  // Build activity map
   const userActivity = {};
   allMeals.forEach(m => {
     if (!userActivity[m.user_id]) userActivity[m.user_id] = { count: 0, last: m.date };
@@ -1442,46 +1465,92 @@ async function loadAdminData() {
     if (m.date > userActivity[m.user_id].last) userActivity[m.user_id].last = m.date;
   });
 
-  // Render users list
+  // Render users list with email and edit button
   const usersContainer = document.getElementById('admin-users-list');
-  const userIds = Object.keys(userActivity);
-  if (!userIds.length) {
-    usersContainer.innerHTML = '<div class="log-empty">Sem utilizadores com actividade.</div>';
+  if (!adminUsers.length) {
+    usersContainer.innerHTML = '<div class="log-empty">Sem utilizadores.</div>';
   } else {
-    usersContainer.innerHTML = userIds.map(uid => {
-      const activity = userActivity[uid];
-      const isAdminUser = settingsMap[uid]?.is_admin;
+    usersContainer.innerHTML = adminUsers.map(u => {
+      const activity = userActivity[u.user_id] || { count: 0, last: null };
       const lastActive = activity.last ? formatDateLabel(activity.last) : 'Nunca';
-      const shortId = uid.slice(0,8) + '...';
+      const isActiveToday = activity.last === today;
+      const planLabel = u.plan === 'premium' ? 'Premium' : 'Free';
+      const planColor = u.plan === 'premium' ? 'var(--green)' : 'var(--text3)';
       return '<div class="user-row">' +
-        '<div>' +
-          '<div class="user-email">' + shortId + (isAdminUser ? ' <span class="user-badge admin">admin</span>' : '') + '</div>' +
-          '<div class="user-meta">' + activity.count + ' refeições · último acesso ' + lastActive + '</div>' +
+        '<div style="flex:1;min-width:0">' +
+          '<div class="user-email" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
+            u.email +
+            (u.is_admin ? ' <span class="user-badge admin">admin</span>' : '') +
+            ' <span class="user-badge" style="background:' + (u.plan==='premium'?'var(--green-light)':'var(--surface2)') + ';color:' + planColor + '">' + planLabel + '</span>' +
+          '</div>' +
+          '<div class="user-meta">' + activity.count + ' refeições · último acesso ' + lastActive + (u.daily_analyses ? ' · ' + u.daily_analyses + ' análises hoje' : '') + '</div>' +
         '</div>' +
-        '<span class="user-badge ' + (activity.last === today ? 'active' : 'inactive') + '">' +
-          (activity.last === today ? 'Activo hoje' : 'Inactivo') +
-        '</span>' +
+        '<div style="display:flex;align-items:center;gap:8px;flex-shrink:0">' +
+          '<span class="user-badge ' + (isActiveToday ? 'active' : 'inactive') + '">' + (isActiveToday ? 'Activo' : 'Inactivo') + '</span>' +
+          '<button class="btn-outline" style="padding:5px 10px;font-size:0.72rem" onclick="openEditUser('' + u.user_id + '')">✎ Editar</button>' +
+        '</div>' +
       '</div>';
     }).join('');
   }
 
-  // Recent activity - last 10 meals across all users
-  const recent = [...allMeals].sort((a,b) => (b.date+b.created_at).localeCompare(a.date+a.created_at)).slice(0,10);
+  // Recent activity
+  const recentFull = [...allMeals].sort((a,b) => b.created_at?.localeCompare(a.created_at || '') || 0).slice(0,10);
   const activityContainer = document.getElementById('admin-activity');
-  if (!recent.length) {
+  if (!recentFull.length) {
     activityContainer.innerHTML = '<div class="log-empty">Sem actividade recente.</div>';
   } else {
-    const { data: recentFull } = await sb.from('meal_log').select('*').order('created_at', { ascending: false }).limit(10);
-    activityContainer.innerHTML = (recentFull || []).map(m =>
+    const emailMap = {};
+    adminUsers.forEach(u => { emailMap[u.user_id] = u.email; });
+    activityContainer.innerHTML = recentFull.map(m =>
       '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.82rem">' +
         '<div>' +
           '<div style="font-weight:500">' + m.name + '</div>' +
-          '<div style="font-size:0.68rem;color:var(--text3);font-family:monospace">' + formatDateLabel(m.date) + ' · ' + m.user_id.slice(0,8) + '...</div>' +
+          '<div style="font-size:0.68rem;color:var(--text3);font-family:monospace">' + formatDateLabel(m.date) + ' · ' + (emailMap[m.user_id] || m.user_id.slice(0,8) + '...') + '</div>' +
         '</div>' +
         '<span style="font-family:monospace;font-size:0.82rem;color:var(--green);font-weight:600">' + Math.round(m.kcal) + ' kcal</span>' +
       '</div>'
     ).join('');
   }
+}
+
+function openEditUser(userId) {
+  const user = adminUsers.find(u => u.user_id === userId);
+  if (!user) return;
+  editingUserId = userId;
+  document.getElementById('edit-user-email').textContent = user.email;
+  document.getElementById('edit-user-plan').value = user.plan || 'free';
+  document.getElementById('edit-user-admin').checked = user.is_admin || false;
+  document.getElementById('edit-user-modal').style.display = 'flex';
+  document.getElementById('edit-user-error').classList.remove('show');
+}
+
+function closeEditUser() {
+  document.getElementById('edit-user-modal').style.display = 'none';
+  editingUserId = null;
+}
+
+async function saveUserEdit() {
+  if (!editingUserId) return;
+  const plan = document.getElementById('edit-user-plan').value;
+  const isAdminVal = document.getElementById('edit-user-admin').checked;
+  const errEl = document.getElementById('edit-user-error');
+  errEl.classList.remove('show');
+
+  const { error } = await sb.from('user_settings').upsert({
+    user_id: editingUserId,
+    plan,
+    is_admin: isAdminVal,
+    updated_at: new Date().toISOString()
+  });
+
+  if (error) {
+    errEl.textContent = 'Erro ao guardar: ' + error.message;
+    errEl.classList.add('show');
+    return;
+  }
+
+  closeEditUser();
+  await loadAdminData();
 }
 
 function inviteUser() {
