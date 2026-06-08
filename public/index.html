@@ -1024,12 +1024,16 @@ dz.addEventListener('drop', e => {
 });
 
 // ── API ───────────────────────────────────────────────────
-async function callClaude(messages, system) {
+async function callClaude(messages, system, is_photo = false) {
   const res = await fetch('/api/analyse', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system, messages })
+    body: JSON.stringify({ system, messages, user_id: currentUser?.id, is_photo })
   });
-  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.error || 'API ' + res.status); }
+  if (!res.ok) {
+    const e = await res.json().catch(()=>({}));
+    if (e.error === 'LIMIT_REACHED') throw new Error(e.message);
+    throw new Error(e.error || 'API ' + res.status);
+  }
   const data = await res.json();
   return data.content.filter(b => b.type==='text').map(b => b.text).join('');
 }
@@ -1047,7 +1051,7 @@ async function analyzePhoto() {
     const raw = await callClaude([{ role:'user', content:[
       { type:'image', source:{ type:'base64', media_type:photoMediaType, data:photoBase64 }},
       { type:'text', text:'Analisa esta refeição.' + (weight ? ' Peso: ' + weight + 'g.' : '') + (desc ? ' Descrição: ' + desc + '.' : '') + ' Devolve JSON.' }
-    ]}], MACRO_SYS);
+    ]}], MACRO_SYS, true);
     const r = JSON.parse(raw.replace(/```json|```/g,'').trim());
     r.meal = meal; pendingResult = r; renderResult(r);
     if (wantRecipe) generateRecipeSug(r.name, desc);
