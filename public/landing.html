@@ -32,7 +32,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ── NOISE TEXTURE ── */
 body::before {
   content: '';
   position: fixed;
@@ -42,7 +41,6 @@ body::before {
   z-index: 0;
 }
 
-/* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: 100;
@@ -53,40 +51,20 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 
-.nav-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem; font-weight: 900;
-  color: var(--ink); letter-spacing: -0.02em;
-}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--ink); letter-spacing: -0.02em; }
 .nav-logo span { color: var(--green); }
 
 .nav-links { display: flex; gap: 32px; align-items: center; }
-.nav-links a {
-  font-size: 0.85rem; font-weight: 500;
-  color: var(--muted); text-decoration: none;
-  transition: color 0.2s;
-}
+.nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: var(--ink); }
 
-.lang-toggle {
-  display: flex; gap: 2px;
-  background: var(--cream2); border-radius: 6px; padding: 3px;
-}
-.lang-btn {
-  background: none; border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.72rem; font-weight: 600;
-  padding: 4px 10px; border-radius: 4px;
-  cursor: pointer; color: var(--muted); transition: all 0.18s;
-}
-.lang-btn.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); background: white; }
+.lang-toggle { display: flex; gap: 2px; background: var(--cream2); border-radius: 6px; padding: 3px; }
+.lang-btn { background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; cursor: pointer; color: var(--muted); transition: all 0.18s; }
+.lang-btn.active { background: white; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 
-@media (max-width: 700px) {
-  nav { padding: 16px 20px; }
-  .nav-links { display: none; }
-}
+@media (max-width: 700px) { nav { padding: 16px 20px; } .nav-links { display: none; } }
 
-/* ── HERO ── */
+/* HERO */
 .hero {
   min-height: 100vh;
   display: flex; flex-direction: column;
@@ -98,272 +76,104 @@ nav {
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--green-pale); border: 1px solid #b8d9c4;
-  border-radius: 100px;
-  padding: 6px 16px;
-  font-size: 0.75rem; font-weight: 600;
-  color: var(--green); letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 32px;
-  animation: fadeDown 0.6s ease both;
+  border-radius: 100px; padding: 6px 16px;
+  font-size: 0.75rem; font-weight: 600; color: var(--green);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 32px; animation: fadeDown 0.6s ease both;
+}
+.hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--green-light); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+
+.hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.03em; max-width: 800px; animation: fadeDown 0.6s 0.1s ease both; }
+.hero-title em { font-style: italic; color: var(--green); }
+
+.hero-subtitle { font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted); font-weight: 300; max-width: 540px; margin: 24px auto 0; line-height: 1.7; animation: fadeDown 0.6s 0.2s ease both; }
+
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+
+/* PORTUGAL BADGE */
+.portugal-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: white; border: 1px solid var(--border);
+  border-radius: 100px; padding: 6px 14px;
+  font-size: 0.75rem; font-weight: 500; color: var(--muted);
+  margin-top: 20px; animation: fadeDown 0.6s 0.25s ease both;
 }
 
-.hero-eyebrow::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--green-light);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
+/* WAITLIST */
+.waitlist-wrap { margin-top: 48px; animation: fadeDown 0.6s 0.3s ease both; display: flex; flex-direction: column; align-items: center; }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
-}
+.early-bird-badge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #b8912a, #d4a840); color: white; border-radius: 8px; padding: 8px 16px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 16px; }
 
-.hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.8rem, 7vw, 5.5rem);
-  font-weight: 900;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  max-width: 800px;
-  animation: fadeDown 0.6s 0.1s ease both;
-}
-
-.hero-title em {
-  font-style: italic;
-  color: var(--green);
-}
-
-.hero-title .line-gold { color: var(--gold); }
-
-.hero-subtitle {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--muted);
-  font-weight: 300;
-  max-width: 520px;
-  margin: 24px auto 0;
-  line-height: 1.7;
-  animation: fadeDown 0.6s 0.2s ease both;
-}
-
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ── WAITLIST FORM ── */
-.waitlist-wrap {
-  margin-top: 48px;
-  animation: fadeDown 0.6s 0.3s ease both;
-}
-
-.waitlist-form {
-  display: flex; gap: 10px;
-  background: white;
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  padding: 6px 6px 6px 20px;
-  max-width: 480px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.waitlist-form:focus-within {
-  border-color: var(--green);
-  box-shadow: 0 4px 24px rgba(26,92,58,0.12);
-}
-
-.waitlist-form input {
-  flex: 1; border: none; outline: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.95rem; color: var(--ink);
-  background: transparent;
-  min-width: 0;
-}
-
+.waitlist-form { display: flex; gap: 10px; background: white; border: 1.5px solid var(--border); border-radius: 14px; padding: 6px 6px 6px 20px; max-width: 480px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.07); transition: border-color 0.2s, box-shadow 0.2s; }
+.waitlist-form:focus-within { border-color: var(--green); box-shadow: 0 4px 24px rgba(26,92,58,0.12); }
+.waitlist-form input { flex: 1; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--ink); background: transparent; min-width: 0; }
 .waitlist-form input::placeholder { color: #aaa; }
 
-.btn-waitlist {
-  background: var(--green); color: white;
-  border: none; border-radius: 10px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 600; font-size: 0.88rem;
-  padding: 12px 22px;
-  cursor: pointer; white-space: nowrap;
-  transition: background 0.18s, transform 0.1s;
-}
+.btn-waitlist { background: var(--green); color: white; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.88rem; padding: 12px 22px; cursor: pointer; white-space: nowrap; transition: background 0.18s, transform 0.1s; }
 .btn-waitlist:hover { background: var(--green-light); }
 .btn-waitlist:active { transform: scale(0.98); }
 
-.waitlist-note {
-  margin-top: 12px;
-  font-size: 0.75rem; color: var(--muted);
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-}
+.waitlist-note { margin-top: 12px; font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 6px; }
 
-.waitlist-success {
-  display: none;
-  background: var(--green-pale);
-  border: 1px solid #b8d9c4;
-  border-radius: 12px;
-  padding: 16px 24px;
-  text-align: center;
-  font-size: 0.9rem;
-  color: var(--green);
-  font-weight: 500;
-  max-width: 480px;
-}
+.waitlist-success { display: none; background: var(--green-pale); border: 1px solid #b8d9c4; border-radius: 12px; padding: 16px 24px; text-align: center; font-size: 0.9rem; color: var(--green); font-weight: 500; max-width: 480px; }
 
-.early-bird-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: linear-gradient(135deg, #b8912a, #d4a840);
-  color: white; border-radius: 8px;
-  padding: 8px 16px; font-size: 0.78rem;
-  font-weight: 600; letter-spacing: 0.03em;
-  margin-bottom: 16px;
-  animation: fadeDown 0.6s 0.25s ease both;
-}
-
-.counter-wrap {
-  margin-top: 20px;
-  font-size: 0.82rem; color: var(--muted);
-  animation: fadeDown 0.6s 0.4s ease both;
-}
+.counter-wrap { margin-top: 20px; font-size: 0.82rem; color: var(--muted); animation: fadeDown 0.6s 0.4s ease both; }
 .counter-num { font-weight: 700; color: var(--ink); }
 
-/* ── SCROLL INDICATOR ── */
-.scroll-hint {
-  position: absolute; bottom: 32px; left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;
-  animation: fadeDown 0.6s 0.6s ease both;
-}
+.scroll-hint { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; animation: fadeDown 0.6s 0.6s ease both; }
 .scroll-arrow { width: 1px; height: 40px; background: linear-gradient(var(--border), transparent); }
 
-/* ── FEATURES ── */
-.section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
+/* FEATURES */
+.section-wrap { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
 
-.section-label {
-  font-size: 0.72rem; font-weight: 600;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--green); margin-bottom: 16px;
-}
+.section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; max-width: 560px; }
 
-.section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700; line-height: 1.1;
-  letter-spacing: -0.02em; max-width: 560px;
-}
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; background: var(--border); }
+@media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
 
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  margin-top: 60px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-  background: var(--border);
-}
-
-@media (max-width: 768px) {
-  .features-grid { grid-template-columns: 1fr; }
-}
-
-.feature-card {
-  background: var(--cream);
-  padding: 40px 32px;
-  transition: background 0.2s;
-}
+.feature-card { background: var(--cream); padding: 40px 32px; transition: background 0.2s; }
 .feature-card:hover { background: white; }
-
-.feature-icon {
-  font-size: 2rem; margin-bottom: 20px;
-  display: block;
-}
-.feature-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem; font-weight: 700;
-  margin-bottom: 10px; line-height: 1.2;
-}
-.feature-desc {
-  font-size: 0.875rem; color: var(--muted);
-  line-height: 1.65;
-}
-.feature-tag {
-  display: inline-block; margin-top: 14px;
-  font-size: 0.65rem; font-weight: 600;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 3px 10px; border-radius: 100px;
-  background: var(--green-pale); color: var(--green);
-}
+.feature-icon { font-size: 2rem; margin-bottom: 20px; display: block; }
+.feature-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; line-height: 1.2; }
+.feature-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+.feature-tag { display: inline-block; margin-top: 14px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; background: var(--green-pale); color: var(--green); }
 .feature-tag.gold { background: #f7edcc; color: var(--gold); }
 
-/* ── DIVIDER ── */
-.divider {
-  border: none; height: 1px;
-  background: var(--border);
-  max-width: 1100px; margin: 0 auto;
-}
+.divider { border: none; height: 1px; background: var(--border); max-width: 1100px; margin: 0 auto; }
 
-/* ── HOW IT WORKS ── */
-.how-wrap {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 80px; align-items: center;
-  padding: 100px 24px;
-  max-width: 1100px; margin: 0 auto;
-}
+/* PLANS */
+.plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 48px; }
+@media (max-width: 600px) { .plans-grid { grid-template-columns: 1fr; } }
 
-@media (max-width: 768px) {
-  .how-wrap { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
-}
+.plan-card { background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 32px; position: relative; }
+.plan-card.featured { border-color: var(--green); box-shadow: 0 8px 32px rgba(26,92,58,0.12); }
+.plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--green); color: white; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 14px; border-radius: 100px; white-space: nowrap; }
+.plan-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; }
+.plan-price { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em; color: var(--green); margin: 16px 0 4px; }
+.plan-price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+.plan-price-note { font-size: 0.78rem; color: var(--muted); margin-bottom: 24px; }
+.plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.plan-features li { font-size: 0.85rem; color: var(--muted); display: flex; align-items: flex-start; gap: 8px; }
+.plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.plan-features li.locked { color: #ccc; }
+.plan-features li.locked::before { content: '○'; color: #ddd; }
+
+/* HOW IT WORKS */
+.how-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
+@media (max-width: 768px) { .how-wrap { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; } }
 
 .steps { display: flex; flex-direction: column; gap: 32px; }
-
-.step {
-  display: flex; gap: 20px; align-items: flex-start;
-  opacity: 0; transform: translateX(-20px);
-  transition: opacity 0.5s, transform 0.5s;
-}
+.step { display: flex; gap: 20px; align-items: flex-start; opacity: 0; transform: translateX(-20px); transition: opacity 0.5s, transform 0.5s; }
 .step.visible { opacity: 1; transform: translateX(0); }
-
-.step-num {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--green); color: white;
-  font-family: 'Playfair Display', serif;
-  font-size: 0.9rem; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; margin-top: 2px;
-}
+.step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: white; font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
 .step-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
 .step-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
 
-.phone-mockup {
-  background: var(--ink);
-  border-radius: 40px;
-  padding: 16px;
-  max-width: 260px;
-  margin: 0 auto;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.25);
-  position: relative;
-}
-.phone-mockup::before {
-  content: '';
-  position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
-  width: 80px; height: 6px;
-  background: #1a1a1a; border-radius: 3px;
-}
-.phone-screen {
-  background: var(--cream);
-  border-radius: 28px;
-  padding: 40px 16px 20px;
-  min-height: 380px;
-  display: flex; flex-direction: column; gap: 10px;
-}
-
+.phone-mockup { background: var(--ink); border-radius: 40px; padding: 16px; max-width: 260px; margin: 0 auto; box-shadow: 0 40px 80px rgba(0,0,0,0.25); position: relative; }
+.phone-mockup::before { content: ''; position: absolute; top: 16px; left: 50%; transform: translateX(-50%); width: 80px; height: 6px; background: #1a1a1a; border-radius: 3px; }
+.phone-screen { background: var(--cream); border-radius: 28px; padding: 40px 16px 20px; min-height: 380px; display: flex; flex-direction: column; gap: 10px; }
 .mock-bar { height: 8px; border-radius: 4px; background: var(--border); }
 .mock-bar.green { background: var(--green); width: 60%; }
 .mock-bar.short { width: 40%; }
@@ -374,169 +184,45 @@ nav {
 .mock-macro .mv { font-size: 0.7rem; font-weight: 700; color: var(--green); }
 .mock-macro .ml { font-size: 0.5rem; color: var(--muted); }
 
-/* ── FINAL CTA ── */
-.cta-section {
-  background: var(--green);
-  color: white;
-  padding: 100px 24px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-section::before {
-  content: 'N';
-  position: absolute; top: -40px; right: -20px;
-  font-family: 'Playfair Display', serif;
-  font-size: 320px; font-weight: 900;
-  color: rgba(255,255,255,0.04);
-  line-height: 1; pointer-events: none;
-}
-
-.cta-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 900; line-height: 1.1;
-  letter-spacing: -0.02em;
-  max-width: 600px; margin: 0 auto 24px;
-}
-
+/* CTA */
+.cta-section { background: var(--green); color: white; padding: 100px 24px; text-align: center; position: relative; overflow: hidden; }
+.cta-section::before { content: 'N'; position: absolute; top: -40px; right: -20px; font-family: 'Playfair Display', serif; font-size: 320px; font-weight: 900; color: rgba(255,255,255,0.04); line-height: 1; pointer-events: none; }
+.cta-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; max-width: 600px; margin: 0 auto 24px; }
 .cta-sub { font-size: 1rem; opacity: 0.75; max-width: 440px; margin: 0 auto 40px; }
-
-.cta-form {
-  display: flex; gap: 10px;
-  background: rgba(255,255,255,0.12);
-  border: 1.5px solid rgba(255,255,255,0.25);
-  border-radius: 14px;
-  padding: 6px 6px 6px 20px;
-  max-width: 440px; margin: 0 auto;
-  backdrop-filter: blur(8px);
-}
+.cta-form { display: flex; gap: 10px; background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.25); border-radius: 14px; padding: 6px 6px 6px 20px; max-width: 440px; margin: 0 auto; backdrop-filter: blur(8px); }
 .cta-form:focus-within { border-color: rgba(255,255,255,0.5); }
-.cta-form input {
-  flex: 1; border: none; outline: none; background: transparent;
-  font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
-  color: white; min-width: 0;
-}
+.cta-form input { flex: 1; border: none; outline: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: white; min-width: 0; }
 .cta-form input::placeholder { color: rgba(255,255,255,0.5); }
-.btn-cta {
-  background: white; color: var(--green);
-  border: none; border-radius: 10px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 700; font-size: 0.88rem;
-  padding: 12px 22px; cursor: pointer;
-  transition: all 0.18s; white-space: nowrap;
-}
+.btn-cta { background: white; color: var(--green); border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.88rem; padding: 12px 22px; cursor: pointer; transition: all 0.18s; white-space: nowrap; }
 .btn-cta:hover { background: var(--gold-light); }
+.cta-success { display: none; color: rgba(255,255,255,0.9); font-size: 0.9rem; font-weight: 500; margin-top: 16px; }
 
-.cta-success {
-  display: none;
-  color: rgba(255,255,255,0.9);
-  font-size: 0.9rem; font-weight: 500;
-  margin-top: 16px;
-}
-
-/* ── FOOTER ── */
-footer {
-  background: var(--ink); color: rgba(255,255,255,0.5);
-  padding: 48px 48px 32px;
-}
-
-.footer-top {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  margin-bottom: 40px;
-  flex-wrap: wrap; gap: 32px;
-}
-
-.footer-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem; font-weight: 900;
-  color: white;
-}
+/* FOOTER */
+footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 48px 48px 32px; }
+.footer-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 40px; flex-wrap: wrap; gap: 32px; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: white; }
 .footer-logo span { color: #4db87a; }
-
 .footer-desc { font-size: 0.82rem; max-width: 260px; line-height: 1.6; margin-top: 8px; }
-
 .footer-links { display: flex; flex-direction: column; gap: 10px; }
-.footer-links a {
-  font-size: 0.82rem; color: rgba(255,255,255,0.45);
-  text-decoration: none; transition: color 0.18s;
-}
+.footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.18s; }
 .footer-links a:hover { color: white; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; flex-wrap: wrap; gap: 12px; }
 
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding-top: 24px;
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: 0.75rem; flex-wrap: wrap; gap: 12px;
-}
-
-/* ── T&C MODAL ── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-  z-index: 500;
-  display: none; align-items: center; justify-content: center;
-  padding: 20px;
-}
+/* T&C MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-overlay.show { display: flex; }
-
-.tc-modal {
-  background: var(--cream);
-  border-radius: 20px;
-  max-width: 680px; width: 100%;
-  max-height: 80vh;
-  overflow: hidden;
-  display: flex; flex-direction: column;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.3);
-  animation: modalIn 0.3s ease;
-}
-
-@keyframes modalIn {
-  from { opacity: 0; transform: scale(0.95) translateY(20px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.tc-header {
-  padding: 24px 28px 20px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-}
-
-.tc-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem; font-weight: 700;
-}
-
-.tc-close {
-  background: var(--cream2); border: none; border-radius: 50%;
-  width: 32px; height: 32px; cursor: pointer;
-  font-size: 1rem; color: var(--muted);
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.15s;
-}
+.tc-modal { background: var(--cream); border-radius: 20px; max-width: 680px; width: 100%; max-height: 80vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 40px 80px rgba(0,0,0,0.3); animation: modalIn 0.3s ease; }
+@keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.tc-header { padding: 24px 28px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.tc-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; }
+.tc-close { background: var(--cream2); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 1rem; color: var(--muted); display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
 .tc-close:hover { background: var(--border); }
-
-.tc-body {
-  padding: 24px 28px;
-  overflow-y: auto; flex: 1;
-  font-size: 0.85rem; color: var(--muted);
-  line-height: 1.75;
-}
-
-.tc-body h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem; color: var(--ink); font-weight: 700;
-  margin: 20px 0 8px;
-}
+.tc-body { padding: 24px 28px; overflow-y: auto; flex: 1; font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+.tc-body h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); font-weight: 700; margin: 20px 0 8px; }
 .tc-body h3:first-child { margin-top: 0; }
 .tc-body p { margin-bottom: 10px; }
 
-/* ── ANIMATIONS ── */
-.reveal {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.6s, transform 0.6s;
-}
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s, transform 0.6s; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
 @media (max-width: 480px) {
@@ -544,29 +230,32 @@ footer {
   .btn-waitlist { width: 100%; text-align: center; }
   .cta-form { flex-direction: column; padding: 12px; }
   .btn-cta { width: 100%; text-align: center; }
+  footer { padding: 40px 20px 32px; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-logo">Nutri<span>AI</span></div>
   <div class="nav-links">
     <a href="#features" data-pt="Funcionalidades" data-en="Features">Funcionalidades</a>
+    <a href="#plans" data-pt="Planos" data-en="Plans">Planos</a>
     <a href="#how" data-pt="Como funciona" data-en="How it works">Como funciona</a>
     <a href="#waitlist" data-pt="Lista de espera" data-en="Join waitlist">Lista de espera</a>
   </div>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('pt')">PT</button>
-    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('pt')">PT</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-eyebrow" data-pt="🚀 Em desenvolvimento — sê o primeiro a saber" data-en="🚀 Coming soon — be the first to know">
-    🚀 Em desenvolvimento — sê o primeiro a saber
+  <div class="hero-eyebrow" data-pt="🚀 Em desenvolvimento — junta-te à lista de espera" data-en="🚀 Coming soon — join the waitlist">
+    🚀 Em desenvolvimento — junta-te à lista de espera
   </div>
 
   <h1 class="hero-title">
@@ -574,13 +263,17 @@ footer {
     <span data-pt="saúde merecia" data-en="health deserved">saúde merecia</span>
   </h1>
 
-  <p class="hero-subtitle" data-pt="Analisa refeições por foto, controla macros, gere a tua medicação GLP-1 e monitoriza a glicémia — tudo num só lugar, com IA." data-en="Analyse meals by photo, track macros, manage your GLP-1 medication and monitor blood glucose — all in one place, powered by AI.">
-    Analisa refeições por foto, controla macros, gere a tua medicação GLP-1 e monitoriza a glicémia — tudo num só lugar, com IA.
+  <p class="hero-subtitle" data-pt="Analisa refeições por foto, controla macros, gere medicação GLP-1 e monitoriza a glicémia — tudo num só lugar, com inteligência artificial." data-en="Analyse meals by photo, track macros, manage GLP-1 medication and monitor blood glucose — all in one place, powered by AI.">
+    Analisa refeições por foto, controla macros, gere medicação GLP-1 e monitoriza a glicémia — tudo num só lugar, com inteligência artificial.
   </p>
 
+  <div class="portugal-badge" data-pt="🇵🇹 Desenvolvido em Portugal" data-en="🇵🇹 Built in Portugal">
+    🇵🇹 Desenvolvido em Portugal
+  </div>
+
   <div class="waitlist-wrap" id="waitlist">
-    <div class="early-bird-badge">
-      🎁 <span data-pt="Early Bird — acesso gratuito por 3 meses" data-en="Early Bird — 3 months free access">Early Bird — acesso gratuito por 3 meses</span>
+    <div class="early-bird-badge" style="margin-top:32px">
+      🎁 <span data-pt="Early Bird — 3 meses de acesso gratuito" data-en="Early Bird — 3 months free access">Early Bird — 3 meses de acesso gratuito</span>
     </div>
 
     <form class="waitlist-form" id="hero-form" onsubmit="submitWaitlist(event,'hero')">
@@ -588,11 +281,11 @@ footer {
       <button type="submit" class="btn-waitlist" data-pt="Entrar na lista" data-en="Join waitlist">Entrar na lista</button>
     </form>
     <div class="waitlist-success" id="hero-success">
-      <span data-pt="✓ Estás na lista! Vamos avisar-te assim que abrirmos." data-en="✓ You're on the list! We'll notify you when we launch.">✓ Estás na lista! Vamos avisar-te assim que abrirmos.</span>
+      <span data-pt="✓ Estás na lista! Vamos avisar assim que abrirmos." data-en="✓ You're on the list! We'll notify you when we launch.">✓ Estás na lista! Vamos avisar assim que abrirmos.</span>
     </div>
 
     <div class="waitlist-note">
-      🔒 <span data-pt="Sem spam. Podes cancelar quando quiseres." data-en="No spam. Unsubscribe anytime.">Sem spam. Podes cancelar quando quiseres.</span>
+      🔒 <span data-pt="Sem spam. Cancelamento a qualquer momento." data-en="No spam. Unsubscribe anytime.">Sem spam. Cancelamento a qualquer momento.</span>
     </div>
 
     <div class="counter-wrap">
@@ -612,46 +305,96 @@ footer {
 <section id="features" style="padding:100px 24px">
   <div style="max-width:1100px;margin:0 auto">
     <div class="section-label reveal" data-pt="O que a NutriAI faz" data-en="What NutriAI does">O que a NutriAI faz</div>
-    <h2 class="section-title reveal" data-pt="Tudo o que precisas para gerir a tua saúde" data-en="Everything you need to manage your health">
-      Tudo o que precisas para gerir a tua saúde
+    <h2 class="section-title reveal" data-pt="Tudo o que é preciso para gerir a saúde num só lugar" data-en="Everything needed to manage health in one place">
+      Tudo o que é preciso para gerir a saúde num só lugar
     </h2>
 
     <div class="features-grid reveal" style="transition-delay:0.1s">
       <div class="feature-card">
         <span class="feature-icon">📷</span>
         <div class="feature-title" data-pt="Análise por foto" data-en="Photo analysis">Análise por foto</div>
-        <div class="feature-desc" data-pt="Fotografa qualquer refeição e obtém calorias, proteína, hidratos, gordura e fibra em segundos. Sem pesagens manuais." data-en="Photograph any meal and get calories, protein, carbs, fat and fibre in seconds. No manual weighing.">Fotografa qualquer refeição e obtém calorias, proteína, hidratos, gordura e fibra em segundos. Sem pesagens manuais.</div>
+        <div class="feature-desc" data-pt="Fotografa qualquer refeição e obtém calorias, proteína, hidratos, gordura e fibra em segundos. Funciona com pratos caseiros, restaurantes e qualquer tipo de comida." data-en="Photograph any meal and get calories, protein, carbs, fat and fibre in seconds. Works with home-cooked meals, restaurants and any type of food.">Fotografa qualquer refeição e obtém calorias, proteína, hidratos, gordura e fibra em segundos. Funciona com pratos caseiros, restaurantes e qualquer tipo de comida.</div>
         <span class="feature-tag" data-pt="IA Vision" data-en="AI Vision">IA Vision</span>
       </div>
       <div class="feature-card">
         <span class="feature-icon">💉</span>
-        <div class="feature-title" data-pt="Gestão GLP-1" data-en="GLP-1 Management">Gestão GLP-1</div>
-        <div class="feature-desc" data-pt="Regista tomas de Mounjaro ou Ozempic, rota locais de injecção com mapa corporal interactivo e recebe alertas da próxima dose." data-en="Log Mounjaro or Ozempic doses, rotate injection sites with an interactive body map and receive next-dose alerts.">Regista tomas de Mounjaro ou Ozempic, rota locais de injecção com mapa corporal interactivo e recebe alertas da próxima dose.</div>
+        <div class="feature-title" data-pt="Gestão de medicação GLP-1" data-en="GLP-1 Medication Management">Gestão de medicação GLP-1</div>
+        <div class="feature-desc" data-pt="Regista tomas de Mounjaro ou Ozempic, rota locais de injecção com mapa corporal interactivo e recebe alertas da próxima dose semanal." data-en="Log Mounjaro or Ozempic doses, rotate injection sites with an interactive body map and receive weekly next-dose alerts.">Regista tomas de Mounjaro ou Ozempic, rota locais de injecção com mapa corporal interactivo e recebe alertas da próxima dose semanal.</div>
         <span class="feature-tag" data-pt="Medicação" data-en="Medication">Medicação</span>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🩸</span>
-        <div class="feature-title" data-pt="Monitorização glicémica" data-en="Glucose monitoring">Monitorização glicémica</div>
-        <div class="feature-desc" data-pt="Regista leituras de glicémia, identifica padrões e correlaciona com as tuas refeições e medicação." data-en="Log glucose readings, identify patterns and correlate with your meals and medication.">Regista leituras de glicémia, identifica padrões e correlaciona com as tuas refeições e medicação.</div>
-        <span class="feature-tag gold" data-pt="Em breve" data-en="Coming soon">Em breve</span>
+        <div class="feature-title" data-pt="Monitorização da diabetes" data-en="Diabetes monitoring">Monitorização da diabetes</div>
+        <div class="feature-desc" data-pt="Regista glicemia com semáforo visual, acompanha medicação oral, HbA1c e peso. Exporta relatórios para levar ao médico." data-en="Log blood glucose with a visual traffic light, track oral medication, HbA1c and weight. Export reports to take to your doctor.">Regista glicemia com semáforo visual, acompanha medicação oral, HbA1c e peso. Exporta relatórios para levar ao médico.</div>
+        <span class="feature-tag" data-pt="Diabetes Tipo 2" data-en="Type 2 Diabetes">Diabetes Tipo 2</span>
       </div>
       <div class="feature-card">
         <span class="feature-icon">📊</span>
         <div class="feature-title" data-pt="Objectivos personalizados" data-en="Personalised goals">Objectivos personalizados</div>
-        <div class="feature-desc" data-pt="Define os teus targets de macros, calorias e hidratação. Barras de progresso em tempo real com alertas visuais." data-en="Set your macro, calorie and hydration targets. Real-time progress bars with visual alerts.">Define os teus targets de macros, calorias e hidratação. Barras de progresso em tempo real com alertas visuais.</div>
+        <div class="feature-desc" data-pt="Define targets de macros, calorias e hidratação. Barras de progresso em tempo real com alertas visuais quando os limites são atingidos." data-en="Set macro, calorie and hydration targets. Real-time progress bars with visual alerts when limits are reached.">Define targets de macros, calorias e hidratação. Barras de progresso em tempo real com alertas visuais quando os limites são atingidos.</div>
         <span class="feature-tag" data-pt="Dashboard" data-en="Dashboard">Dashboard</span>
       </div>
       <div class="feature-card">
         <span class="feature-icon">⭐</span>
         <div class="feature-title" data-pt="Pratos favoritos" data-en="Favourite meals">Pratos favoritos</div>
-        <div class="feature-desc" data-pt="Guarda os teus pratos habituais e adiciona-os ao log com um toque. Sem analisar de novo." data-en="Save your regular meals and add them to your log with one tap. No re-analysing needed.">Guarda os teus pratos habituais e adiciona-os ao log com um toque. Sem analisar de novo.</div>
+        <div class="feature-desc" data-pt="Guarda os pratos habituais e adiciona-os ao registo diário com um toque. Sem necessidade de analisar de novo." data-en="Save regular meals and add them to the daily log with one tap. No need to analyse again.">Guarda os pratos habituais e adiciona-os ao registo diário com um toque. Sem necessidade de analisar de novo.</div>
         <span class="feature-tag" data-pt="Produtividade" data-en="Productivity">Produtividade</span>
       </div>
       <div class="feature-card">
         <span class="feature-icon">📤</span>
         <div class="feature-title" data-pt="Exportação & integração" data-en="Export & integration">Exportação & integração</div>
-        <div class="feature-desc" data-pt="Exporta o histórico semanal em CSV para o MyFitnessPal, Excel ou o teu médico. Dados sempre teus." data-en="Export your weekly history as CSV to MyFitnessPal, Excel or your doctor. Your data, always.">Exporta o histórico semanal em CSV para o MyFitnessPal, Excel ou o teu médico. Dados sempre teus.</div>
+        <div class="feature-desc" data-pt="Exporta o histórico semanal em CSV para o MyFitnessPal, Excel ou partilhar com profissionais de saúde. Os dados são sempre teus." data-en="Export your weekly history as CSV to MyFitnessPal, Excel or to share with healthcare professionals. Your data, always.">Exporta o histórico semanal em CSV para o MyFitnessPal, Excel ou partilhar com profissionais de saúde. Os dados são sempre teus.</div>
         <span class="feature-tag" data-pt="Interoperabilidade" data-en="Interoperability">Interoperabilidade</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PLANS -->
+<section id="plans" style="padding:100px 24px">
+  <div style="max-width:800px;margin:0 auto">
+    <div class="section-label reveal" style="text-align:center" data-pt="Planos" data-en="Plans">Planos</div>
+    <h2 class="section-title reveal" style="text-align:center;max-width:100%" data-pt="Começa gratuitamente, evolui quando quiseres" data-en="Start for free, upgrade whenever you're ready">
+      Começa gratuitamente, evolui quando quiseres
+    </h2>
+
+    <div class="plans-grid reveal" style="transition-delay:0.1s">
+      <!-- Free -->
+      <div class="plan-card">
+        <div class="plan-name" data-pt="Free" data-en="Free">Free</div>
+        <div style="font-size:0.82rem;color:var(--muted);margin-bottom:16px" data-pt="Para começar a explorar" data-en="To start exploring">Para começar a explorar</div>
+        <div class="plan-price">€0 <span data-pt="/mês" data-en="/month">/mês</span></div>
+        <div class="plan-price-note" data-pt="Sempre gratuito" data-en="Always free">Sempre gratuito</div>
+        <ul class="plan-features">
+          <li data-pt="3 análises por foto por dia" data-en="3 photo analyses per day">3 análises por foto por dia</li>
+          <li data-pt="5 análises por texto por dia" data-en="5 text analyses per day">5 análises por texto por dia</li>
+          <li data-pt="Histórico dos últimos 3 dias" data-en="3-day history">Histórico dos últimos 3 dias</li>
+          <li data-pt="Até 3 pratos favoritos" data-en="Up to 3 favourite meals">Até 3 pratos favoritos</li>
+          <li class="locked" data-pt="Módulos Mounjaro e Diabetes" data-en="Mounjaro and Diabetes modules">Módulos Mounjaro e Diabetes</li>
+          <li class="locked" data-pt="Exportação CSV" data-en="CSV export">Exportação CSV</li>
+          <li class="locked" data-pt="Sugestões de receita" data-en="Recipe suggestions">Sugestões de receita</li>
+        </ul>
+      </div>
+
+      <!-- Premium -->
+      <div class="plan-card featured">
+        <div class="plan-badge" data-pt="Recomendado" data-en="Recommended">Recomendado</div>
+        <div class="plan-name" data-pt="Premium" data-en="Premium">Premium</div>
+        <div style="font-size:0.82rem;color:var(--muted);margin-bottom:16px" data-pt="Acesso completo a todas as funcionalidades" data-en="Full access to all features">Acesso completo a todas as funcionalidades</div>
+        <div class="plan-price">€7.99 <span data-pt="/mês" data-en="/month">/mês</span></div>
+        <div class="plan-price-note" data-pt="ou €59.99/ano · 3 meses gratuitos para Early Birds" data-en="or €59.99/year · 3 months free for Early Birds">ou €59.99/ano · 3 meses gratuitos para Early Birds</div>
+        <ul class="plan-features">
+          <li data-pt="Análises ilimitadas por foto e texto" data-en="Unlimited photo and text analyses">Análises ilimitadas por foto e texto</li>
+          <li data-pt="Histórico dos últimos 30 dias" data-en="30-day history">Histórico dos últimos 30 dias</li>
+          <li data-pt="Favoritos ilimitados" data-en="Unlimited favourites">Favoritos ilimitados</li>
+          <li data-pt="Módulo Mounjaro / GLP-1 completo" data-en="Full Mounjaro / GLP-1 module">Módulo Mounjaro / GLP-1 completo</li>
+          <li data-pt="Módulo Diabetes (Tipo 2)" data-en="Diabetes module (Type 2)">Módulo Diabetes (Tipo 2)</li>
+          <li data-pt="Exportação CSV para médico ou app" data-en="CSV export for doctor or app">Exportação CSV para médico ou app</li>
+          <li data-pt="Sugestões de receita por IA" data-en="AI recipe suggestions">Sugestões de receita por IA</li>
+          <li data-pt="Modo escuro" data-en="Dark mode">Modo escuro</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -663,15 +406,15 @@ footer {
 <div class="how-wrap" id="how">
   <div>
     <div class="section-label reveal" data-pt="Como funciona" data-en="How it works">Como funciona</div>
-    <h2 class="section-title reveal" data-pt="Três segundos para saber o que comeste" data-en="Three seconds to know what you ate">
-      Três segundos para saber o que comeste
+    <h2 class="section-title reveal" data-pt="Três segundos para saber o que foi comido" data-en="Three seconds to know what was eaten">
+      Três segundos para saber o que foi comido
     </h2>
     <div class="steps" style="margin-top:40px">
       <div class="step reveal">
         <div class="step-num">1</div>
         <div>
           <div class="step-title" data-pt="Fotografa ou descreve" data-en="Photo or describe">Fotografa ou descreve</div>
-          <div class="step-desc" data-pt="Tira uma foto ao prato ou escreve os ingredientes com os pesos. A IA trata do resto." data-en="Take a photo of your meal or type the ingredients with weights. AI does the rest.">Tira uma foto ao prato ou escreve os ingredientes com os pesos. A IA trata do resto.</div>
+          <div class="step-desc" data-pt="Tira uma foto ao prato ou escreve os ingredientes com os pesos. Indica o restaurante ou marca para mais precisão." data-en="Take a photo of the meal or type the ingredients with weights. Mention the restaurant or brand for more accuracy.">Tira uma foto ao prato ou escreve os ingredientes com os pesos. Indica o restaurante ou marca para mais precisão.</div>
         </div>
       </div>
       <div class="step reveal" style="transition-delay:0.1s">
@@ -684,18 +427,17 @@ footer {
       <div class="step reveal" style="transition-delay:0.2s">
         <div class="step-num">3</div>
         <div>
-          <div class="step-title" data-pt="Adiciona ao teu dia" data-en="Add to your day">Adiciona ao teu dia</div>
-          <div class="step-desc" data-pt="Regista no log diário ou copia para o MyFitnessPal. O progresso actualiza em tempo real." data-en="Log to your daily tracker or copy to MyFitnessPal. Progress updates in real time.">Regista no log diário ou copia para o MyFitnessPal. O progresso actualiza em tempo real.</div>
+          <div class="step-title" data-pt="Regista e acompanha" data-en="Log and track">Regista e acompanha</div>
+          <div class="step-desc" data-pt="Adiciona ao log diário ou copia para o MyFitnessPal. O progresso actualiza em tempo real face aos objectivos definidos." data-en="Add to the daily log or copy to MyFitnessPal. Progress updates in real time against your defined goals.">Adiciona ao log diário ou copia para o MyFitnessPal. O progresso actualiza em tempo real face aos objectivos definidos.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Phone mockup -->
   <div class="reveal" style="transition-delay:0.15s">
     <div class="phone-mockup">
       <div class="phone-screen">
-        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#999;margin-bottom:4px">Hoje · Quinta-feira</div>
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#999;margin-bottom:4px">Hoje · Segunda-feira</div>
         <div style="font-size:1.8rem;font-weight:700;color:#1a5c3a;font-family:'Playfair Display',serif;line-height:1">1847</div>
         <div style="font-size:0.55rem;color:#aaa;margin-bottom:10px">kcal / 2150 objectivo</div>
         <div class="mock-bar green"></div>
@@ -706,7 +448,7 @@ footer {
         <div style="height:12px"></div>
         <div class="mock-card">
           <div class="mock-label">Almoço</div>
-          <div style="font-size:0.7rem;font-weight:600;margin-bottom:8px">Frango grelhado com arroz</div>
+          <div style="font-size:0.7rem;font-weight:600;margin-bottom:8px">Salmão grelhado — IKEA</div>
           <div class="mock-macros">
             <div class="mock-macro"><div class="mv">487</div><div class="ml">kcal</div></div>
             <div class="mock-macro"><div class="mv" style="color:#c0392b">42g</div><div class="ml">prot</div></div>
@@ -730,13 +472,12 @@ footer {
 
 <hr class="divider">
 
-<!-- FINAL CTA -->
+<!-- CTA -->
 <section class="cta-section">
-  <h2 class="cta-title" data-pt="Pronto para começar?" data-en="Ready to start?">Pronto para começar?</h2>
-  <p class="cta-sub" data-pt="Junta-te à lista de espera e garante 3 meses gratuitos como Early Bird." data-en="Join the waitlist and secure 3 free months as an Early Bird.">
-    Junta-te à lista de espera e garante 3 meses gratuitos como Early Bird.
+  <h2 class="cta-title" data-pt="Faz parte da lista de espera" data-en="Join the waitlist">Faz parte da lista de espera</h2>
+  <p class="cta-sub" data-pt="Subscreve e garante 3 meses de acesso Premium gratuito como Early Bird." data-en="Subscribe and secure 3 months of free Premium access as an Early Bird.">
+    Subscreve e garante 3 meses de acesso Premium gratuito como Early Bird.
   </p>
-
   <form class="cta-form" id="cta-form" onsubmit="submitWaitlist(event,'cta')">
     <input type="email" id="cta-email" placeholder="o teu email" data-pt-placeholder="o teu email" data-en-placeholder="your email" required>
     <button type="submit" class="btn-cta" data-pt="Garantir lugar" data-en="Secure my spot">Garantir lugar</button>
@@ -751,7 +492,7 @@ footer {
   <div class="footer-top">
     <div>
       <div class="footer-logo">Nutri<span>AI</span></div>
-      <div class="footer-desc" data-pt="Nutrição inteligente e gestão de saúde para quem toma a sério o seu bem-estar." data-en="Smart nutrition and health management for those who take their wellbeing seriously.">Nutrição inteligente e gestão de saúde para quem toma a sério o seu bem-estar.</div>
+      <div class="footer-desc" data-pt="Nutrição inteligente e gestão de saúde, desenvolvido em Portugal 🇵🇹 para quem quer tomar as rédeas do próprio bem-estar." data-en="Smart nutrition and health management, built in Portugal 🇵🇹 for those who want to take control of their own wellbeing.">Nutrição inteligente e gestão de saúde, desenvolvido em Portugal 🇵🇹 para quem quer tomar as rédeas do próprio bem-estar.</div>
     </div>
     <div class="footer-links">
       <a href="#" onclick="openTC(event)" data-pt="Termos e Condições" data-en="Terms & Conditions">Termos e Condições</a>
@@ -761,7 +502,7 @@ footer {
   </div>
   <div class="footer-bottom">
     <span data-pt="© 2025 NutriAI. Todos os direitos reservados." data-en="© 2025 NutriAI. All rights reserved.">© 2025 NutriAI. Todos os direitos reservados.</span>
-    <span data-pt="Desenvolvido em Portugal 🇵🇹" data-en="Built in Portugal 🇵🇹">Desenvolvido em Portugal 🇵🇹</span>
+    <span data-pt="🇵🇹 Desenvolvido em Portugal" data-en="🇵🇹 Built in Portugal">🇵🇹 Desenvolvido em Portugal</span>
   </div>
 </footer>
 
@@ -774,13 +515,13 @@ footer {
     </div>
     <div class="tc-body">
       <h3 data-pt="1. Sobre a NutriAI" data-en="1. About NutriAI">1. Sobre a NutriAI</h3>
-      <p data-pt="A NutriAI é uma aplicação de apoio à gestão nutricional e de saúde pessoal. Não é um dispositivo médico certificado nem substitui aconselhamento médico profissional. Os valores nutricionais apresentados são estimativas calculadas por inteligência artificial e podem conter margem de erro." data-en="NutriAI is an application to support personal nutritional and health management. It is not a certified medical device and does not replace professional medical advice. Nutritional values shown are estimates calculated by artificial intelligence and may contain a margin of error.">A NutriAI é uma aplicação de apoio à gestão nutricional e de saúde pessoal. Não é um dispositivo médico certificado nem substitui aconselhamento médico profissional. Os valores nutricionais apresentados são estimativas calculadas por inteligência artificial e podem conter margem de erro.</p>
+      <p data-pt="A NutriAI é uma aplicação de apoio à gestão nutricional e de saúde pessoal, desenvolvida em Portugal. Não é um dispositivo médico certificado nem substitui aconselhamento médico profissional. Os valores nutricionais apresentados são estimativas calculadas por inteligência artificial e podem conter margem de erro." data-en="NutriAI is a personal nutritional and health management application, developed in Portugal. It is not a certified medical device and does not replace professional medical advice. Nutritional values shown are estimates calculated by artificial intelligence and may contain a margin of error.">A NutriAI é uma aplicação de apoio à gestão nutricional e de saúde pessoal, desenvolvida em Portugal. Não é um dispositivo médico certificado nem substitui aconselhamento médico profissional. Os valores nutricionais apresentados são estimativas calculadas por inteligência artificial e podem conter margem de erro.</p>
 
       <h3 data-pt="2. Recolha de dados" data-en="2. Data collection">2. Recolha de dados</h3>
-      <p data-pt="Recolhemos apenas o endereço de email fornecido voluntariamente para a lista de espera. Não recolhemos dados de saúde sem consentimento explícito. Após o lançamento, os dados inseridos na aplicação (refeições, medicação, glicémia) são armazenados localmente no teu dispositivo ou, com consentimento, em servidores seguros." data-en="We collect only the email address voluntarily provided for the waitlist. We do not collect health data without explicit consent. After launch, data entered in the app (meals, medication, glucose) is stored locally on your device or, with consent, on secure servers.">Recolhemos apenas o endereço de email fornecido voluntariamente para a lista de espera. Não recolhemos dados de saúde sem consentimento explícito. Após o lançamento, os dados inseridos na aplicação (refeições, medicação, glicémia) são armazenados localmente no teu dispositivo ou, com consentimento, em servidores seguros.</p>
+      <p data-pt="Recolhemos apenas o endereço de email fornecido voluntariamente para a lista de espera. Não recolhemos dados de saúde sem consentimento explícito. Após o lançamento, os dados inseridos na aplicação são armazenados de forma segura e nunca partilhados com terceiros." data-en="We collect only the email address voluntarily provided for the waitlist. We do not collect health data without explicit consent. After launch, data entered in the application is stored securely and never shared with third parties.">Recolhemos apenas o endereço de email fornecido voluntariamente para a lista de espera. Não recolhemos dados de saúde sem consentimento explícito. Após o lançamento, os dados inseridos na aplicação são armazenados de forma segura e nunca partilhados com terceiros.</p>
 
       <h3 data-pt="3. Uso do email" data-en="3. Use of email">3. Uso do email</h3>
-      <p data-pt="O teu email é usado exclusivamente para comunicar o lançamento da NutriAI e actualizações relevantes. Não é partilhado com terceiros nem usado para fins comerciais externos. Podes cancelar a qualquer momento respondendo com 'cancelar' ou através do link de unsubscribe em cada email." data-en="Your email is used exclusively to communicate the NutriAI launch and relevant updates. It is not shared with third parties or used for external commercial purposes. You can unsubscribe at any time by replying 'unsubscribe' or via the unsubscribe link in each email.">O teu email é usado exclusivamente para comunicar o lançamento da NutriAI e actualizações relevantes. Não é partilhado com terceiros nem usado para fins comerciais externos. Podes cancelar a qualquer momento respondendo com 'cancelar' ou através do link de unsubscribe em cada email.</p>
+      <p data-pt="O email é usado exclusivamente para comunicar o lançamento da NutriAI e actualizações relevantes. Não é partilhado com terceiros nem usado para fins comerciais externos. O cancelamento pode ser feito a qualquer momento." data-en="The email is used exclusively to communicate the NutriAI launch and relevant updates. It is not shared with third parties or used for external commercial purposes. You can unsubscribe at any time.">O email é usado exclusivamente para comunicar o lançamento da NutriAI e actualizações relevantes. Não é partilhado com terceiros nem usado para fins comerciais externos. O cancelamento pode ser feito a qualquer momento.</p>
 
       <h3 data-pt="4. Limitação de responsabilidade" data-en="4. Limitation of liability">4. Limitação de responsabilidade</h3>
       <p data-pt="A NutriAI não se responsabiliza por decisões de saúde tomadas com base nas estimativas da aplicação. Em caso de dúvida, consulta sempre um profissional de saúde qualificado, especialmente no que respeita a medicação, glicémia ou condições médicas." data-en="NutriAI is not responsible for health decisions made based on the application's estimates. When in doubt, always consult a qualified healthcare professional, especially regarding medication, blood glucose or medical conditions.">A NutriAI não se responsabiliza por decisões de saúde tomadas com base nas estimativas da aplicação. Em caso de dúvida, consulta sempre um profissional de saúde qualificado, especialmente no que respeita a medicação, glicémia ou condições médicas.</p>
@@ -803,25 +544,21 @@ let currentLang = 'pt';
 function setLang(lang) {
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
-
+  document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add('active');
   document.querySelectorAll('[data-pt]').forEach(el => {
     const val = el.getAttribute('data-' + lang);
     if (val) el.innerHTML = val;
   });
-
   document.querySelectorAll('[data-pt-placeholder]').forEach(el => {
     el.placeholder = el.getAttribute('data-' + lang + '-placeholder') || el.placeholder;
   });
-
   document.documentElement.lang = lang;
 }
 
 // ── WAITLIST ──────────────────────────────────────────────
-let waitlistCount = 47;
-
 const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSe8BPRVHYmNjCKDfIYNIafUN0pSrroJRVTxUhIf7erh-2zoRg/formResponse';
 const ENTRY_ID = 'entry.2108367124';
+let waitlistCount = 47;
 
 async function submitWaitlist(e, source) {
   e.preventDefault();
@@ -832,17 +569,10 @@ async function submitWaitlist(e, source) {
   const btn = document.querySelector('#' + source + '-form button[type=submit]');
   if (btn) { btn.disabled = true; btn.textContent = '...'; }
 
-  // Submit to Google Forms (no-cors — response is opaque but submission works)
   const body = new FormData();
   body.append(ENTRY_ID, email);
+  try { await fetch(FORM_ACTION, { method: 'POST', mode: 'no-cors', body }); } catch(e) {}
 
-  try {
-    await fetch(FORM_ACTION, { method: 'POST', mode: 'no-cors', body });
-  } catch(err) {
-    // no-cors fetch always throws or returns opaque — submission still works
-  }
-
-  // Store locally too
   const list = JSON.parse(localStorage.getItem('nutriai_waitlist') || '[]');
   if (!list.includes(email)) {
     list.push(email);
@@ -851,39 +581,22 @@ async function submitWaitlist(e, source) {
     document.getElementById('counter').textContent = waitlistCount;
   }
 
-  // Show success
   document.getElementById(source + '-form').style.display = 'none';
   document.getElementById(source + '-success').style.display = 'block';
 }
 
 // ── T&C ───────────────────────────────────────────────────
-function openTC(e) {
-  if (e) e.preventDefault();
-  document.getElementById('tc-modal').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeTC() {
-  document.getElementById('tc-modal').classList.remove('show');
-  document.body.style.overflow = '';
-}
-
+function openTC(e) { if (e) e.preventDefault(); document.getElementById('tc-modal').classList.add('show'); document.body.style.overflow = 'hidden'; }
+function closeTC() { document.getElementById('tc-modal').classList.remove('show'); document.body.style.overflow = ''; }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTC(); });
 
 // ── SCROLL REVEAL ─────────────────────────────────────────
 const observer = new IntersectionObserver(entries => {
-  entries.forEach(el => {
-    if (el.isIntersecting) {
-      el.target.classList.add('visible');
-      observer.unobserve(el.target);
-    }
-  });
+  entries.forEach(el => { if (el.isIntersecting) { el.target.classList.add('visible'); observer.unobserve(el.target); } });
 }, { threshold: 0.15 });
-
 document.querySelectorAll('.reveal, .step').forEach(el => observer.observe(el));
 
-// ── COUNTER ANIMATION ─────────────────────────────────────
-// Simulate a growing counter on load
+// ── COUNTER ───────────────────────────────────────────────
 const stored = JSON.parse(localStorage.getItem('nutriai_waitlist') || '[]');
 waitlistCount = 47 + stored.length;
 document.getElementById('counter').textContent = waitlistCount;
