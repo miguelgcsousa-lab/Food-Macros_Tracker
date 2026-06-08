@@ -7,11 +7,69 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+
   if (!ANTHROPIC_API_KEY) return res.status(500).json({ error: 'API key not configured' });
 
   try {
-    const { messages, system } = req.body;
+    const { messages, system, user_id, is_photo } = req.body;
 
+    // ── PLAN CHECK (only for photo analyses) ──────────────
+    if (is_photo && user_id && SUPABASE_URL && SUPABASE_SERVICE_KEY) {
+      const today = new Date().toISOString().slice(0, 10);
+
+      // Get user settings
+      const settingsRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/user_settings?user_id=eq.${user_id}&select=plan,daily_analyses,last_analysis_date,is_admin`,
+        {
+          headers: {
+            'apikey': SUPABASE_SERVICE_KEY,
+            'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+          }
+        }
+      );
+
+      const settings = await settingsRes.json();
+      const userSettings = settings?.[0];
+
+      if (userSettings) {
+        const plan = userSettings.plan || 'free';
+        const isAdmin = userSettings.is_admin === true;
+        const lastDate = userSettings.last_analysis_date;
+        const dailyCount = lastDate === today ? (userSettings.daily_analyses || 0) : 0;
+        const limit = plan === 'premium' || isAdmin ? 999 : 3;
+
+        if (dailyCount >= limit) {
+          return res.status(429).json({
+            error: 'LIMIT_REACHED',
+            message: `Atingiste o limite diário de ${limit} análises por foto. Faz upgrade para Premium para análises ilimitadas.`,
+            count: dailyCount,
+            limit
+          });
+        }
+
+        // Update counter
+        await fetch(
+          `${SUPABASE_URL}/rest/v1/user_settings?user_id=eq.${user_id}`,
+          {
+            method: 'PATCH',
+            headers: {
+              'apikey': SUPABASE_SERVICE_KEY,
+              'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              daily_analyses: dailyCount + 1,
+              last_analysis_date: today
+            })
+          }
+        );
+      }
+    }
+
+    // ── ANTHROPIC API ──────────────────────────────────────
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -30,10 +88,9 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      // Return full error from Anthropic for debugging
-      return res.status(response.status).json({ 
+      return res.status(response.status).json({
         error: data.error?.message || 'API error',
-        full: data 
+        full: data
       });
     }
 
