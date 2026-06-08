@@ -18,18 +18,16 @@ export default async function handler(req, res) {
     // ── PLAN CHECK (only for photo analyses) ──────────────
     if (is_photo && user_id && SUPABASE_URL && SUPABASE_SERVICE_KEY) {
       const today = new Date().toISOString().slice(0, 10);
+      const headers = {
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+      };
 
       // Get user settings
       const settingsRes = await fetch(
         `${SUPABASE_URL}/rest/v1/user_settings?user_id=eq.${user_id}&select=plan,daily_analyses,last_analysis_date,is_admin`,
-        {
-          headers: {
-            'apikey': SUPABASE_SERVICE_KEY,
-            'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
-          }
-        }
+        { headers }
       );
-
       const settings = await settingsRes.json();
       const userSettings = settings?.[0];
 
@@ -38,12 +36,26 @@ export default async function handler(req, res) {
         const isAdmin = userSettings.is_admin === true;
         const lastDate = userSettings.last_analysis_date;
         const dailyCount = lastDate === today ? (userSettings.daily_analyses || 0) : 0;
-        const limit = plan === 'premium' || isAdmin ? 999 : 3;
+
+        // Get limit from plan_config table
+        let limit = 3; // fallback default
+        if (!isAdmin) {
+          const planRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/plan_config?plan=eq.${plan}&select=daily_photo_limit`,
+            { headers }
+          );
+          const planData = await planRes.json();
+          if (planData?.[0]?.daily_photo_limit !== undefined) {
+            limit = planData[0].daily_photo_limit;
+          }
+        } else {
+          limit = 999;
+        }
 
         if (dailyCount >= limit) {
           return res.status(429).json({
             error: 'LIMIT_REACHED',
-            message: `Atingiste o limite diário de ${limit} análises por foto. Faz upgrade para Premium para análises ilimitadas.`,
+            message: `Atingiste o limite diário de ${limit} análise${limit !== 1 ? 's' : ''} por foto. Faz upgrade para Premium para análises ilimitadas.`,
             count: dailyCount,
             limit
           });
@@ -54,16 +66,8 @@ export default async function handler(req, res) {
           `${SUPABASE_URL}/rest/v1/user_settings?user_id=eq.${user_id}`,
           {
             method: 'PATCH',
-            headers: {
-              'apikey': SUPABASE_SERVICE_KEY,
-              'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
-              'Content-Type': 'application/json',
-              'Prefer': 'return=minimal'
-            },
-            body: JSON.stringify({
-              daily_analyses: dailyCount + 1,
-              last_analysis_date: today
-            })
+            headers: { ...headers, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ daily_analyses: dailyCount + 1, last_analysis_date: today })
           }
         );
       }
