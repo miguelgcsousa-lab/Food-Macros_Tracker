@@ -400,6 +400,28 @@ body.dark {
   </div>
 </div>
 
+
+<!-- RESET PASSWORD SCREEN -->
+<div id="reset-screen" style="display:none;min-height:100dvh;align-items:center;justify-content:center;padding:24px;background:var(--bg)">
+  <div class="auth-card">
+    <div class="auth-logo">Nutri<span>AI</span></div>
+    <div class="auth-subtitle" style="margin-bottom:20px">Define a tua nova password</div>
+    <div class="auth-form">
+      <div class="auth-field">
+        <label>Nova password</label>
+        <input type="password" id="new-password" placeholder="mínimo 6 caracteres" autocomplete="new-password">
+      </div>
+      <div class="auth-field">
+        <label>Confirmar password</label>
+        <input type="password" id="confirm-password" placeholder="repete a password" autocomplete="new-password">
+      </div>
+      <div class="auth-error" id="reset-error"></div>
+      <div class="auth-success" id="reset-success"></div>
+      <button class="btn-auth" onclick="updatePassword()" id="btn-update-pw">Guardar nova password</button>
+    </div>
+  </div>
+</div>
+
 <!-- APP SCREEN -->
 <div id="app-screen">
 <header>
@@ -891,6 +913,14 @@ const ZONE_NAMES = {
 
 // ── INIT ──────────────────────────────────────────────────
 async function init() {
+  // Check if this is a password reset redirect
+  const hash = window.location.hash;
+  if (hash && hash.includes('type=recovery')) {
+    document.getElementById('loading-overlay').style.display = 'none';
+    document.getElementById('reset-screen').style.display = 'flex';
+    return;
+  }
+
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
     currentUser = session.user;
@@ -964,6 +994,50 @@ function switchAuthTab(tab, el) {
   el.classList.add('active');
   document.getElementById('auth-login').style.display = tab === 'login' ? 'block' : 'none';
   document.getElementById('auth-register').style.display = tab === 'register' ? 'block' : 'none';
+}
+
+async function updatePassword() {
+  const pw = document.getElementById('new-password').value;
+  const confirm = document.getElementById('confirm-password').value;
+  const errEl = document.getElementById('reset-error');
+  const sucEl = document.getElementById('reset-success');
+  errEl.classList.remove('show');
+  sucEl.classList.remove('show');
+
+  if (pw.length < 6) {
+    errEl.textContent = 'A password deve ter pelo menos 6 caracteres.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (pw !== confirm) {
+    errEl.textContent = 'As passwords não coincidem.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('btn-update-pw');
+  btn.disabled = true; btn.textContent = 'A guardar...';
+
+  const { error } = await sb.auth.updateUser({ password: pw });
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Guardar nova password';
+  } else {
+    sucEl.textContent = 'Password alterada com sucesso! A redirecionar...';
+    sucEl.classList.add('show');
+    setTimeout(async () => {
+      document.getElementById('reset-screen').style.display = 'none';
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) {
+        currentUser = session.user;
+        await loadUserData();
+        showApp();
+      } else {
+        showAuth();
+      }
+    }, 1500);
+  }
 }
 
 async function forgotPassword() {
