@@ -1782,11 +1782,11 @@ async function saveUserEdit() {
   const errEl = document.getElementById('edit-user-error');
   errEl.classList.remove('show');
 
-  const { error } = await sb.from('user_settings').upsert({
-    user_id: editingUserId,
-    plan,
-    is_admin: isAdminVal,
-    updated_at: new Date().toISOString()
+  // Use RPC function to bypass RLS
+  const { error } = await sb.rpc('update_user_plan', {
+    target_user_id: editingUserId,
+    new_plan: plan,
+    new_is_admin: isAdminVal
   });
 
   if (error) {
