@@ -848,6 +848,22 @@ body.dark {
       </div>
     </div>
 
+    <!-- Plan config -->
+    <div class="card">
+      <div class="card-header">
+        <span>Configuração de planos</span>
+        <button class="btn-outline" style="font-size:0.75rem;padding:6px 12px" onclick="savePlanConfig()">Guardar</button>
+      </div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="plan-config-grid">
+          <div class="log-empty" style="grid-column:1/-1">A carregar...</div>
+        </div>
+        <div style="font-size:0.72rem;color:var(--text3);margin-top:10px">
+          ⓘ Define o número máximo de análises por foto por dia para cada plano. Use 999 para ilimitado.
+        </div>
+      </div>
+    </div>
+
     <!-- Danger zone -->
     <div class="card" style="border-color:var(--red)">
       <div class="card-header" style="color:var(--red)">Zona de perigo</div>
@@ -1108,7 +1124,7 @@ function showPage(id, el) {
   if (id === 'history') renderHistory();
   if (id === 'mounjaro') { renderBodyMap(); renderNextDose(); renderInjHistory(); }
   if (id === 'diabetes') { initDiabetesPage(); }
-  if (id === 'admin') { loadAdminData(); }
+  if (id === 'admin') { loadAdminData(); loadPlanConfig(); }
   if (id === 'daily') { initWater(); }
 }
 
@@ -1668,6 +1684,42 @@ function inviteUser() {
   const email = prompt('Email do utilizador a convidar:');
   if (!email) return;
   alert('Partilha este link com ' + email + ':\nhttps://food-macros-tracker.vercel.app\n\nO utilizador cria a conta directamente na app.');
+}
+
+// ── PLAN CONFIG ───────────────────────────────────────────
+let planConfigs = [];
+
+async function loadPlanConfig() {
+  const { data } = await sb.from('plan_config').select('*').order('plan');
+  planConfigs = data || [];
+  renderPlanConfig();
+}
+
+function renderPlanConfig() {
+  const grid = document.getElementById('plan-config-grid');
+  if (!planConfigs.length) { grid.innerHTML = '<div class="log-empty" style="grid-column:1/-1">Sem planos configurados.</div>'; return; }
+  grid.innerHTML = planConfigs.map(p => `
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:8px">${p.label || p.plan}</div>
+      <div class="field">
+        <label>Fotos/dia</label>
+        <input type="number" id="plan-limit-${p.plan}" value="${p.daily_photo_limit}" inputmode="numeric" min="1" max="999" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:0.95rem;padding:8px 12px;outline:none;width:100%">
+      </div>
+      <div style="font-size:0.7rem;color:var(--text3);margin-top:6px">${p.daily_photo_limit >= 999 ? 'Ilimitado' : p.daily_photo_limit + ' fotos por dia'}</div>
+    </div>
+  `).join('');
+}
+
+async function savePlanConfig() {
+  for (const p of planConfigs) {
+    const input = document.getElementById('plan-limit-' + p.plan);
+    if (!input) continue;
+    const newLimit = parseInt(input.value) || 3;
+    await sb.from('plan_config').update({ daily_photo_limit: newLimit, updated_at: new Date().toISOString() }).eq('plan', p.plan);
+  }
+  await loadPlanConfig();
+  const btn = document.querySelector('[onclick="savePlanConfig()"]');
+  if (btn) { btn.textContent = '✓ Guardado'; setTimeout(() => { btn.textContent = 'Guardar'; }, 2000); }
 }
 
 async function exportAllData() {
