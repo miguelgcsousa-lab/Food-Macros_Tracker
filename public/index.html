@@ -339,6 +339,42 @@ body.dark {
 .cost-bar { height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); margin-top: 6px; }
 .cost-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.5s ease; }
 
+
+/* ── BOTTOM NAV (mobile only) ── */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 8px 0;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  z-index: 100;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.bottom-nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: none; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 600;
+  color: var(--text3); padding: 4px 10px; border-radius: 8px;
+  transition: all 0.18s; min-width: 52px;
+}
+.bottom-nav-item .bn-icon { font-size: 1.3rem; line-height: 1; }
+.bottom-nav-item.active { color: var(--green); }
+.bottom-nav-item.active .bn-icon { transform: scale(1.1); }
+
+@media (max-width: 700px) {
+  .bottom-nav { display: flex; }
+  /* Add padding to app content so it doesn't hide behind bottom nav */
+  #app-screen > .page { padding-bottom: 80px; }
+  /* Hide desktop nav tabs on mobile */
+  .nav-tabs { display: none; }
+  /* Simplify header on mobile */
+  header { padding: 0 16px; justify-content: space-between; }
+}
+
 </style>
 </head>
 <body>
@@ -639,6 +675,55 @@ body.dark {
       <div class="card-body" style="padding:12px 16px"><div id="inj-history-container"><div class="log-empty">Sem tomas registadas.</div></div></div>
     </div>
   </div>
+</div>
+
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bottom-nav-item active" id="bn-analyser" onclick="showPage('analyser',this);syncBottomNav('analyser')">
+    <span class="bn-icon">🍽️</span>
+    <span>Analisar</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-daily" onclick="showPage('daily',this);syncBottomNav('daily')">
+    <span class="bn-icon">📊</span>
+    <span>Hoje</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-history" onclick="showPage('history',this);syncBottomNav('history')">
+    <span class="bn-icon">📅</span>
+    <span>Histórico</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-mounjaro" onclick="showPage('mounjaro',this);syncBottomNav('mounjaro')">
+    <span class="bn-icon">💉</span>
+    <span>Mounjaro</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-diabetes" onclick="showPage('diabetes',this);syncBottomNav('diabetes')">
+    <span class="bn-icon">🩸</span>
+    <span>Diabetes</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-more" onclick="toggleMoreMenu()">
+    <span class="bn-icon">⋯</span>
+    <span>Mais</span>
+  </button>
+</nav>
+
+<!-- MORE MENU (mobile) -->
+<div id="more-menu" style="display:none;position:fixed;bottom:80px;right:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:8px;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,0.12);min-width:160px">
+  <button class="bottom-nav-item" style="flex-direction:row;gap:10px;width:100%;justify-content:flex-start;padding:10px 12px;min-width:0" onclick="showPage('admin',document.getElementById('admin-nav-tab'));toggleMoreMenu()">
+    <span class="bn-icon" style="font-size:1rem">🔧</span>
+    <span style="font-size:0.82rem">Admin</span>
+  </button>
+  <button class="bottom-nav-item" style="flex-direction:row;gap:10px;width:100%;justify-content:flex-start;padding:10px 12px;min-width:0" onclick="openSettings();toggleMoreMenu()">
+    <span class="bn-icon" style="font-size:1rem">⚙️</span>
+    <span style="font-size:0.82rem">Objectivos</span>
+  </button>
+  <button class="bottom-nav-item" style="flex-direction:row;gap:10px;width:100%;justify-content:flex-start;padding:10px 12px;min-width:0" onclick="toggleDark();toggleMoreMenu()">
+    <span class="bn-icon" style="font-size:1rem" id="bn-dark-icon">🌙</span>
+    <span style="font-size:0.82rem">Modo escuro</span>
+  </button>
+  <div style="height:1px;background:var(--border);margin:4px 0"></div>
+  <button class="bottom-nav-item" style="flex-direction:row;gap:10px;width:100%;justify-content:flex-start;padding:10px 12px;min-width:0;color:var(--red)" onclick="signOut();toggleMoreMenu()">
+    <span class="bn-icon" style="font-size:1rem">↩️</span>
+    <span style="font-size:0.82rem">Sair</span>
+  </button>
 </div>
 
 </div><!-- end app-screen -->
@@ -1071,6 +1156,11 @@ function applyPlanRestrictions() {
     if (onclick.includes('mounjaro')) tab.style.display = planLimits.mounjaro_access ? '' : 'none';
     if (onclick.includes('diabetes')) tab.style.display = planLimits.diabetes_access ? '' : 'none';
   });
+  // Also update bottom nav
+  const bnMounjaro = document.getElementById('bn-mounjaro');
+  const bnDiabetes = document.getElementById('bn-diabetes');
+  if (bnMounjaro) bnMounjaro.style.display = planLimits.mounjaro_access ? '' : 'none';
+  if (bnDiabetes) bnDiabetes.style.display = planLimits.diabetes_access ? '' : 'none';
 
   // Recipe suggestion checkbox
   const recipeCheck = document.getElementById('suggest-recipe');
@@ -2166,6 +2256,46 @@ function initDiabetesPage() {
   renderMedications();
   renderHba1c();
   renderWeight();
+}
+
+// ── BOTTOM NAV ───────────────────────────────────────────
+function syncBottomNav(pageId) {
+  document.querySelectorAll('.bottom-nav-item[id^="bn-"]').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('bn-' + pageId);
+  if (btn) btn.classList.add('active');
+  // Close more menu if open
+  document.getElementById('more-menu').style.display = 'none';
+}
+
+function toggleMoreMenu() {
+  const menu = document.getElementById('more-menu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+// Close more menu when clicking outside
+document.addEventListener('click', e => {
+  const menu = document.getElementById('more-menu');
+  const moreBtn = document.getElementById('bn-more');
+  if (menu && !menu.contains(e.target) && e.target !== moreBtn && !moreBtn?.contains(e.target)) {
+    menu.style.display = 'none';
+  }
+});
+
+// Update showPage to also sync bottom nav
+const _origShowPage = showPage;
+// Override to sync both navs
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  if (id === 'daily') renderDaily();
+  if (id === 'history') renderHistory();
+  if (id === 'mounjaro') { renderBodyMap(); renderNextDose(); renderInjHistory(); }
+  if (id === 'diabetes') { initDiabetesPage(); }
+  if (id === 'daily') { initWater(); }
+  if (id === 'admin') { loadAdminData(); loadPlanConfig(); }
+  syncBottomNav(id);
 }
 
 // ── START ─────────────────────────────────────────────────
