@@ -6,6 +6,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="NutriAI">
+<meta name="theme-color" content="#2d7d52">
+<meta name="description" content="Nutrição inteligente e gestão de saúde com IA">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <title>NutriAI</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2161,6 +2165,41 @@ function initDiabetesPage() {
 
 // ── START ─────────────────────────────────────────────────
 init();
+
+// ── SERVICE WORKER ────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('NutriAI PWA ready'))
+      .catch(() => {});
+  });
+}
+
+// ── INSTALL PROMPT ────────────────────────────────────────
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show install button if not already installed
+  const existing = document.getElementById('install-btn');
+  if (!existing) {
+    const btn = document.createElement('button');
+    btn.id = 'install-btn';
+    btn.textContent = '📲 Instalar app';
+    btn.style.cssText = 'position:fixed;bottom:20px;right:20px;background:var(--green);color:white;border:none;border-radius:10px;padding:10px 18px;font-family:Inter,sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,0.2)';
+    btn.onclick = async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        btn.remove();
+      }
+    };
+    document.body.appendChild(btn);
+    // Auto-hide after 10 seconds
+    setTimeout(() => btn.remove(), 10000);
+  }
+});
 </script>
 </body>
 </html>
