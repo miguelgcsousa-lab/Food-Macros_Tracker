@@ -1,0 +1,35 @@
+{
+  "name": "NutriAI",
+  "short_name": "NutriAI",
+  "description": "Nutrição inteligente e gestão de saúde com IA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f7f5",
+  "theme_color": "#2d7d52",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "fitness", "food"],
+  "lang": "pt",
+  "shortcuts": [
+    {
+      "name": "Analisar refeição",
+      "short_name": "Analisar",
+      "description": "Analisa uma refeição por foto",
+      "url": "/",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
